@@ -14,7 +14,15 @@ pnpm dev
 
 ```sh
 pnpm build
+pnpm start
 ```
 
-Built with React, TypeScript, Vite, Tailwind CSS, and a minimal headless shadcn
-installation.
+`pnpm build` creates separate server and browser bundles in `build/server` and
+`build/client`. `pnpm start` serves the production build with server rendering;
+the browser then hydrates the rendered HTML for client-side interactions.
+
+Run `pnpm typecheck` to regenerate React Router's route types and check the
+TypeScript project.
+
+Built with React Router framework mode, React, TypeScript, Vite, Tailwind CSS,
+and a minimal headless shadcn installation.

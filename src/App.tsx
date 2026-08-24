@@ -1,6 +1,6 @@
 import { ArrowDown, CircleAlert, FileCheck2, ScanSearch } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 
 const standards = [
   {
@@ -23,10 +23,6 @@ const standards = [
   },
 ]
 
-function scrollToFramework() {
-  document.querySelector("#framework")?.scrollIntoView({ behavior: "smooth" })
-}
-
 export default function App() {
   return (
     <div className="min-h-svh bg-background text-foreground">
@@ -38,8 +34,8 @@ export default function App() {
             aria-label="DeathBench home"
           >
             <img
-              className="size-7 bg-white object-cover"
-              src="/deathbench-skull.png"
+              className="size-7 object-contain"
+              src="/deathbench-skull-white.svg"
               alt=""
               aria-hidden="true"
             />
@@ -70,13 +66,15 @@ export default function App() {
                 enabled by artificial intelligence—built to separate evidence
                 from speculation and accountability from hype.
               </p>
-              <Button
-                className="mt-10 h-11 rounded-none px-5 uppercase tracking-[0.1em]"
-                onClick={scrollToFramework}
+              <a
+                className={buttonVariants({
+                  className: "mt-10 h-11 rounded-none px-5 uppercase tracking-[0.1em]",
+                })}
+                href="#framework"
               >
                 How records qualify
                 <ArrowDown data-icon="inline-end" aria-hidden="true" />
-              </Button>
+              </a>
             </div>
 
             <aside className="self-end border-t border-border lg:border-t-0">

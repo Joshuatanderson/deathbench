@@ -37,9 +37,12 @@ export default function App() {
             href="#top"
             aria-label="DeathBench home"
           >
-            <span className="grid size-7 place-items-center bg-primary text-xs font-black text-primary-foreground">
-              DB
-            </span>
+            <img
+              className="size-7 bg-white object-cover"
+              src="/deathbench-skull.png"
+              alt=""
+              aria-hidden="true"
+            />
             <span>DeathBench</span>
           </a>
 
@@ -102,79 +105,6 @@ export default function App() {
                 </div>
               </div>
             </aside>
-          </div>
-        </section>
-
-        <section className="border-b border-border" aria-labelledby="index-title">
-          <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 lg:px-12 lg:py-24">
-            <div className="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-              <div>
-                <p className="section-label">Index preview</p>
-                <h2 id="index-title" className="section-title mt-3">
-                  No number before the evidence.
-                </h2>
-              </div>
-              <p className="max-w-md text-sm leading-6 text-muted-foreground">
-                Public totals remain withheld until the first methodology and
-                source review is complete.
-              </p>
-            </div>
-
-            <div className="grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
-              <article className="instrument-panel">
-                <div className="flex items-start justify-between gap-4">
-                  <p className="instrument-label">Verified fatalities</p>
-                  <span className="signal-square" aria-hidden="true" />
-                </div>
-                <p className="instrument-value" aria-label="Not yet published">
-                  —
-                </p>
-                <p className="instrument-note">Publication pending review</p>
-              </article>
-
-              <article className="instrument-panel">
-                <div className="flex items-start justify-between gap-4">
-                  <p className="instrument-label">Case review</p>
-                  <span className="signal-square signal-square-muted" aria-hidden="true" />
-                </div>
-                <p className="instrument-value instrument-value-word">Active</p>
-                <p className="instrument-note">Cross-source verification</p>
-              </article>
-
-              <article className="instrument-panel">
-                <div className="flex items-start justify-between gap-4">
-                  <p className="instrument-label">Geographic scope</p>
-                  <span className="signal-square signal-square-dim" aria-hidden="true" />
-                </div>
-                <p className="instrument-value instrument-value-word">Global</p>
-                <p className="instrument-note">All model-mediated domains</p>
-              </article>
-            </div>
-
-            <div className="mt-px border border-border bg-card">
-              <div className="flex flex-col justify-between gap-4 border-b border-border p-5 md:flex-row md:items-center md:p-6">
-                <div>
-                  <p className="instrument-label">Cumulative verified fatalities</p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Source-linked records over time
-                  </p>
-                </div>
-                <p className="text-[0.68rem] font-medium uppercase tracking-[0.14em] text-primary">
-                  Series locked
-                </p>
-              </div>
-              <div className="chart-field grid min-h-72 place-items-center px-6 text-center">
-                <div className="max-w-md bg-card px-6 py-5">
-                  <p className="font-display text-2xl tracking-[-0.025em] text-foreground">
-                    The record opens when the evidence is ready.
-                  </p>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    No estimates, projections, or unsourced totals will appear
-                    in the public index.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="DeathBench is an evidence-led public record of deaths caused or enabled by artificial intelligence."
+    />
+    <meta property="og:title" content="DeathBench — Coming Soon" />
+    <meta
+      property="og:description"
+      content="Measuring machine-made mortality."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#e9e5dc" />
+    <title>DeathBench — Coming Soon</title>
+
+    <style>
+      :root {
+        color-scheme: light;
+        --color-paper: oklch(0.92 0.012 82);
+        --color-ink: oklch(0.17 0.012 45);
+        --color-muted: oklch(0.43 0.018 55);
+        --color-rule: oklch(0.73 0.015 70);
+        --color-signal: oklch(0.52 0.2 28);
+        --space-xs: 8px;
+        --space-sm: 16px;
+        --space-md: 24px;
+        --space-lg: 32px;
+        --space-xl: 48px;
+        --space-2xl: 64px;
+        --space-3xl: 96px;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--color-paper);
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100svh;
+        margin: 0;
+        background: var(--color-paper);
+        color: var(--color-ink);
+        font-family: "Helvetica Neue", Helvetica, sans-serif;
+        text-rendering: optimizeLegibility;
+      }
+
+      .page {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-height: 100svh;
+        padding: var(--space-md);
+      }
+
+      .site-header,
+      .site-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-sm);
+        border-color: var(--color-rule);
+        color: var(--color-muted);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        line-height: 1.4;
+        text-transform: uppercase;
+      }
+
+      .site-header {
+        border-bottom: 1px solid var(--color-rule);
+        padding-bottom: var(--space-sm);
+      }
+
+      .wordmark {
+        color: var(--color-ink);
+        letter-spacing: -0.02em;
+      }
+
+      .wordmark::after {
+        color: var(--color-signal);
+        content: ".";
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+        text-align: right;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: var(--color-signal);
+      }
+
+      main {
+        display: grid;
+        align-content: center;
+        gap: var(--space-lg);
+        padding-block: var(--space-2xl);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--color-signal);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        line-height: 1.4;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 14ch;
+        margin: 0;
+        font-family: "Arial Narrow", "Helvetica Neue", sans-serif;
+        font-size: clamp(3.25rem, 12vw, 9.5rem);
+        font-stretch: condensed;
+        font-weight: 900;
+        letter-spacing: -0.07em;
+        line-height: 0.84;
+        text-wrap: balance;
+      }
+
+      h1 span {
+        display: block;
+      }
+
+      .lede {
+        max-width: 38rem;
+        margin: 0;
+        color: var(--color-muted);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(1.125rem, 1.5vw, 1.5rem);
+        line-height: 1.5;
+      }
+
+      .lede strong {
+        color: var(--color-ink);
+        font-weight: 700;
+      }
+
+      .site-footer {
+        align-items: flex-end;
+        border-top: 1px solid var(--color-rule);
+        padding-top: var(--space-sm);
+      }
+
+      .site-footer p {
+        margin: 0;
+      }
+
+      .site-footer p:first-child {
+        max-width: 24ch;
+        color: var(--color-ink);
+      }
+
+      ::selection {
+        background: var(--color-signal);
+        color: var(--color-paper);
+      }
+
+      @media (min-width: 768px) {
+        .page {
+          padding: var(--space-lg);
+        }
+
+        main {
+          grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 0.9fr);
+          align-items: end;
+          gap: var(--space-2xl);
+          padding-block: var(--space-3xl);
+        }
+
+        .eyebrow {
+          grid-column: 1 / -1;
+        }
+
+        h1 {
+          align-self: end;
+        }
+
+        .lede {
+          align-self: end;
+          padding-bottom: var(--space-xs);
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .page {
+          padding: var(--space-xl);
+        }
+
+        main {
+          gap: var(--space-3xl);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="page">
+      <header class="site-header">
+        <span class="wordmark">DeathBench</span>
+        <span class="status">
+          <span class="status-dot" aria-hidden="true"></span>
+          Project in development
+        </span>
+      </header>
+
+      <main>
+        <p class="eyebrow">Public record · Coming soon</p>
+        <h1>
+          <span>Counting the</span>
+          <span>human cost</span>
+          <span>of AI.</span>
+        </h1>
+        <p class="lede">
+          <strong>DeathBench</strong> is an evidence-led public record of deaths
+          caused or enabled by artificial intelligence.
+        </p>
+      </main>
+
+      <footer class="site-footer">
+        <p>Measuring machine-made mortality.</p>
+        <p>Est. 2026</p>
+      </footer>
+    </div>
+  </body>
+</html>

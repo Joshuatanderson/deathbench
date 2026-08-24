@@ -33,3 +33,11 @@ and `pnpm start` load a local `.env` file when present.
 
 Built with React Router framework mode, React, TypeScript, Vite, Tailwind CSS,
 and a minimal headless shadcn installation.
+
+## Background video
+
+The ambient background in `public/bg/` is derived from
+[Misty river.webm](https://commons.wikimedia.org/wiki/File:Misty_river.webm)
+on Wikimedia Commons (CC0 1.0, by user Digitura). It was cropped, ping-pong
+looped, converted to black and white, and given grain and a tear effect with
+ffmpeg. The MP4 and WebM are each under 250 KB.

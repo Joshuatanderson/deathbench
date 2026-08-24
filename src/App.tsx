@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { ArrowDown, CircleAlert, FileCheck2, ScanSearch } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
@@ -24,6 +25,38 @@ const standards = [
   },
 ]
 
+function AmbientBackground() {
+  const ref = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+    // React does not serialize `muted` into server HTML, so set it here
+    // before play() or the autoplay policy blocks the video.
+    video.muted = true
+    video.play().catch(() => {})
+  }, [])
+
+  return (
+    <div className="ambient-bg" aria-hidden="true">
+      <video
+        ref={ref}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster="/bg/fog-poster.jpg"
+        disablePictureInPicture
+      >
+        <source src="/bg/fog.webm" type="video/webm" />
+        <source src="/bg/fog.mp4" type="video/mp4" />
+      </video>
+    </div>
+  )
+}
+
 type AppProps = {
   registrySummary: PublicRegistrySummary
 }
@@ -33,7 +66,8 @@ export default function App({ registrySummary }: AppProps) {
   const includedDeaths = registrySummary.companies.reduce((total, company) => total + company.deaths, 0)
 
   return (
-    <div className="min-h-svh bg-background text-foreground">
+    <div className="relative isolate min-h-svh text-foreground">
+      <AmbientBackground />
       <header className="border-b border-border">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 md:px-8 lg:px-12">
           <a

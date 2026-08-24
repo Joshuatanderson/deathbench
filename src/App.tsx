@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import { ArrowDown, CircleAlert, FileCheck2, ScanSearch } from "lucide-react"
+import { ArrowDown, CircleAlert, ScanSearch } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
 import type { PublicRegistrySummary } from "../server/public-registry"
@@ -21,7 +21,7 @@ const standards = [
     number: "03",
     title: "Systemic contribution",
     description:
-      "An AI system contributes to a death through its deployment, automated decisions, or inadequate human oversight. The evidence must show the chain of events.",
+      "An AI system contributes to a death through its deployment, automated decisions, or weak human oversight.",
   },
 ]
 
@@ -104,8 +104,8 @@ export default function App({ registrySummary }: AppProps) {
                 Deaths linked to AI systems.
               </h1>
               <p className="mt-10 max-w-2xl text-balance text-lg leading-8 text-muted-foreground md:text-xl">
-                DeathBench reviews reported deaths involving AI. Each record links
-                to its sources and lists the system, company, death count, evidence, and verdict.
+                Every reported death is reviewed against the same rules and
+                published with its sources.
               </p>
               <a
                 className={buttonVariants({
@@ -113,7 +113,7 @@ export default function App({ registrySummary }: AppProps) {
                 })}
                 href="#framework"
               >
-                See inclusion rules
+                Inclusion rules
                 <ArrowDown data-icon="inline-end" aria-hidden="true" />
               </a>
             </div>
@@ -123,23 +123,11 @@ export default function App({ registrySummary }: AppProps) {
                 <ScanSearch className="mt-1 size-4 text-primary" aria-hidden="true" />
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground">
-                    Incident records
+                    Record contents
                   </p>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Each record includes sources, the AI system, the company,
-                    the number of deaths, and the current verdict.
-                  </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-[2rem_1fr] gap-4 border-b border-border py-6">
-                <FileCheck2 className="mt-1 size-4 text-primary" aria-hidden="true" />
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground">
-                    Review rules
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    The same inclusion rules and evidence classes apply to every
-                    incident.
+                    Sources, the system, the company, the deaths, and the
+                    verdict.
                   </p>
                 </div>
               </div>
@@ -151,28 +139,25 @@ export default function App({ registrySummary }: AppProps) {
           <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 lg:px-12 lg:py-28">
             <div className="grid gap-12 lg:grid-cols-[0.58fr_1.42fr] lg:gap-24">
               <div>
-                <p className="section-label">Company totals</p>
-                <h2 className="section-title mt-3 max-w-[11ch]">Included deaths by company.</h2>
+                <h2 className="section-title max-w-[11ch]">Included deaths by company.</h2>
                 <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  A company total changes only when a reviewer marks an incident as included. Excluded and
-                  unresolved incidents do not affect the total.
+                  A total counts only the records a reviewer marked as included.
                 </p>
                 <p className="mt-8 text-sm leading-6 text-muted-foreground">
-                  <span className="font-semibold text-foreground">{includedDeaths}</span> deaths across all
-                  included incidents.
+                  <span className="font-semibold text-foreground">{includedDeaths}</span> deaths in included records.
                 </p>
               </div>
 
               <div className="border-t border-border" aria-label="Included deaths by company">
                 <div className="grid grid-cols-[minmax(8rem,0.8fr)_minmax(7rem,1.5fr)_3rem] gap-4 border-b border-border py-3 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                   <span>Company</span>
-                  <span>Included deaths</span>
-                  <span className="text-right">Count</span>
+                  <span aria-hidden="true" />
+                  <span className="text-right">Deaths</span>
                 </div>
 
                 {!registrySummary.available ? (
                   <p className="border-b border-border py-10 text-sm leading-6 text-muted-foreground" role="status">
-                    Company totals are temporarily unavailable.
+                    Totals unavailable.
                   </p>
                 ) : registrySummary.companies.length ? (
                   registrySummary.companies.map((company) => (
@@ -183,7 +168,7 @@ export default function App({ registrySummary }: AppProps) {
                       <div>
                         <p className="font-semibold tracking-[-0.02em]">{company.company}</p>
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {company.incidents} included {company.incidents === 1 ? "incident" : "incidents"}
+                          {company.incidents} included {company.incidents === 1 ? "record" : "records"}
                         </p>
                       </div>
                       <div className="h-7 border border-border p-1" aria-hidden="true">
@@ -197,16 +182,13 @@ export default function App({ registrySummary }: AppProps) {
                   ))
                 ) : (
                   <div className="border-b border-border py-10">
-                    <p className="font-semibold">No included incidents yet.</p>
-                    <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                      Unresolved and excluded incidents do not appear in this chart.
-                    </p>
+                    <p className="font-semibold">No included records yet.</p>
                   </div>
                 )}
 
                 <p className="py-4 text-xs leading-5 text-muted-foreground">
-                  These totals measure documented incidents, not overall model safety. Companies with more
-                  public reports may have higher counts.
+                  Totals reflect documented records, not model safety. Companies with more public
+                  reporting show higher counts.
                 </p>
               </div>
             </div>
@@ -217,12 +199,10 @@ export default function App({ registrySummary }: AppProps) {
           <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 lg:px-12 lg:py-28">
             <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
               <div>
-                <p className="section-label">Inclusion rules</p>
-                <h2 className="section-title mt-3 max-w-[10ch]">How an incident qualifies.</h2>
+                <h2 className="section-title max-w-[10ch]">How a record qualifies.</h2>
                 <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  We include an incident when the evidence supports one of the
-                  three links below. Inclusion is not a legal finding. Each
-                  record explains the evidence and open disputes.
+                  A record is included when the evidence supports one of the
+                  three links below. Inclusion is not a legal finding.
                 </p>
               </div>
 
@@ -252,7 +232,6 @@ export default function App({ registrySummary }: AppProps) {
       <footer>
         <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-5 px-5 py-8 text-[0.68rem] font-medium uppercase tracking-[0.14em] text-muted-foreground md:flex-row md:items-center md:px-8 lg:px-12">
           <p className="text-foreground">DeathBench · Est. 2026</p>
-          <p>Public data on reported deaths involving AI.</p>
         </div>
       </footer>
     </div>

@@ -1,13 +1,20 @@
 # DeathBench
 
-Coming-soon site for DeathBench.
+Homepage for DeathBench, an independent public record of deaths caused or
+enabled by artificial intelligence.
 
 ## Run locally
 
 ```sh
-python3 -m http.server 8080
+pnpm install
+pnpm dev
 ```
 
-Then open <http://localhost:8080>.
+## Build
 
-The site is plain HTML and CSS with no build step or runtime dependencies.
+```sh
+pnpm build
+```
+
+Built with React, TypeScript, Vite, Tailwind CSS, and a minimal headless shadcn
+installation.

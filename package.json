@@ -1,0 +1,27 @@
+{
+  "name": "deathbench",
+  "version": "1.0.0",
+  "description": "Coming-soon site for DeathBench - an evidence-led public record of deaths caused or enabled by artificial intelligence.",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Joshuatanderson/deathbench.git"
+  },
+  "keywords": [
+    "deathbench",
+    "ai",
+    "analytics"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Joshuatanderson/deathbench/issues"
+  },
+  "homepage": "https://github.com/Joshuatanderson/deathbench#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}

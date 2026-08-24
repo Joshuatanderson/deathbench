@@ -12,12 +12,12 @@ export function meta() {
     {
       name: "description",
       content:
-        "DeathBench reviews reported deaths involving AI systems and explains the evidence behind each verdict.",
+        "Reported deaths involving AI systems. Every record lists its sources, evidence, and verdict.",
     },
     { property: "og:title", content: "DeathBench" },
     {
       property: "og:description",
-      content: "A source-linked public record of reported deaths involving AI systems.",
+      content: "Reported deaths involving AI systems, with sources and a verdict for every record.",
     },
     { property: "og:type", content: "website" },
     { name: "theme-color", content: "#0b0a0a" },

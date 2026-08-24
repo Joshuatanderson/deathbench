@@ -18,6 +18,14 @@ export function Layout({ children }: { children: ReactNode }) {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
+        <meta property="og:image" content="https://deathbench.com/opengraph.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="The DeathBench homepage" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://deathbench.com/opengraph.png" />
+        <meta name="twitter:image:alt" content="The DeathBench homepage" />
         <Links />
         <link rel="icon" type="image/svg+xml" href="/deathbench-skull.svg" />
       </head>

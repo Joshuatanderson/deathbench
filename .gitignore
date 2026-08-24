@@ -2,5 +2,7 @@ node_modules
 dist
 build
 .react-router
+.env
+.neon
 *.local
 .DS_Store

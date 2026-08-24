@@ -10,7 +10,7 @@ All endpoints are under `/api/editor`. The session endpoint is public; every oth
 | `/incidents` | `GET`, `POST` | List or create incidents |
 | `/incidents/:id` | `GET`, `PUT`, `DELETE` | Read, fully replace, or delete one incident |
 
-`PUT` replaces the complete editable incident representation. Unsupported methods return `405` with an `Allow` header. Successful creates return `201` with a `Location` header.
+`PUT` replaces the complete editable incident representation. Agents create incidents with `POST`; the review UI only reads them and edits `reviewState`, `evidenceClass`, `verdict`, and `reasoning`. Unsupported methods return `405` with an `Allow` header. Successful creates return `201` with a `Location` header.
 
 Incident resources keep review provenance separate from the case outcome:
 

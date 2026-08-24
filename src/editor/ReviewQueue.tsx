@@ -106,7 +106,7 @@ export function ReviewQueue({
           <div className="px-4 py-10">
             <p className="font-semibold">No dossiers in this view.</p>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Change the filter or add a candidate for review.
+              Change the filter. Agents add new candidates through the editor API.
             </p>
           </div>
         )}

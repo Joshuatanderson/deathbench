@@ -23,6 +23,13 @@ type IncidentTableProps = {
 }
 
 const columnHelper = createColumnHelper<DataTableFeatures, Incident>()
+const transcriptLabels: Record<Incident["transcriptStatus"], string> = {
+  none: "None public",
+  excerpts: "Excerpts",
+  partial: "Partial",
+  "complete-final": "Complete final",
+  sealed: "Sealed",
+}
 
 export function IncidentTable({ incidents, labs, models, onEdit }: IncidentTableProps) {
   const labNames = useMemo(() => new Map(labs.map((lab) => [String(lab.id), lab.name])), [labs])
@@ -33,19 +40,31 @@ export function IncidentTable({ incidents, labs, models, onEdit }: IncidentTable
   const columns = useMemo(
     () =>
       columnHelper.columns([
-        columnHelper.accessor("link", {
-          header: "Source",
+        columnHelper.accessor("title", {
+          header: "Incident",
           cell: ({ row }) => (
             <a
-              className="flex max-w-[34rem] items-center gap-2 truncate text-foreground underline decoration-border underline-offset-4 hover:decoration-primary"
+              className="flex max-w-[26rem] items-center gap-2 text-foreground underline decoration-border underline-offset-4 hover:decoration-primary"
               href={row.original.link}
               target="_blank"
               rel="noreferrer"
             >
-              <span className="truncate">{row.original.link}</span>
+              <span>{row.original.title}</span>
               <ExternalLink className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
             </a>
           ),
+        }),
+        columnHelper.accessor("verdict", {
+          header: "Verdict",
+          cell: ({ row }) => (
+            <span className="inline-flex border border-border px-2 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.1em]">
+              {row.original.verdict.replace("-", " ")}
+            </span>
+          ),
+        }),
+        columnHelper.accessor("evidenceClass", {
+          header: "Evidence",
+          cell: ({ row }) => `Class ${row.original.evidenceClass}`,
         }),
         columnHelper.accessor("labId", {
           header: "Lab",
@@ -54,6 +73,22 @@ export function IncidentTable({ incidents, labs, models, onEdit }: IncidentTable
         columnHelper.accessor("modelId", {
           header: "Model",
           cell: ({ row }) => modelNames.get(String(row.original.modelId)) ?? "Unknown",
+        }),
+        columnHelper.accessor("victimCount", {
+          header: "Deaths",
+        }),
+        columnHelper.accessor("transcriptStatus", {
+          header: "Transcript",
+          cell: ({ row }) => row.original.transcriptLink ? (
+            <a
+              className="underline decoration-border underline-offset-4 hover:decoration-primary"
+              href={row.original.transcriptLink}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {transcriptLabels[row.original.transcriptStatus]}
+            </a>
+          ) : transcriptLabels[row.original.transcriptStatus],
         }),
         columnHelper.accessor("updatedAt", {
           header: "Updated",
@@ -76,7 +111,10 @@ export function IncidentTable({ incidents, labs, models, onEdit }: IncidentTable
 
   return (
     <div className="border border-border">
-      <Table>
+      <p className="border-b border-border px-3 py-2 text-xs text-muted-foreground md:hidden">
+        Swipe horizontally to view all columns.
+      </p>
+      <Table className="min-w-[72rem]">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

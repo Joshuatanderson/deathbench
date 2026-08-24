@@ -18,7 +18,21 @@ import { IncidentTable } from "./IncidentTable"
 import type { EditorData, Incident, IncidentInput } from "./types"
 
 const emptyData: EditorData = { incidents: [], labs: [], models: [] }
-const emptyDraft: IncidentInput = { link: "", labId: "", modelId: "" }
+const emptyDraft: IncidentInput = {
+  title: "",
+  link: "",
+  labId: "",
+  modelId: "",
+  victimCount: 1,
+  verdict: "resolution-pending",
+  evidenceClass: "C",
+  pathway: "",
+  transcriptStatus: "none",
+  transcriptLink: "",
+  reasoning: "",
+}
+const selectClassName =
+  "h-10 w-full rounded-none border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50"
 
 function Login({ onSuccess }: { onSuccess: () => void }) {
   const [password, setPassword] = useState("")
@@ -107,7 +121,19 @@ export default function EditorApp() {
 
   function startEdit(incident: Incident) {
     setEditingId(incident.id)
-    setDraft({ link: incident.link, labId: String(incident.labId), modelId: String(incident.modelId) })
+    setDraft({
+      title: incident.title,
+      link: incident.link,
+      labId: String(incident.labId),
+      modelId: String(incident.modelId),
+      victimCount: incident.victimCount,
+      verdict: incident.verdict,
+      evidenceClass: incident.evidenceClass,
+      pathway: incident.pathway,
+      transcriptStatus: incident.transcriptStatus,
+      transcriptLink: incident.transcriptLink,
+      reasoning: incident.reasoning,
+    })
     setError("")
     setMessage("")
     window.scrollTo({ top: 0, behavior: "smooth" })
@@ -200,7 +226,8 @@ export default function EditorApp() {
             <p className="section-label">Working dataset</p>
             <h1 className="mt-3 font-display text-5xl tracking-[-0.05em] md:text-6xl">Incident editor</h1>
             <p className="mt-5 max-w-md text-sm leading-6 text-muted-foreground">
-              Every record requires a source, responsible lab, and model. Changes write directly to Neon.
+              Track the verdict separately from evidence strength. Cases remain resolution pending until
+              stronger records support inclusion or exclusion.
             </p>
           </section>
 
@@ -219,6 +246,16 @@ export default function EditorApp() {
 
             <div className="mt-6 grid gap-5 md:grid-cols-2">
               <div className="grid gap-2 md:col-span-2">
+                <Label htmlFor="title">Incident title</Label>
+                <Input
+                  id="title"
+                  maxLength={200}
+                  value={draft.title}
+                  onChange={(event) => setDraft({ ...draft, title: event.target.value })}
+                  required
+                />
+              </div>
+              <div className="grid gap-2 md:col-span-2">
                 <Label htmlFor="link">Source link</Label>
                 <Input
                   id="link"
@@ -233,7 +270,7 @@ export default function EditorApp() {
                 <Label htmlFor="lab">Lab</Label>
                 <select
                   id="lab"
-                  className="h-10 w-full rounded-none border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40"
+                  className={selectClassName}
                   value={draft.labId}
                   onChange={(event) => setDraft({ ...draft, labId: event.target.value, modelId: "" })}
                   required
@@ -246,7 +283,7 @@ export default function EditorApp() {
                 <Label htmlFor="model">Model</Label>
                 <select
                   id="model"
-                  className="h-10 w-full rounded-none border border-input bg-background px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50"
+                  className={selectClassName}
                   value={draft.modelId}
                   onChange={(event) => setDraft({ ...draft, modelId: event.target.value })}
                   disabled={!draft.labId}
@@ -255,6 +292,98 @@ export default function EditorApp() {
                   <option value="">Select a model</option>
                   {availableModels.map((model) => <option key={model.id} value={model.id}>{model.name}</option>)}
                 </select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="victim-count">Deaths in this incident</Label>
+                <Input
+                  id="victim-count"
+                  type="number"
+                  min={1}
+                  max={100}
+                  step={1}
+                  value={draft.victimCount}
+                  onChange={(event) => setDraft({ ...draft, victimCount: Number(event.target.value) })}
+                  required
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="verdict">Verdict</Label>
+                <select
+                  id="verdict"
+                  className={selectClassName}
+                  value={draft.verdict}
+                  onChange={(event) => setDraft({ ...draft, verdict: event.target.value as IncidentInput["verdict"] })}
+                  required
+                >
+                  <option value="excluded">Excluded</option>
+                  <option value="included">Included</option>
+                  <option value="resolution-pending">Resolution pending</option>
+                </select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="evidence-class">Evidence class</Label>
+                <select
+                  id="evidence-class"
+                  className={selectClassName}
+                  value={draft.evidenceClass}
+                  onChange={(event) => setDraft({ ...draft, evidenceClass: event.target.value as IncidentInput["evidenceClass"] })}
+                  required
+                >
+                  <option value="A">A — authenticated / adjudicated</option>
+                  <option value="B">B — substantiated allegation</option>
+                  <option value="C">C — provisional watchlist</option>
+                  <option value="X">X — excluded</option>
+                </select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="pathway">Candidate pathway</Label>
+                <select
+                  id="pathway"
+                  className={selectClassName}
+                  value={draft.pathway}
+                  onChange={(event) => setDraft({ ...draft, pathway: event.target.value as IncidentInput["pathway"] })}
+                >
+                  <option value="">Not established</option>
+                  <option value="direct-operation">Direct operation</option>
+                  <option value="enabled-harm">Enabled harm</option>
+                  <option value="systemic-contribution">Systemic contribution</option>
+                </select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="transcript-status">Transcript record</Label>
+                <select
+                  id="transcript-status"
+                  className={selectClassName}
+                  value={draft.transcriptStatus}
+                  onChange={(event) => setDraft({ ...draft, transcriptStatus: event.target.value as IncidentInput["transcriptStatus"] })}
+                  required
+                >
+                  <option value="none">No public transcript</option>
+                  <option value="excerpts">Selected excerpts</option>
+                  <option value="partial">Partial interaction</option>
+                  <option value="complete-final">Complete final conversation</option>
+                  <option value="sealed">Complete record sealed</option>
+                </select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="transcript-link">Transcript / exhibit link</Label>
+                <Input
+                  id="transcript-link"
+                  type="url"
+                  placeholder="https://…"
+                  value={draft.transcriptLink}
+                  onChange={(event) => setDraft({ ...draft, transcriptLink: event.target.value })}
+                />
+              </div>
+              <div className="grid gap-2 md:col-span-2">
+                <Label htmlFor="reasoning">Decision reasoning</Label>
+                <textarea
+                  id="reasoning"
+                  className="min-h-32 w-full resize-y rounded-none border border-input bg-transparent px-3 py-2 text-base leading-6 outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/40 md:text-sm"
+                  maxLength={4000}
+                  value={draft.reasoning}
+                  onChange={(event) => setDraft({ ...draft, reasoning: event.target.value })}
+                />
               </div>
             </div>
 

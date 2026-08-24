@@ -1,4 +1,4 @@
-import type { EditorData, Incident, IncidentInput } from "./types"
+import type { EditorData, Incident, IncidentInput, Lab, Model } from "./types"
 
 const API = "/api/editor"
 
@@ -18,22 +18,39 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 }
 
 export function login(password: string) {
-  return request<{ ok: true }>("/login", {
-    method: "POST",
+  return request<{ authenticated: true }>("/session", {
+    method: "PUT",
     body: JSON.stringify({ password }),
   })
 }
 
 export function logout() {
-  return request<{ ok: true }>("/logout", { method: "POST" })
+  return request<void>("/session", { method: "DELETE" })
 }
 
 export function getSession() {
   return request<{ authenticated: boolean }>("/session")
 }
 
-export function getEditorData() {
-  return request<EditorData>("/data")
+export function getLabs() {
+  return request<Lab[]>("/labs")
+}
+
+export function getModels() {
+  return request<Model[]>("/models")
+}
+
+export function getIncidents() {
+  return request<Incident[]>("/incidents")
+}
+
+export async function getEditorData(): Promise<EditorData> {
+  const [labs, models, incidents] = await Promise.all([
+    getLabs(),
+    getModels(),
+    getIncidents(),
+  ])
+  return { labs, models, incidents }
 }
 
 export function createIncident(input: IncidentInput) {
@@ -45,7 +62,7 @@ export function createIncident(input: IncidentInput) {
 
 export function updateIncident(id: string, input: IncidentInput) {
   return request<Incident>(`/incidents/${id}`, {
-    method: "PATCH",
+    method: "PUT",
     body: JSON.stringify(input),
   })
 }

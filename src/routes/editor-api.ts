@@ -1,4 +1,4 @@
-import { handleEditorRequest } from "../../server/editor-api"
+import { handleEditorRequest } from "../../server/editor-api/index"
 
 import type { Route } from "./+types/editor-api"
 

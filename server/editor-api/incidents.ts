@@ -1,7 +1,9 @@
 import type { EditorDatabase } from "./database"
-import { parseIncident } from "./incident-contract"
+import { parseIncident, parseReview } from "./incident-contract"
 import {
+  clearReview,
   findIncident,
+  saveReview,
   insertIncident,
   listIncidents,
   modelBelongsToLab,
@@ -82,4 +84,23 @@ export async function handleIncidentItemRequest(
     return noContentResponse()
   }
   return methodNotAllowedResponse(["GET", "PUT", "DELETE"])
+}
+
+export async function handleIncidentReviewRequest(
+  request: Request,
+  database: EditorDatabase,
+  incidentId: string
+) {
+  if (request.method === "PUT") {
+    const review = parseReview(await readJsonObject(request))
+    const updated = await saveReview(database, incidentId, review)
+    if (!updated) throw new HttpError(404, "Incident not found")
+    return jsonResponse(200, updated)
+  }
+  if (request.method === "DELETE") {
+    const updated = await clearReview(database, incidentId)
+    if (!updated) throw new HttpError(404, "Incident not found")
+    return jsonResponse(200, updated)
+  }
+  return methodNotAllowedResponse(["PUT", "DELETE"])
 }

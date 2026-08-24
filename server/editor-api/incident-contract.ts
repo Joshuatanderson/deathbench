@@ -1,7 +1,6 @@
 import { HttpError } from "./http"
 
 const INCIDENT_VERDICTS = ["excluded", "included", "resolution-pending"] as const
-const REVIEW_STATES = ["unreviewed", "agent-recommended", "human-reviewed"] as const
 const EVIDENCE_CLASSES = ["A", "B", "C", "X"] as const
 const PATHWAYS = ["direct-operation", "enabled-harm", "systemic-contribution"] as const
 const TRANSCRIPT_STATUSES = ["none", "excerpts", "partial", "complete-final", "sealed"] as const
@@ -17,9 +16,6 @@ export type IncidentRow = {
   death_date: unknown
   location: unknown
   case_reference: unknown
-  review_state: unknown
-  verdict: unknown
-  evidence_class: unknown
   pathway: unknown
   transcript_status: unknown
   transcript_link: unknown
@@ -27,7 +23,12 @@ export type IncidentRow = {
   claim_summary: unknown
   evidence_summary: unknown
   counterevidence: unknown
-  reasoning: unknown
+  agent_verdict: unknown
+  agent_evidence_class: unknown
+  agent_reasoning: unknown
+  human_verdict: unknown
+  human_reasoning: unknown
+  human_reviewed_at: unknown
   created_at: unknown
   updated_at: unknown
 }
@@ -45,6 +46,10 @@ function sourceLinkResources(value: unknown): SourceLink[] {
   })
 }
 
+function timestamp(value: unknown) {
+  return value instanceof Date ? value.toISOString() : String(value)
+}
+
 export function incidentResource(row: IncidentRow) {
   return {
     id: String(row.id),
@@ -57,9 +62,6 @@ export function incidentResource(row: IncidentRow) {
     deathDate: String(row.death_date),
     location: String(row.location),
     caseReference: String(row.case_reference),
-    reviewState: String(row.review_state),
-    verdict: String(row.verdict),
-    evidenceClass: String(row.evidence_class),
     pathway: row.pathway === null ? "" : String(row.pathway),
     transcriptStatus: String(row.transcript_status),
     transcriptLink: row.transcript_link === null ? "" : String(row.transcript_link),
@@ -67,11 +69,44 @@ export function incidentResource(row: IncidentRow) {
     claimSummary: String(row.claim_summary),
     evidenceSummary: String(row.evidence_summary),
     counterevidence: String(row.counterevidence),
-    reasoning: String(row.reasoning),
-    createdAt: row.created_at instanceof Date ? row.created_at.toISOString() : String(row.created_at),
-    updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : String(row.updated_at),
+    agent: {
+      verdict: row.agent_verdict === null ? null : String(row.agent_verdict),
+      evidenceClass: row.agent_evidence_class === null ? null : String(row.agent_evidence_class),
+      reasoning: String(row.agent_reasoning),
+    },
+    review:
+      row.human_verdict === null
+        ? null
+        : {
+            verdict: String(row.human_verdict),
+            reasoning: String(row.human_reasoning),
+            reviewedAt: timestamp(row.human_reviewed_at),
+          },
+    createdAt: timestamp(row.created_at),
+    updatedAt: timestamp(row.updated_at),
   }
 }
+
+function isVerdict(value: unknown): value is (typeof INCIDENT_VERDICTS)[number] {
+  return typeof value === "string" && INCIDENT_VERDICTS.includes(value as (typeof INCIDENT_VERDICTS)[number])
+}
+
+/** Human decision. Written only by the review UI, never by agents. */
+export function parseReview(body: Record<string, unknown>) {
+  const reasoning = typeof body.reasoning === "string" ? body.reasoning.trim() : ""
+  if (!isVerdict(body.verdict)) {
+    throw new HttpError(400, "Choose include, exclude, or pending")
+  }
+  if (!reasoning) {
+    throw new HttpError(400, "Write your reasoning before you save")
+  }
+  if (reasoning.length > 4_000) {
+    throw new HttpError(400, "Reasoning must be 4,000 characters or fewer")
+  }
+  return { verdict: body.verdict, reasoning }
+}
+
+export type ReviewInput = ReturnType<typeof parseReview>
 
 export function parseIncident(body: Record<string, unknown>) {
   const title = typeof body.title === "string" ? body.title.trim() : ""
@@ -83,9 +118,6 @@ export function parseIncident(body: Record<string, unknown>) {
   const deathDate = typeof body.deathDate === "string" ? body.deathDate.trim() : ""
   const location = typeof body.location === "string" ? body.location.trim() : ""
   const caseReference = typeof body.caseReference === "string" ? body.caseReference.trim() : ""
-  const reviewState = typeof body.reviewState === "string" ? body.reviewState : ""
-  const verdict = typeof body.verdict === "string" ? body.verdict : ""
-  const evidenceClass = typeof body.evidenceClass === "string" ? body.evidenceClass : ""
   const pathway = typeof body.pathway === "string" ? body.pathway : ""
   const transcriptStatus = typeof body.transcriptStatus === "string" ? body.transcriptStatus : ""
   const transcriptLink = typeof body.transcriptLink === "string" ? body.transcriptLink.trim() : ""
@@ -93,7 +125,13 @@ export function parseIncident(body: Record<string, unknown>) {
   const claimSummary = typeof body.claimSummary === "string" ? body.claimSummary.trim() : ""
   const evidenceSummary = typeof body.evidenceSummary === "string" ? body.evidenceSummary.trim() : ""
   const counterevidence = typeof body.counterevidence === "string" ? body.counterevidence.trim() : ""
-  const reasoning = typeof body.reasoning === "string" ? body.reasoning.trim() : ""
+  const agent =
+    typeof body.agent === "object" && body.agent !== null && !Array.isArray(body.agent)
+      ? (body.agent as Record<string, unknown>)
+      : {}
+  const agentVerdict = agent.verdict ?? null
+  const agentEvidenceClass = agent.evidenceClass ?? null
+  const agentReasoning = typeof agent.reasoning === "string" ? agent.reasoning.trim() : ""
 
   if (!title || title.length > 200) {
     throw new HttpError(400, "Title is required and must be 200 characters or fewer")
@@ -121,14 +159,14 @@ export function parseIncident(body: Record<string, unknown>) {
   if (deathDate.length > 100 || location.length > 200 || caseReference.length > 300) {
     throw new HttpError(400, "Case metadata is too long")
   }
-  if (!REVIEW_STATES.includes(reviewState as (typeof REVIEW_STATES)[number])) {
-    throw new HttpError(400, "Select a valid review state")
+  if (agentVerdict !== null && !isVerdict(agentVerdict)) {
+    throw new HttpError(400, "Agent verdict must be excluded, included, resolution-pending, or null")
   }
-  if (!INCIDENT_VERDICTS.includes(verdict as (typeof INCIDENT_VERDICTS)[number])) {
-    throw new HttpError(400, "Select a valid verdict")
-  }
-  if (!EVIDENCE_CLASSES.includes(evidenceClass as (typeof EVIDENCE_CLASSES)[number])) {
-    throw new HttpError(400, "Select a valid evidence class")
+  if (
+    agentEvidenceClass !== null &&
+    !EVIDENCE_CLASSES.includes(agentEvidenceClass as (typeof EVIDENCE_CLASSES)[number])
+  ) {
+    throw new HttpError(400, "Agent evidence class must be A, B, C, X, or null")
   }
   if (pathway && !PATHWAYS.includes(pathway as (typeof PATHWAYS)[number])) {
     throw new HttpError(400, "Select a valid qualification pathway")
@@ -160,11 +198,8 @@ export function parseIncident(body: Record<string, unknown>) {
   if (claimSummary.length > 4_000 || evidenceSummary.length > 6_000 || counterevidence.length > 4_000) {
     throw new HttpError(400, "Evidence narrative is too long")
   }
-  if (reasoning.length > 4_000) {
-    throw new HttpError(400, "Reasoning must be 4,000 characters or fewer")
-  }
-  if (reviewState === "human-reviewed" && !reasoning) {
-    throw new HttpError(400, "Human-reviewed dossiers require decision reasoning")
+  if (agentReasoning.length > 4_000) {
+    throw new HttpError(400, "Agent reasoning must be 4,000 characters or fewer")
   }
 
   return {
@@ -177,9 +212,6 @@ export function parseIncident(body: Record<string, unknown>) {
     deathDate,
     location,
     caseReference,
-    reviewState,
-    verdict,
-    evidenceClass,
     pathway: pathway || null,
     transcriptStatus,
     transcriptLink: transcriptLink || null,
@@ -187,7 +219,9 @@ export function parseIncident(body: Record<string, unknown>) {
     claimSummary,
     evidenceSummary,
     counterevidence,
-    reasoning,
+    agentVerdict: agentVerdict as (typeof INCIDENT_VERDICTS)[number] | null,
+    agentEvidenceClass: agentEvidenceClass as (typeof EVIDENCE_CLASSES)[number] | null,
+    agentReasoning,
   }
 }
 

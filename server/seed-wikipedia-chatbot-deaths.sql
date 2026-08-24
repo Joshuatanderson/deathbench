@@ -2,7 +2,7 @@
 -- "Deaths linked to chatbots" page, audited on 2026-08-24.
 --
 -- Run server/schema.sql first. This import is idempotent by source link.
--- Every imported record is an agent-researched dossier, not a human verdict.
+-- Every imported record is an agent-researched case, not a human decision.
 -- Class B and C records remain resolution pending; no public record in this set currently
 -- meets DeathBench's Class-A qualification threshold.
 
@@ -178,13 +178,12 @@ INSERT INTO incidents (
   lab_id,
   model_id,
   victim_count,
-  review_state,
-  verdict,
-  evidence_class,
+  agent_verdict,
+  agent_evidence_class,
   pathway,
   transcript_status,
   transcript_link,
-  reasoning
+  agent_reasoning
 )
 SELECT
   source_data.title,
@@ -192,7 +191,6 @@ SELECT
   models.lab_id,
   models.id,
   source_data.victim_count,
-  'agent-recommended'::incident_review_state,
   source_data.verdict::incident_verdict,
   source_data.evidence_class,
   source_data.pathway,
@@ -206,17 +204,16 @@ ON CONFLICT (link) DO UPDATE SET
   lab_id = EXCLUDED.lab_id,
   model_id = EXCLUDED.model_id,
   victim_count = EXCLUDED.victim_count,
-  review_state = EXCLUDED.review_state,
-  verdict = EXCLUDED.verdict,
-  evidence_class = EXCLUDED.evidence_class,
+  agent_verdict = EXCLUDED.agent_verdict,
+  agent_evidence_class = EXCLUDED.agent_evidence_class,
   pathway = EXCLUDED.pathway,
   transcript_status = EXCLUDED.transcript_status,
   transcript_link = EXCLUDED.transcript_link,
-  reasoning = EXCLUDED.reasoning,
+  agent_reasoning = EXCLUDED.agent_reasoning,
   updated_at = now()
-WHERE incidents.review_state <> 'human-reviewed';
+WHERE incidents.human_verdict IS NULL;
 
--- Rich dossiers requested for human review. These remain pending even where a pleading
+-- Rich cases requested for human review. These remain pending even where a pleading
 -- describes them as a definite causal case. Court filings establish allegations, not findings.
 WITH review_data (
   link,
@@ -403,27 +400,26 @@ SET title = review_data.title,
     death_date = review_data.death_date,
     location = review_data.location,
     case_reference = review_data.case_reference,
-    review_state = 'agent-recommended',
-    verdict = 'resolution-pending',
-    evidence_class = review_data.evidence_class,
+    agent_verdict = 'resolution-pending',
+    agent_evidence_class = review_data.evidence_class,
     pathway = review_data.pathway,
     source_links = review_data.source_links,
     claim_summary = review_data.claim_summary,
     evidence_summary = review_data.evidence_summary,
     counterevidence = review_data.counterevidence,
-    reasoning = review_data.reasoning,
+    agent_reasoning = review_data.reasoning,
     updated_at = now()
 FROM review_data
 WHERE incidents.link = review_data.link
-  AND incidents.review_state <> 'human-reviewed';
+  AND incidents.human_verdict IS NULL;
 
 -- One incident with two deaths. Keep the homicide and later suicide together while
--- preserving in the dossier that each death needs its own causal analysis.
+-- preserving in the case that each death needs its own causal analysis.
 UPDATE incidents
 SET victim_count = 2,
     updated_at = now()
 WHERE link = 'https://storage.courtlistener.com/recap/gov.uscourts.cand.461878/gov.uscourts.cand.461878.1.0_1.pdf'
-  AND review_state <> 'human-reviewed';
+  AND human_verdict IS NULL;
 
 -- Austin Gordon is a distinct case and was not one of the 25 Wikipedia rows audited above.
 -- The complaint describes a 289-page conversation but does not attach the complete export.
@@ -437,9 +433,8 @@ INSERT INTO incidents (
   death_date,
   location,
   case_reference,
-  review_state,
-  verdict,
-  evidence_class,
+  agent_verdict,
+  agent_evidence_class,
   pathway,
   transcript_status,
   transcript_link,
@@ -447,7 +442,7 @@ INSERT INTO incidents (
   claim_summary,
   evidence_summary,
   counterevidence,
-  reasoning
+  agent_reasoning
 )
 SELECT
   'Austin Gordon, 40',
@@ -459,7 +454,6 @@ SELECT
   '2025-11-02',
   'Colorado',
   'Gray v. OpenAI, Los Angeles Superior Court (filed 2026-01-12; reported No. 26STCV00988)',
-  'agent-recommended'::incident_review_state,
   'resolution-pending'::incident_verdict,
   'B',
   'systemic-contribution',
@@ -481,9 +475,8 @@ ON CONFLICT (link) DO UPDATE SET
   death_date = EXCLUDED.death_date,
   location = EXCLUDED.location,
   case_reference = EXCLUDED.case_reference,
-  review_state = EXCLUDED.review_state,
-  verdict = EXCLUDED.verdict,
-  evidence_class = EXCLUDED.evidence_class,
+  agent_verdict = EXCLUDED.agent_verdict,
+  agent_evidence_class = EXCLUDED.agent_evidence_class,
   pathway = EXCLUDED.pathway,
   transcript_status = EXCLUDED.transcript_status,
   transcript_link = EXCLUDED.transcript_link,
@@ -491,6 +484,6 @@ ON CONFLICT (link) DO UPDATE SET
   claim_summary = EXCLUDED.claim_summary,
   evidence_summary = EXCLUDED.evidence_summary,
   counterevidence = EXCLUDED.counterevidence,
-  reasoning = EXCLUDED.reasoning,
+  agent_reasoning = EXCLUDED.agent_reasoning,
   updated_at = now()
-WHERE incidents.review_state <> 'human-reviewed';
+WHERE incidents.human_verdict IS NULL;

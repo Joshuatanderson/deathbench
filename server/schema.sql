@@ -20,14 +20,6 @@ EXCEPTION
 END
 $$;
 
-DO $$
-BEGIN
-  CREATE TYPE incident_review_state AS ENUM ('unreviewed', 'agent-recommended', 'human-reviewed');
-EXCEPTION
-  WHEN duplicate_object THEN NULL;
-END
-$$;
-
 CREATE TABLE IF NOT EXISTS incidents (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
@@ -40,9 +32,6 @@ CREATE TABLE IF NOT EXISTS incidents (
   death_date TEXT NOT NULL DEFAULT '',
   location TEXT NOT NULL DEFAULT '',
   case_reference TEXT NOT NULL DEFAULT '',
-  review_state incident_review_state NOT NULL DEFAULT 'unreviewed',
-  verdict incident_verdict NOT NULL DEFAULT 'resolution-pending',
-  evidence_class TEXT NOT NULL DEFAULT 'C' CHECK (evidence_class IN ('A', 'B', 'C', 'X')),
   pathway TEXT CHECK (pathway IN ('direct-operation', 'enabled-harm', 'systemic-contribution')),
   transcript_status TEXT NOT NULL DEFAULT 'none'
     CHECK (transcript_status IN ('none', 'excerpts', 'partial', 'complete-final', 'sealed')),
@@ -51,7 +40,14 @@ CREATE TABLE IF NOT EXISTS incidents (
   claim_summary TEXT NOT NULL DEFAULT '',
   evidence_summary TEXT NOT NULL DEFAULT '',
   counterevidence TEXT NOT NULL DEFAULT '',
-  reasoning TEXT NOT NULL DEFAULT '',
+  -- Agent recommendation. Written by agents. Display only in the review UI.
+  agent_verdict incident_verdict,
+  agent_evidence_class TEXT CHECK (agent_evidence_class IN ('A', 'B', 'C', 'X')),
+  agent_reasoning TEXT NOT NULL DEFAULT '',
+  -- Human decision. Written only through the review UI. NULL until a human decides.
+  human_verdict incident_verdict,
+  human_reasoning TEXT NOT NULL DEFAULT '',
+  human_reviewed_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -63,10 +59,6 @@ ALTER TABLE incidents
   ADD COLUMN IF NOT EXISTS death_date TEXT NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS location TEXT NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS case_reference TEXT NOT NULL DEFAULT '',
-  ADD COLUMN IF NOT EXISTS review_state incident_review_state NOT NULL DEFAULT 'unreviewed',
-  ADD COLUMN IF NOT EXISTS verdict incident_verdict,
-  ADD COLUMN IF NOT EXISTS evidence_class TEXT NOT NULL DEFAULT 'C'
-    CHECK (evidence_class IN ('A', 'B', 'C', 'X')),
   ADD COLUMN IF NOT EXISTS pathway TEXT
     CHECK (pathway IN ('direct-operation', 'enabled-harm', 'systemic-contribution')),
   ADD COLUMN IF NOT EXISTS transcript_status TEXT NOT NULL DEFAULT 'none'
@@ -77,7 +69,13 @@ ALTER TABLE incidents
   ADD COLUMN IF NOT EXISTS claim_summary TEXT NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS evidence_summary TEXT NOT NULL DEFAULT '',
   ADD COLUMN IF NOT EXISTS counterevidence TEXT NOT NULL DEFAULT '',
-  ADD COLUMN IF NOT EXISTS reasoning TEXT NOT NULL DEFAULT '';
+  ADD COLUMN IF NOT EXISTS agent_verdict incident_verdict,
+  ADD COLUMN IF NOT EXISTS agent_evidence_class TEXT
+    CHECK (agent_evidence_class IN ('A', 'B', 'C', 'X')),
+  ADD COLUMN IF NOT EXISTS agent_reasoning TEXT NOT NULL DEFAULT '',
+  ADD COLUMN IF NOT EXISTS human_verdict incident_verdict,
+  ADD COLUMN IF NOT EXISTS human_reasoning TEXT NOT NULL DEFAULT '',
+  ADD COLUMN IF NOT EXISTS human_reviewed_at TIMESTAMPTZ;
 
 DO $$
 BEGIN
@@ -97,39 +95,32 @@ BEGIN
 END
 $$;
 
+-- Migration from the old single-track layout (review_state + verdict + evidence_class + reasoning).
+-- Human-reviewed rows keep their decision in the human columns. Every other row keeps
+-- its data as the agent recommendation, and the human columns stay empty.
 DO $$
 BEGIN
   IF EXISTS (
     SELECT 1
     FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'incidents' AND column_name = 'status'
+    WHERE table_schema = 'public' AND table_name = 'incidents' AND column_name = 'review_state'
   ) THEN
-    EXECUTE 'UPDATE incidents SET verdict = CASE status
-      WHEN ''excluded'' THEN ''excluded''::incident_verdict
-      WHEN ''qualified'' THEN ''included''::incident_verdict
-      ELSE ''resolution-pending''::incident_verdict
-    END WHERE verdict IS NULL';
-  END IF;
-
-  IF EXISTS (
-    SELECT 1
-    FROM information_schema.columns
-    WHERE table_schema = 'public' AND table_name = 'incidents' AND column_name = 'summary'
-  ) THEN
-    EXECUTE 'UPDATE incidents SET reasoning = summary WHERE reasoning = '''' AND summary <> ''''';
+    EXECUTE $migrate$
+      UPDATE incidents
+      SET human_verdict = CASE WHEN review_state = 'human-reviewed' THEN verdict END,
+          human_reasoning = CASE WHEN review_state = 'human-reviewed' THEN reasoning ELSE '' END,
+          human_reviewed_at = CASE WHEN review_state = 'human-reviewed' THEN updated_at END,
+          agent_verdict = CASE WHEN review_state = 'agent-recommended' THEN verdict END,
+          agent_evidence_class = evidence_class,
+          agent_reasoning = CASE WHEN review_state = 'human-reviewed' THEN '' ELSE reasoning END
+      WHERE human_verdict IS NULL AND agent_verdict IS NULL
+    $migrate$;
+    EXECUTE 'ALTER TABLE incidents DROP COLUMN review_state, DROP COLUMN verdict, DROP COLUMN evidence_class, DROP COLUMN reasoning';
   END IF;
 END
 $$;
 
-UPDATE incidents
-SET verdict = 'resolution-pending'
-WHERE verdict IS NULL;
-
-ALTER TABLE incidents
-  ALTER COLUMN verdict SET DEFAULT 'resolution-pending',
-  ALTER COLUMN verdict SET NOT NULL,
-  DROP COLUMN IF EXISTS status,
-  DROP COLUMN IF EXISTS summary;
+DROP TYPE IF EXISTS incident_review_state;
 
 INSERT INTO labs (name, slug) VALUES
   ('OpenAI', 'openai'),

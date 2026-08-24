@@ -1,4 +1,4 @@
-import type { EditorData, Incident, IncidentInput, Lab, Model } from "./types"
+import type { EditorData, Incident, IncidentInput, Lab, Model, ReviewInput } from "./types"
 
 const API = "/api/editor"
 
@@ -69,4 +69,15 @@ export function updateIncident(id: string, input: IncidentInput) {
 
 export function deleteIncident(id: string) {
   return request<void>(`/incidents/${id}`, { method: "DELETE" })
+}
+
+export function saveReview(id: string, input: ReviewInput) {
+  return request<Incident>(`/incidents/${id}/review`, {
+    method: "PUT",
+    body: JSON.stringify(input),
+  })
+}
+
+export function clearReview(id: string) {
+  return request<Incident>(`/incidents/${id}/review`, { method: "DELETE" })
 }

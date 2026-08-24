@@ -3,6 +3,7 @@ import {
   incidentResource,
   type IncidentInput,
   type IncidentRow,
+  type ReviewInput,
 } from "./incident-contract"
 
 export async function modelBelongsToLab(
@@ -28,18 +29,19 @@ export async function insertIncident(database: EditorDatabase, incident: Inciden
   const [created] = await database`
     INSERT INTO incidents (
       title, link, lab_id, model_id, victim_count, minor_victim_count,
-      death_date, location, case_reference, review_state, verdict, evidence_class, pathway,
+      death_date, location, case_reference, pathway,
       transcript_status, transcript_link, source_links, claim_summary,
-      evidence_summary, counterevidence, reasoning
+      evidence_summary, counterevidence,
+      agent_verdict, agent_evidence_class, agent_reasoning
     )
     VALUES (
       ${incident.title}, ${incident.link}, ${incident.labId}, ${incident.modelId},
       ${incident.victimCount}, ${incident.minorVictimCount}, ${incident.deathDate},
-      ${incident.location}, ${incident.caseReference}, ${incident.reviewState},
-      ${incident.verdict}, ${incident.evidenceClass}, ${incident.pathway}, ${incident.transcriptStatus},
+      ${incident.location}, ${incident.caseReference},
+      ${incident.pathway}, ${incident.transcriptStatus},
       ${incident.transcriptLink}, ${JSON.stringify(incident.sourceLinks)}::jsonb,
       ${incident.claimSummary}, ${incident.evidenceSummary}, ${incident.counterevidence},
-      ${incident.reasoning}
+      ${incident.agentVerdict}, ${incident.agentEvidenceClass}, ${incident.agentReasoning}
     )
     RETURNING *
   `
@@ -57,14 +59,37 @@ export async function updateIncident(
         model_id = ${incident.modelId}, victim_count = ${incident.victimCount},
         minor_victim_count = ${incident.minorVictimCount}, death_date = ${incident.deathDate},
         location = ${incident.location}, case_reference = ${incident.caseReference},
-        review_state = ${incident.reviewState}, verdict = ${incident.verdict},
-        evidence_class = ${incident.evidenceClass},
         pathway = ${incident.pathway}, transcript_status = ${incident.transcriptStatus},
         transcript_link = ${incident.transcriptLink},
         source_links = ${JSON.stringify(incident.sourceLinks)}::jsonb,
         claim_summary = ${incident.claimSummary}, evidence_summary = ${incident.evidenceSummary},
-        counterevidence = ${incident.counterevidence}, reasoning = ${incident.reasoning},
+        counterevidence = ${incident.counterevidence},
+        agent_verdict = ${incident.agentVerdict},
+        agent_evidence_class = ${incident.agentEvidenceClass},
+        agent_reasoning = ${incident.agentReasoning},
         updated_at = now()
+    WHERE id = ${incidentId}
+    RETURNING *
+  `
+  return updated ? incidentResource(updated as IncidentRow) : null
+}
+
+/** Human decision only. Never touches the agent columns. */
+export async function saveReview(database: EditorDatabase, incidentId: string, review: ReviewInput) {
+  const [updated] = await database`
+    UPDATE incidents
+    SET human_verdict = ${review.verdict}, human_reasoning = ${review.reasoning},
+        human_reviewed_at = now(), updated_at = now()
+    WHERE id = ${incidentId}
+    RETURNING *
+  `
+  return updated ? incidentResource(updated as IncidentRow) : null
+}
+
+export async function clearReview(database: EditorDatabase, incidentId: string) {
+  const [updated] = await database`
+    UPDATE incidents
+    SET human_verdict = NULL, human_reasoning = '', human_reviewed_at = NULL, updated_at = now()
     WHERE id = ${incidentId}
     RETURNING *
   `

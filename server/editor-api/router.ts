@@ -3,12 +3,13 @@ import { HttpError, jsonResponse, notFoundResponse, unauthorizedResponse } from 
 import {
   handleIncidentCollectionRequest,
   handleIncidentItemRequest,
+  handleIncidentReviewRequest,
 } from "./incidents"
 import { handleLabsRequest, handleModelsRequest } from "./reference-data"
 import { handleSessionRequest, isAuthenticated } from "./session"
 
 const API_PREFIX = "/api/editor"
-const INCIDENT_ITEM_PATH = /^\/incidents\/([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i
+const INCIDENT_ITEM_PATH = /^\/incidents\/([0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})(\/review)?$/i
 
 export type EditorApiDependencies = {
   database: EditorDatabase
@@ -44,7 +45,9 @@ export async function routeEditorRequest(
       return await handleIncidentCollectionRequest(request, database)
     }
     if (incidentMatch) {
-      return await handleIncidentItemRequest(request, database, incidentMatch[1])
+      return incidentMatch[2]
+        ? await handleIncidentReviewRequest(request, database, incidentMatch[1])
+        : await handleIncidentItemRequest(request, database, incidentMatch[1])
     }
 
     return notFoundResponse()

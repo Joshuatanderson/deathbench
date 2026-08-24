@@ -12,7 +12,6 @@ export type Model = {
 }
 
 export type IncidentVerdict = "excluded" | "included" | "resolution-pending"
-export type ReviewState = "unreviewed" | "agent-recommended" | "human-reviewed"
 export type EvidenceClass = "A" | "B" | "C" | "X"
 export type QualificationPathway = "" | "direct-operation" | "enabled-harm" | "systemic-contribution"
 export type TranscriptStatus = "none" | "excerpts" | "partial" | "complete-final" | "sealed"
@@ -33,9 +32,6 @@ export type Incident = {
   deathDate: string
   location: string
   caseReference: string
-  reviewState: ReviewState
-  verdict: IncidentVerdict
-  evidenceClass: EvidenceClass
   pathway: QualificationPathway
   transcriptStatus: TranscriptStatus
   transcriptLink: string
@@ -43,7 +39,18 @@ export type Incident = {
   claimSummary: string
   evidenceSummary: string
   counterevidence: string
-  reasoning: string
+  /** Agent recommendation. Display only. */
+  agent: {
+    verdict: IncidentVerdict | null
+    evidenceClass: EvidenceClass | null
+    reasoning: string
+  }
+  /** Human decision. Null until a human decides. */
+  review: {
+    verdict: IncidentVerdict
+    reasoning: string
+    reviewedAt: string
+  } | null
   createdAt: string
   updatedAt: string
 }
@@ -52,6 +59,11 @@ export type EditorData = {
   labs: Lab[]
   models: Model[]
   incidents: Incident[]
+}
+
+export type ReviewInput = {
+  verdict: IncidentVerdict
+  reasoning: string
 }
 
 export type IncidentInput = Pick<
@@ -65,9 +77,6 @@ export type IncidentInput = Pick<
   | "deathDate"
   | "location"
   | "caseReference"
-  | "reviewState"
-  | "verdict"
-  | "evidenceClass"
   | "pathway"
   | "transcriptStatus"
   | "transcriptLink"
@@ -75,5 +84,5 @@ export type IncidentInput = Pick<
   | "claimSummary"
   | "evidenceSummary"
   | "counterevidence"
-  | "reasoning"
+  | "agent"
 >

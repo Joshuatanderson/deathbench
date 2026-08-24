@@ -8,17 +8,18 @@ All endpoints are under `/api/editor`. The session endpoint is public; every oth
 | `/labs` | `GET` | List labs |
 | `/models` | `GET` | List models |
 | `/incidents` | `GET`, `POST` | List or create incidents |
-| `/incidents/:id` | `GET`, `PUT`, `DELETE` | Read, fully replace, or delete one incident |
+| `/incidents/:id` | `GET`, `PUT`, `DELETE` | Read, fully replace, or delete one case |
+| `/incidents/:id/review` | `PUT`, `DELETE` | Save or remove the human decision on one case |
 
-`PUT` replaces the complete editable incident representation. Agents create incidents with `POST`; the review UI only reads them and edits `reviewState`, `evidenceClass`, `verdict`, and `reasoning`. Unsupported methods return `405` with an `Allow` header. Successful creates return `201` with a `Location` header.
+`PUT /incidents/:id` replaces the complete agent-authored case. Agents create cases with `POST`. The review UI never calls `PUT /incidents/:id`; it only reads cases and writes the human decision through `/review`. Unsupported methods return `405` with an `Allow` header. Successful creates return `201` with a `Location` header.
 
-Incident resources keep review provenance separate from the case outcome:
+A case keeps the agent recommendation and the human decision in separate columns:
 
-- `reviewState` is `unreviewed`, `agent-recommended`, or `human-reviewed`.
-- `verdict` is `excluded`, `included`, or `resolution-pending`.
-- `reasoning` records the recommendation or decision rationale. A `human-reviewed` dossier must include it.
+- `agent` is `{ verdict, evidenceClass, reasoning }`. Agents write it. The review UI only displays it. `verdict` and `evidenceClass` can be `null`.
+- `review` is `{ verdict, reasoning, reviewedAt }` or `null`. Only `PUT /incidents/:id/review` writes it. `DELETE /incidents/:id/review` sets it back to `null`. A decision must include `reasoning`.
+- `verdict` values are `excluded`, `included`, or `resolution-pending`.
 
-Only incidents with both `reviewState: "human-reviewed"` and `verdict: "included"` enter public aggregates. An agent recommendation never changes the public company count.
+Only cases with `review.verdict = "included"` enter public aggregates. An agent recommendation never changes the public company count.
 
 The evidence representation also includes incident metadata, `claimSummary`, `evidenceSummary`, `counterevidence`, a primary `link`, additional `sourceLinks`, and the status/link for the available chatbot conversation record. A court complaint remains an allegation; the summaries should explicitly distinguish pleadings, authenticated records, official findings, and unavailable or sealed transcripts.
 

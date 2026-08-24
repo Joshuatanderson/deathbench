@@ -24,8 +24,7 @@ export async function getPublicRegistrySummary(): Promise<PublicRegistrySummary>
         COUNT(*) AS incidents
       FROM labs
       JOIN incidents ON incidents.lab_id = labs.id
-        AND incidents.verdict = 'included'
-        AND incidents.review_state = 'human-reviewed'
+        AND incidents.human_verdict = 'included'
       GROUP BY labs.id, labs.name
       ORDER BY deaths DESC, labs.name ASC
     `

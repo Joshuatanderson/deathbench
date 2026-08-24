@@ -1,4 +1,4 @@
-const MAX_JSON_BODY_SIZE = 16_384
+const MAX_JSON_BODY_SIZE = 65_536
 
 export class HttpError extends Error {
   readonly status: number

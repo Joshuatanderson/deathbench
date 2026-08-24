@@ -12,9 +12,15 @@ export type Model = {
 }
 
 export type IncidentVerdict = "excluded" | "included" | "resolution-pending"
+export type ReviewState = "unreviewed" | "agent-recommended" | "human-reviewed"
 export type EvidenceClass = "A" | "B" | "C" | "X"
 export type QualificationPathway = "" | "direct-operation" | "enabled-harm" | "systemic-contribution"
 export type TranscriptStatus = "none" | "excerpts" | "partial" | "complete-final" | "sealed"
+
+export type SourceLink = {
+  label: string
+  url: string
+}
 
 export type Incident = {
   id: string
@@ -23,11 +29,20 @@ export type Incident = {
   labId: string
   modelId: string
   victimCount: number
+  minorVictimCount: number
+  deathDate: string
+  location: string
+  caseReference: string
+  reviewState: ReviewState
   verdict: IncidentVerdict
   evidenceClass: EvidenceClass
   pathway: QualificationPathway
   transcriptStatus: TranscriptStatus
   transcriptLink: string
+  sourceLinks: SourceLink[]
+  claimSummary: string
+  evidenceSummary: string
+  counterevidence: string
   reasoning: string
   createdAt: string
   updatedAt: string
@@ -46,10 +61,19 @@ export type IncidentInput = Pick<
   | "labId"
   | "modelId"
   | "victimCount"
+  | "minorVictimCount"
+  | "deathDate"
+  | "location"
+  | "caseReference"
+  | "reviewState"
   | "verdict"
   | "evidenceClass"
   | "pathway"
   | "transcriptStatus"
   | "transcriptLink"
+  | "sourceLinks"
+  | "claimSummary"
+  | "evidenceSummary"
+  | "counterevidence"
   | "reasoning"
 >

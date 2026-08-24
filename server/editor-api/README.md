@@ -12,7 +12,15 @@ All endpoints are under `/api/editor`. The session endpoint is public; every oth
 
 `PUT` replaces the complete editable incident representation. Unsupported methods return `405` with an `Allow` header. Successful creates return `201` with a `Location` header.
 
-Incident resources expose `verdict` as one of `excluded`, `included`, or `resolution-pending`. The `reasoning` field records why that verdict was selected.
+Incident resources keep review provenance separate from the case outcome:
+
+- `reviewState` is `unreviewed`, `agent-recommended`, or `human-reviewed`.
+- `verdict` is `excluded`, `included`, or `resolution-pending`.
+- `reasoning` records the recommendation or decision rationale. A `human-reviewed` dossier must include it.
+
+Only incidents with both `reviewState: "human-reviewed"` and `verdict: "included"` enter public aggregates. An agent recommendation never changes the public company count.
+
+The evidence representation also includes incident metadata, `claimSummary`, `evidenceSummary`, `counterevidence`, a primary `link`, additional `sourceLinks`, and the status/link for the available chatbot conversation record. A court complaint remains an allegation; the summaries should explicitly distinguish pleadings, authenticated records, official findings, and unavailable or sealed transcripts.
 
 ## File ownership
 

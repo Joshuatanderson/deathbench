@@ -27,13 +27,18 @@ export async function findIncident(database: EditorDatabase, incidentId: string)
 export async function insertIncident(database: EditorDatabase, incident: IncidentInput) {
   const [created] = await database`
     INSERT INTO incidents (
-      title, link, lab_id, model_id, victim_count, verdict, evidence_class,
-      pathway, transcript_status, transcript_link, reasoning
+      title, link, lab_id, model_id, victim_count, minor_victim_count,
+      death_date, location, case_reference, review_state, verdict, evidence_class, pathway,
+      transcript_status, transcript_link, source_links, claim_summary,
+      evidence_summary, counterevidence, reasoning
     )
     VALUES (
       ${incident.title}, ${incident.link}, ${incident.labId}, ${incident.modelId},
-      ${incident.victimCount}, ${incident.verdict}, ${incident.evidenceClass},
-      ${incident.pathway}, ${incident.transcriptStatus}, ${incident.transcriptLink},
+      ${incident.victimCount}, ${incident.minorVictimCount}, ${incident.deathDate},
+      ${incident.location}, ${incident.caseReference}, ${incident.reviewState},
+      ${incident.verdict}, ${incident.evidenceClass}, ${incident.pathway}, ${incident.transcriptStatus},
+      ${incident.transcriptLink}, ${JSON.stringify(incident.sourceLinks)}::jsonb,
+      ${incident.claimSummary}, ${incident.evidenceSummary}, ${incident.counterevidence},
       ${incident.reasoning}
     )
     RETURNING *
@@ -50,9 +55,15 @@ export async function updateIncident(
     UPDATE incidents
     SET title = ${incident.title}, link = ${incident.link}, lab_id = ${incident.labId},
         model_id = ${incident.modelId}, victim_count = ${incident.victimCount},
-        verdict = ${incident.verdict}, evidence_class = ${incident.evidenceClass},
+        minor_victim_count = ${incident.minorVictimCount}, death_date = ${incident.deathDate},
+        location = ${incident.location}, case_reference = ${incident.caseReference},
+        review_state = ${incident.reviewState}, verdict = ${incident.verdict},
+        evidence_class = ${incident.evidenceClass},
         pathway = ${incident.pathway}, transcript_status = ${incident.transcriptStatus},
-        transcript_link = ${incident.transcriptLink}, reasoning = ${incident.reasoning},
+        transcript_link = ${incident.transcriptLink},
+        source_links = ${JSON.stringify(incident.sourceLinks)}::jsonb,
+        claim_summary = ${incident.claimSummary}, evidence_summary = ${incident.evidenceSummary},
+        counterevidence = ${incident.counterevidence}, reasoning = ${incident.reasoning},
         updated_at = now()
     WHERE id = ${incidentId}
     RETURNING *

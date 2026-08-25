@@ -11,7 +11,7 @@ export type Model = {
   slug: string
 }
 
-export type IncidentVerdict = "excluded" | "included" | "resolution-pending"
+export type IncidentVerdict = "excluded" | "included" | "resolution-pending" | "under-review"
 export type EvidenceClass = "A" | "B" | "C" | "X"
 export type QualificationPathway = "" | "direct-operation" | "enabled-harm" | "systemic-contribution"
 export type TranscriptStatus = "none" | "excerpts" | "partial" | "complete-final" | "sealed"

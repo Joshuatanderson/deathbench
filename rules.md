@@ -1,26 +1,5 @@
 # Rulings and precedents
-
-## legal standard
-After looking into this, I decided not to go with the legal standard. I think it's worth knowing for context. It may be an interesting note on some of these, but the legal standard isn't incredibly relevant for what we're doing. There are better standards for this than legal liability 
-### areas i have not yet explored
-- When is a death a human's responsibility under us law? Does inaction count? What about enabling suicidal ideation or not reporting it? 
-- Seems that understanding this is fairly critical to getting a reasonably unbiased number 
-
-### Legal precedent
-1. Causation — their conduct was both a but-for cause (without it, no death) and a proximate cause (the death wasn't too freakish or remote a result).
-2. Duty — they had a legal duty to act differently (this matters most for omissions: you're liable for failing to act only if the law obliged you to act).
-3. Mental state — they had the required mens rea, ranked from most to least culpable: purpose → knowledge → recklessness → criminal negligence.
-
-Obviously I am not a lawyer.
-
-### Inaction counts only if a duty pre-exists. 
-There is no general duty to rescue in American law. You can watch a stranger drown and commit no crime. Omission liability attaches only through the five sources from Jones v. United States (D.C. Cir. 1962):
-
-statute (tax filing, hit-and-run, child neglect statutes)
-status relationship (parent/child, spouse, sometimes employer)
-contract (lifeguard, nurse, in-home caretaker)
-voluntary assumption of care that secludes the victim from other aid
-creation of the peril
+Note that this document has several things that are footnotes about legal standards. This isn't what's important. What's important is the standard rules 
 
 ## Standard rules
 - when in doubt, exclude
@@ -46,3 +25,25 @@ creation of the peril
 - An AI guides the user to risky actions commonly undertaken by non-suicidal people in a society (ie snake charming, sky diving, bull riding, etc).
 
 * genuine track record of adversarial process + independent factfinder required
+
+## FOOTNOTE ONLY: legal standard
+After looking into this, I decided not to go with the legal standard. I think it's worth knowing for context. It may be an interesting note on some of these, but the legal standard isn't incredibly relevant for what we're doing. There are better standards for this than legal liability 
+### areas i have not yet explored
+- When is a death a human's responsibility under us law? Does inaction count? What about enabling suicidal ideation or not reporting it? 
+- Seems that understanding this is fairly critical to getting a reasonably unbiased number 
+
+### Legal precedent
+1. Causation — their conduct was both a but-for cause (without it, no death) and a proximate cause (the death wasn't too freakish or remote a result).
+2. Duty — they had a legal duty to act differently (this matters most for omissions: you're liable for failing to act only if the law obliged you to act).
+3. Mental state — they had the required mens rea, ranked from most to least culpable: purpose → knowledge → recklessness → criminal negligence.
+
+Obviously I am not a lawyer.
+
+### Inaction counts only if a duty pre-exists. 
+There is no general duty to rescue in American law. You can watch a stranger drown and commit no crime. Omission liability attaches only through the five sources from Jones v. United States (D.C. Cir. 1962):
+
+statute (tax filing, hit-and-run, child neglect statutes)
+status relationship (parent/child, spouse, sometimes employer)
+contract (lifeguard, nurse, in-home caretaker)
+voluntary assumption of care that secludes the victim from other aid
+creation of the peril

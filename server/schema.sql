@@ -122,6 +122,10 @@ $$;
 
 DROP TYPE IF EXISTS incident_review_state;
 
+-- 'resolution-pending' means insufficient evidence for a clear in or out.
+-- 'under-review' means concrete evidence points at a rule, but independent factfinding is not finished.
+ALTER TYPE incident_verdict ADD VALUE IF NOT EXISTS 'under-review';
+
 INSERT INTO labs (name, slug) VALUES
   ('OpenAI', 'openai'),
   ('Anthropic', 'anthropic'),

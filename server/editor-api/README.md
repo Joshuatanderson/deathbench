@@ -17,7 +17,7 @@ A case keeps the agent recommendation and the human decision in separate columns
 
 - `agent` is `{ verdict, evidenceClass, reasoning }`. Agents write it. The review UI only displays it. `verdict` and `evidenceClass` can be `null`.
 - `review` is `{ verdict, reasoning, reviewedAt }` or `null`. Only `PUT /incidents/:id/review` writes it. `DELETE /incidents/:id/review` sets it back to `null`. A decision must include `reasoning`.
-- `verdict` values are `excluded`, `included`, or `resolution-pending`.
+- `verdict` values are `excluded`, `included`, `resolution-pending` (insufficient evidence for a clear in or out), or `under-review` (concrete evidence points at a rule, but no independent factfinder has ruled yet).
 
 Only cases with `review.verdict = "included"` enter public aggregates. An agent recommendation never changes the public company count.
 

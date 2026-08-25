@@ -1,6 +1,6 @@
 import { HttpError } from "./http"
 
-const INCIDENT_VERDICTS = ["excluded", "included", "resolution-pending"] as const
+const INCIDENT_VERDICTS = ["excluded", "included", "resolution-pending", "under-review"] as const
 const EVIDENCE_CLASSES = ["A", "B", "C", "X"] as const
 const PATHWAYS = ["direct-operation", "enabled-harm", "systemic-contribution"] as const
 const TRANSCRIPT_STATUSES = ["none", "excerpts", "partial", "complete-final", "sealed"] as const
@@ -95,7 +95,7 @@ function isVerdict(value: unknown): value is (typeof INCIDENT_VERDICTS)[number] 
 export function parseReview(body: Record<string, unknown>) {
   const reasoning = typeof body.reasoning === "string" ? body.reasoning.trim() : ""
   if (!isVerdict(body.verdict)) {
-    throw new HttpError(400, "Choose include, exclude, or pending")
+    throw new HttpError(400, "Choose include, exclude, insufficient evidence, or under review")
   }
   if (!reasoning) {
     throw new HttpError(400, "Write your reasoning before you save")
@@ -160,7 +160,7 @@ export function parseIncident(body: Record<string, unknown>) {
     throw new HttpError(400, "Case metadata is too long")
   }
   if (agentVerdict !== null && !isVerdict(agentVerdict)) {
-    throw new HttpError(400, "Agent verdict must be excluded, included, resolution-pending, or null")
+    throw new HttpError(400, "Agent verdict must be excluded, included, resolution-pending, under-review, or null")
   }
   if (
     agentEvidenceClass !== null &&

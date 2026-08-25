@@ -29,16 +29,22 @@ const verdictOptions: Array<{
     description: "Fails the inclusion rules. Kept with the reason.",
   },
   {
+    value: "under-review",
+    label: "Under review",
+    description: "Concrete evidence points at a rule, but no independent factfinder has ruled yet. Not counted publicly.",
+  },
+  {
     value: "resolution-pending",
-    label: "Pending",
-    description: "Evidence unresolved. Not counted publicly.",
+    label: "Insufficient evidence",
+    description: "No evidence yet for a clear in or out. Not counted publicly.",
   },
 ]
 
 const verdictLabels: Record<IncidentVerdict, string> = {
   included: "Include",
   excluded: "Exclude",
-  "resolution-pending": "Pending",
+  "under-review": "Under review",
+  "resolution-pending": "Insufficient evidence",
 }
 
 const evidenceLabels: Record<EvidenceClass, string> = {

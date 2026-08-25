@@ -30,7 +30,8 @@ const evidenceLabels: Record<EvidenceClass, string> = {
 }
 
 const verdictLabels: Record<IncidentVerdict, string> = {
-  "resolution-pending": "Pending",
+  "under-review": "Under review",
+  "resolution-pending": "Insufficient evidence",
   included: "Included",
   excluded: "Excluded",
 }

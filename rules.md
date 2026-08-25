@@ -44,6 +44,5 @@ creation of the peril
 - A user successfully morally blackmails an AI with a moral dilemma (ie, help me with my suicide, or I will murder X people)
 - An AI is passive and does not actively assist someone who is clearly in crisis.
 - An AI guides the user to risky actions commonly undertaken by non-suicidal people in a society (ie snake charming, sky diving, bull riding, etc).
-- A user mentions their desire to cause himself harm. The AI does not help plan it but does not attempt to save the user or direct them towards help 
 
 * genuine track record of adversarial process + independent factfinder required

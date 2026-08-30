@@ -84,8 +84,8 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                 Death tolls for AI systems.
               </h1>
               <p className="mt-10 max-w-2xl text-balance text-lg leading-8 text-muted-foreground md:text-xl">
-                DeathBench reviews reported deaths involving AI. Each record links
-                to its sources and lists the system, company, death count, evidence, and verdict.
+                An open count of deaths AI contributed to. Inclusion means the evidence showed material
+                contribution under our rules, not a legal finding.
               </p>
               <p className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
                 All of this is open. Every verdict, its reasoning, and the research behind it are published

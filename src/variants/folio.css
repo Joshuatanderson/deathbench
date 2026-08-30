@@ -1,0 +1,659 @@
+@import "@fontsource/courier-prime/400.css";
+@import "@fontsource/courier-prime/700.css";
+@import "@fontsource/courier-prime/400-italic.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+
+.v-folio {
+  --paper: #f4f1ea;
+  --card: #fbf9f4;
+  --tile: #e8e2d4;
+  --ink: #141210;
+  --ink-70: rgba(20, 18, 16, 0.7);
+  --ink-45: rgba(20, 18, 16, 0.45);
+  --ink-20: rgba(20, 18, 16, 0.2);
+  --red: #b3261e;
+  --ember: #d8933a;
+  --mono: "Courier Prime", "Courier New", Courier, monospace;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --pad: clamp(1rem, 4vw, 3rem);
+  min-height: 100svh;
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.17 0 0 0 0 0.12 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0) 40%);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  -webkit-font-smoothing: auto;
+  overflow-x: clip;
+}
+.v-folio * {
+  box-sizing: border-box;
+}
+.v-folio a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--red);
+}
+.v-folio a:hover,
+.v-folio a:focus-visible {
+  color: var(--red);
+  outline: none;
+}
+.v-folio .label {
+  margin: 0 0 0.6rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+.v-folio h2 {
+  margin: 0 0 0.8rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.v-folio .note {
+  max-width: 60ch;
+  margin: 1rem 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-70);
+}
+
+/* ---- header ---- */
+.v-folio .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem var(--pad);
+  border-bottom: 1px solid var(--ink);
+  box-shadow: 0 3px 0 var(--paper), 0 4px 0 var(--ink);
+}
+.v-folio .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.v-folio .brand img {
+  width: 20px;
+  height: 20px;
+}
+.v-folio .top-right {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+
+/* ---- hero ---- */
+.v-folio .hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.4rem;
+  padding: 1.4rem var(--pad) 2.2rem;
+  border-bottom: 1px solid var(--ink);
+}
+.v-folio h1 {
+  margin: 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 9vw, 6.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  max-width: 11ch;
+}
+.v-folio .count {
+  margin-top: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.v-folio .count-cap {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+
+/* counter tiles */
+.v-folio .counter {
+  display: flex;
+  gap: 0.35rem;
+}
+.v-folio .tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 3rem;
+  border: 1px solid var(--ink);
+  background: var(--tile);
+  box-shadow:
+    inset 0 -10px 16px rgba(20, 18, 16, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    2px 2px 0 var(--ink);
+  overflow: hidden;
+}
+.v-folio .tile::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--ember);
+}
+.v-folio .digit {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 2.3rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  animation: folio-roll 0.7s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+  animation-delay: calc(var(--i) * 110ms + 120ms);
+}
+.v-folio .counter-lg .tile {
+  width: clamp(3.4rem, 14vw, 5.2rem);
+  height: clamp(4.6rem, 19vw, 7rem);
+  box-shadow:
+    inset 0 -16px 24px rgba(20, 18, 16, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    3px 3px 0 var(--ink);
+}
+.v-folio .counter-lg .digit {
+  font-size: clamp(3.4rem, 14vw, 5.4rem);
+}
+@keyframes folio-roll {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.v-folio.reduced .digit {
+  animation: none;
+}
+
+/* ticker card */
+.v-folio .ticker {
+  margin: 0;
+  perspective: 1400px;
+}
+.v-folio .card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  padding: 1rem 1.1rem 1rem;
+  transform-origin: center top;
+  transform-style: preserve-3d;
+  transition: transform 0.26s ease, opacity 0.26s ease;
+}
+.v-folio .card.is-flipping {
+  transform: rotateX(-88deg);
+  opacity: 0.2;
+}
+.v-folio.reduced .card,
+.v-folio.reduced .card.is-flipping {
+  transform: none;
+  transition: opacity 0.2s ease;
+}
+.v-folio .card-label {
+  margin: 0 0 0.6rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.v-folio .card-quote {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.55rem, 5.4vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+  color: var(--ink);
+}
+.v-folio .card-meta {
+  display: grid;
+  gap: 0.2rem;
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--ink-20);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink-70);
+}
+.v-folio .card-who {
+  width: fit-content;
+  font-weight: 700;
+  color: var(--red);
+}
+.v-folio .card-src {
+  width: fit-content;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration-color: var(--ink-45);
+}
+.v-folio .ticker-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-70);
+}
+.v-folio .ticker-nav button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.v-folio .ticker-nav button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.v-folio .ticker-pause {
+  margin-left: auto;
+  font-size: 10px !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.v-folio .stand {
+  max-width: 52ch;
+  margin: 1.1rem 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-70);
+}
+
+/* field */
+.v-folio .hero-field {
+  margin-top: 0.4rem;
+}
+.v-folio .field {
+  position: relative;
+  height: 42vh;
+  min-height: 250px;
+  max-height: 420px;
+  border: 1px solid var(--ink);
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+}
+.v-folio .field canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: manipulation;
+}
+.v-folio .field canvas.is-near {
+  cursor: pointer;
+}
+.v-folio .field-key {
+  position: absolute;
+  top: 0.45rem;
+  left: 0.6rem;
+  margin: 0;
+  display: flex;
+  gap: 0.8rem;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+  pointer-events: none;
+}
+.v-folio .k-inc {
+  color: var(--ember);
+}
+.v-folio .k-rev {
+  color: var(--ink);
+}
+.v-folio .k-exc {
+  color: var(--ink-45);
+}
+.v-folio .field-card {
+  position: absolute;
+  width: 240px;
+  max-width: calc(100% - 1rem);
+  padding: 0.7rem 0.8rem 0.75rem;
+  background: var(--card);
+  border: 1px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--ink);
+  z-index: 2;
+  transform: translateX(-50%);
+}
+.v-folio .field-card.above {
+  transform: translate(-50%, -100%);
+}
+@keyframes folio-pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.v-folio .field-card-x {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.35rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--ink-70);
+}
+.v-folio .field-card-title {
+  margin: 0 1.2rem 0.2rem 0;
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--red);
+}
+.v-folio .field-card-meta,
+.v-folio .field-card-sub {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--ink-70);
+}
+.v-folio .field-card-link {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* verdict pills */
+.v-folio .verdict {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  border: 1px solid currentColor;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--ink-70);
+  white-space: nowrap;
+}
+.v-folio .verdict.v-included {
+  color: var(--ember);
+  border-color: var(--ember);
+}
+.v-folio .verdict.v-under-review {
+  color: var(--ink);
+}
+
+/* ---- sections ---- */
+.v-folio .sec {
+  padding: 2.2rem var(--pad) 2.4rem;
+  border-bottom: 1px solid var(--ink);
+}
+
+/* record list */
+.v-folio .record {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--ink);
+  max-width: 64rem;
+}
+.v-folio .record li {
+  border-bottom: 1px solid var(--ink-20);
+}
+.v-folio .record a {
+  display: grid;
+  grid-template-columns: 6.2rem minmax(0, 1fr) auto;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0.55rem 0;
+  text-decoration: none;
+  font-size: 12px;
+}
+.v-folio .rec-date {
+  color: var(--ink-70);
+  font-variant-numeric: tabular-nums;
+}
+.v-folio .rec-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.v-folio .rec-title.is-inc {
+  font-weight: 700;
+  color: var(--red);
+}
+.v-folio .rec-title.is-inc::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: var(--ember);
+  vertical-align: 1px;
+}
+.v-folio .record a:hover .rec-title {
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-underline-offset: 3px;
+}
+
+/* board */
+.v-folio .board {
+  border-top: 1px solid var(--ink);
+  max-width: 44rem;
+}
+.v-folio .row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--ink-20);
+  text-decoration: none;
+}
+.v-folio .row-all {
+  border-bottom: 1px solid var(--ink);
+  box-shadow: 0 3px 0 var(--paper), 0 4px 0 var(--ink);
+}
+.v-folio .row-name {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  line-height: 1;
+}
+.v-folio .row-sub {
+  margin-top: 0.3rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+}
+.v-folio a.row:hover .row-name {
+  color: var(--red);
+}
+
+/* framework */
+.v-folio .doubt {
+  max-width: 34ch;
+  margin: 0.4rem 0 1.4rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.3rem, 4.4vw, 1.7rem);
+  line-height: 1.2;
+}
+.v-folio .entries {
+  border-top: 1px solid var(--ink);
+  max-width: 64rem;
+}
+.v-folio .entry {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr);
+  gap: 0.2rem 0.8rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--ink-20);
+}
+.v-folio .entry .n {
+  grid-row: 1 / span 3;
+  margin: 0.35rem 0 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+.v-folio .entry h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.6rem;
+  line-height: 1.05;
+}
+.v-folio .entry p {
+  max-width: 62ch;
+  margin: 0.4rem 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--ink-70);
+}
+.v-folio .entry .example {
+  padding-left: 0.8rem;
+  border-left: 2px solid var(--ember);
+  color: var(--ink);
+}
+.v-folio .entry .example a {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* footer */
+.v-folio .foot {
+  padding: 1.4rem var(--pad) 2.4rem;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-70);
+  box-shadow: inset 0 3px 0 var(--paper), inset 0 4px 0 var(--ink);
+}
+.v-folio .foot p {
+  margin: 0;
+}
+.v-folio .foot .disc {
+  max-width: 60ch;
+  margin-top: 0.6rem;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 11px;
+}
+
+/* ---- desktop ---- */
+@media (min-width: 900px) {
+  .v-folio .hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    grid-template-areas:
+      "lead field"
+      "card field";
+    gap: 1.6rem 3rem;
+    padding-top: 2.2rem;
+    padding-bottom: 2.6rem;
+  }
+  .v-folio .hero-lead {
+    grid-area: lead;
+  }
+  .v-folio .hero-card {
+    grid-area: card;
+    max-width: 40rem;
+  }
+  .v-folio .hero-field {
+    grid-area: field;
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .v-folio .field {
+    flex: 0 0 auto;
+    height: 480px;
+    max-height: none;
+  }
+  .v-folio .count {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1.2rem;
+  }
+  .v-folio .count-cap {
+    max-width: 20ch;
+    padding-bottom: 0.5rem;
+  }
+  .v-folio .sec {
+    padding-top: 3rem;
+    padding-bottom: 3.2rem;
+  }
+  .v-folio .record a {
+    grid-template-columns: 7rem minmax(0, 1fr) auto;
+    font-size: 13px;
+  }
+  .v-folio .entry {
+    grid-template-columns: 4rem 18rem minmax(0, 1fr);
+    gap: 0 1.5rem;
+  }
+  .v-folio .entry .n {
+    grid-row: auto;
+  }
+  .v-folio .entry p:not(.n) {
+    grid-column: 3;
+    margin-top: 0;
+  }
+  .v-folio .entry .n {
+    margin-top: 0.5rem;
+  }
+  .v-folio .entry p:not(.n) + p {
+    margin-top: 0.7rem;
+  }
+}
+@media (max-width: 380px) {
+  .v-folio .record a {
+    grid-template-columns: 5.4rem minmax(0, 1fr);
+  }
+  .v-folio .record .verdict {
+    grid-column: 2;
+    width: fit-content;
+  }
+}

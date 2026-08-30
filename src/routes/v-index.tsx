@@ -7,6 +7,8 @@ export default function VariantIndex() {
     ["transcript", "Transcript", "Paper, Courier, red pen. The site as a filed court document."],
     ["field", "Field", "A monument. Every incident a point of light on a time axis."],
     ["weight", "Weight", "Kinetic brutalism. One block per death, falling into place."],
+    ["ledger", "Ledger", "Hybrid, dark: field + Courier + counter + card ticker, mobile-first."],
+    ["folio", "Folio", "Hybrid, paper: the same fold, field drawn in ink."],
   ]
   return (
     <main className="mx-auto max-w-2xl px-6 py-24">

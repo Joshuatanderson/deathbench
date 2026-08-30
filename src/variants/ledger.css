@@ -1,0 +1,704 @@
+@import "@fontsource/courier-prime/400.css";
+@import "@fontsource/courier-prime/700.css";
+@import "@fontsource/courier-prime/400-italic.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+
+.v-ledger {
+  --night: #070a12;
+  --night-2: #0b0f1a;
+  --bone: #e9e4d8;
+  --bone-75: rgba(233, 228, 216, 0.75);
+  --bone-50: rgba(233, 228, 216, 0.5);
+  --bone-15: rgba(233, 228, 216, 0.15);
+  --ember: #d8933a;
+  --red: #b3261e;
+  --paper: #efeade;
+  --ink: #141210;
+  --ink-soft: #4a463f;
+  --mono: "Courier Prime", "Courier New", Courier, monospace;
+  --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --pad: 5vw;
+  min-height: 100svh;
+  background: var(--night);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  overflow-x: clip;
+}
+.v-ledger * {
+  box-sizing: border-box;
+}
+.v-ledger a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--red);
+}
+.v-ledger a:hover,
+.v-ledger a:focus-visible {
+  color: var(--ember);
+  outline: none;
+}
+
+/* ---- header ---- */
+.v-ledger .ldg-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem var(--pad);
+  border-bottom: 1px solid var(--bone-15);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.v-ledger .ldg-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+.v-ledger .ldg-brand img {
+  width: 20px;
+  height: 20px;
+}
+.v-ledger .ldg-top-right {
+  font-size: 10px;
+  color: var(--bone-50);
+}
+
+/* ---- hero ---- */
+.v-ledger .ldg-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.v-ledger .ldg-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  touch-action: pan-y;
+}
+.v-ledger .ldg-canvas.is-near {
+  cursor: pointer;
+}
+.v-ledger .ldg-hero-grid {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--pad) 2.2rem;
+  pointer-events: none;
+}
+.v-ledger .ldg-hero-grid a,
+.v-ledger .ldg-hero-grid button,
+.v-ledger .ldg-ticker {
+  pointer-events: auto;
+}
+.v-ledger .ldg-band {
+  order: 0;
+  height: 136px;
+  margin: 0 calc(-1 * var(--pad));
+  pointer-events: none;
+}
+.v-ledger .ldg-h1 { order: 1; }
+.v-ledger .ldg-count { order: 2; }
+.v-ledger .ldg-ticker-wrap { order: 3; margin-top: 1.4rem; min-width: 0; }
+.v-ledger .ldg-quotes-note { order: 4; }
+.v-ledger .ldg-stand { order: 5; }
+
+.v-ledger .ldg-h1 {
+  margin: 0.4rem 0 0;
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 8.6vw, 6.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-wrap: balance;
+  max-width: 11ch;
+  text-shadow: 0 0 24px var(--night), 0 0 6px var(--night);
+}
+
+.v-ledger .ldg-count {
+  margin-top: 0.9rem;
+}
+.v-ledger .ldg-count-cap {
+  margin: 0.55rem 0 0;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-stand {
+  margin-top: 1.2rem;
+  max-width: 38ch;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--bone-75);
+}
+.v-ledger .ldg-stand p {
+  margin: 0 0 0.6rem;
+}
+.v-ledger .ldg-stand a {
+  color: var(--bone);
+}
+
+/* ---- counter (mechanical tiles) ---- */
+.v-ledger .ldg-counter {
+  display: flex;
+  gap: 0.35rem;
+}
+.v-ledger .ldg-digit {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 2.6rem;
+  height: 3.6rem;
+  border: 1px solid var(--bone-15);
+  background: linear-gradient(180deg, #121727 0%, #0a0e19 50%, #070a12 50%, #0d1120 100%);
+  box-shadow:
+    inset 0 -10px 18px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--bone);
+  font-variant-numeric: tabular-nums;
+}
+.v-ledger .ldg-digit::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--ember);
+  opacity: 0.55;
+}
+.v-ledger .ldg-digit-glyph {
+  display: block;
+  animation: ldg-roll 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 110ms + 120ms);
+}
+@keyframes ldg-roll {
+  from {
+    transform: translateY(110%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.v-ledger .ldg-counter-lg .ldg-digit {
+  width: clamp(3.2rem, 14vw, 5.4rem);
+  height: clamp(4.4rem, 19vw, 7.6rem);
+  font-size: clamp(3.2rem, 14vw, 5.6rem);
+}
+.v-ledger .ldg-counter-lg .ldg-digit::after {
+  opacity: 0.7;
+}
+
+/* ---- quote card ticker ---- */
+.v-ledger .ldg-ticker {
+  margin: 0.4rem 0 0;
+  perspective: 1400px;
+}
+.v-ledger .ldg-card {
+  position: relative;
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.17 0 0 0 0 0.12 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ember);
+  color: var(--ink);
+  padding: 1.1rem 1.15rem 1rem;
+  transform-origin: center top;
+  transform-style: preserve-3d;
+  transition: transform 0.26s ease, opacity 0.26s ease;
+}
+.v-ledger .ldg-card.is-flipping {
+  transform: rotateX(-88deg);
+  opacity: 0.2;
+}
+.v-ledger .ldg-card-meta {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.v-ledger .ldg-card-quote {
+  margin: 0.55rem 0 0;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 5.2vw, 2.4rem);
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+  color: var(--ink);
+}
+.v-ledger .ldg-card-foot {
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(20, 18, 16, 0.25);
+  display: grid;
+  gap: 0.3rem;
+}
+.v-ledger .ldg-card-name {
+  font-weight: 700;
+  color: var(--red);
+  text-decoration-color: var(--red);
+  font-size: 13px;
+}
+.v-ledger .ldg-card-name:hover,
+.v-ledger .ldg-card-name:focus-visible {
+  color: var(--red);
+  text-decoration-thickness: 2px;
+}
+.v-ledger .ldg-card-src {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration-color: rgba(20, 18, 16, 0.35);
+}
+.v-ledger .ldg-card-src:hover {
+  color: var(--ink);
+}
+.v-ledger .ldg-ticker-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-top: 0.75rem;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-ticker-nav button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.6rem;
+  border: 1px solid var(--bone-15);
+  background: rgba(7, 10, 18, 0.6);
+  color: var(--bone);
+  font-family: var(--mono);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.v-ledger .ldg-ticker-nav .ldg-ticker-pause {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-left: auto;
+}
+.v-ledger .ldg-ticker-nav button:hover,
+.v-ledger .ldg-ticker-nav button:focus-visible {
+  border-color: var(--ember);
+  color: var(--ember);
+  outline: none;
+}
+.v-ledger .ldg-quotes-note {
+  margin: 0.8rem 0 0;
+  max-width: 44ch;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--bone-50);
+}
+
+/* ---- field pick card ---- */
+.v-ledger .ldg-pick {
+  position: absolute;
+  z-index: 2;
+  transform: translate(14px, 12px);
+  min-width: 200px;
+  max-width: min(260px, calc(100vw - 2 * var(--pad)));
+  padding: 0.6rem 0.75rem 0.65rem;
+  border: 1px solid var(--bone-15);
+  background: rgba(11, 15, 26, 0.94);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  font-size: 11px;
+  line-height: 1.45;
+  pointer-events: auto;
+  animation: ldg-pop 0.18s ease-out both;
+}
+.v-ledger .ldg-pick.is-left {
+  transform: translate(calc(-100% - 14px), 12px);
+}
+.v-ledger .ldg-pick.is-up {
+  transform: translate(14px, calc(-100% - 12px));
+}
+.v-ledger .ldg-pick.is-left.is-up {
+  transform: translate(calc(-100% - 14px), calc(-100% - 12px));
+}
+@keyframes ldg-pop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.v-ledger .ldg-pick p {
+  margin: 0;
+}
+.v-ledger .ldg-pick-verdict {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-pick-verdict.v-included {
+  color: var(--ember);
+}
+.v-ledger .ldg-pick-title {
+  margin-top: 0.2rem !important;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.15;
+  color: var(--bone);
+}
+.v-ledger .ldg-pick-meta {
+  margin-top: 0.2rem !important;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-pick-link {
+  display: inline-block;
+  margin-top: 0.45rem;
+  font-weight: 700;
+  color: var(--bone);
+  text-decoration-color: var(--ember);
+}
+
+/* ---- blocks ---- */
+.v-ledger .ldg-block {
+  padding: 2.6rem var(--pad);
+  border-top: 1px solid var(--bone-15);
+}
+.v-ledger .ldg-h2 {
+  margin: 0 0 1.2rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 6vw, 2.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.v-ledger .ldg-muted {
+  margin: 1.2rem 0 0;
+  max-width: 58ch;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--bone-50);
+}
+
+/* record list */
+.v-ledger .ldg-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--bone-15);
+}
+.v-ledger .ldg-row {
+  display: grid;
+  grid-template-columns: 6.2rem minmax(0, 1fr);
+  grid-template-areas: "date verdict" "title title";
+  gap: 0.15rem 0.6rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--bone-15);
+  text-decoration: none;
+  font-size: 12px;
+}
+.v-ledger .ldg-row-date {
+  grid-area: date;
+  color: var(--bone-50);
+  font-variant-numeric: tabular-nums;
+}
+.v-ledger .ldg-row-title {
+  grid-area: title;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.15;
+  color: var(--bone);
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.v-ledger .ldg-row-verdict {
+  grid-area: verdict;
+  justify-self: start;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--bone-15);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-row.v-included .ldg-row-verdict {
+  border-color: var(--ember);
+  color: var(--ember);
+}
+.v-ledger .ldg-row.v-under-review .ldg-row-verdict {
+  color: var(--bone-75);
+}
+.v-ledger .ldg-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ember);
+  box-shadow: 0 0 10px rgba(216, 147, 58, 0.8);
+  transform: translateY(-2px);
+}
+.v-ledger .ldg-row:hover .ldg-row-title,
+.v-ledger .ldg-row:focus-visible .ldg-row-title {
+  color: var(--ember);
+}
+
+/* companies */
+.v-ledger .ldg-companies {
+  border-top: 1px solid var(--bone-15);
+}
+.v-ledger .ldg-company {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "name counter" "sub counter";
+  align-items: center;
+  column-gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--bone-15);
+  text-decoration: none;
+}
+.v-ledger .ldg-company-name {
+  grid-area: name;
+  font-family: var(--serif);
+  font-size: 2rem;
+  line-height: 1;
+}
+.v-ledger .ldg-company-sub {
+  grid-area: sub;
+  margin-top: 0.3rem;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-company .ldg-counter {
+  grid-area: counter;
+}
+.v-ledger a.ldg-company:hover .ldg-company-name {
+  color: var(--ember);
+}
+.v-ledger .ldg-company-all .ldg-company-name {
+  color: var(--bone-75);
+}
+
+/* framework */
+.v-ledger .ldg-doubt {
+  margin: 0 0 1.6rem;
+  max-width: 44ch;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(1.25rem, 4.2vw, 1.6rem);
+  line-height: 1.25;
+}
+.v-ledger .ldg-entries {
+  border-top: 1px solid var(--bone-15);
+}
+.v-ledger .ldg-entry {
+  padding: 1.3rem 0;
+  border-bottom: 1px solid var(--bone-15);
+}
+.v-ledger .ldg-entry p {
+  margin: 0;
+}
+.v-ledger .ldg-n {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+.v-ledger .ldg-entry h3 {
+  margin: 0.3rem 0 0.5rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+.v-ledger .ldg-entry > p:not(.ldg-n) {
+  max-width: 62ch;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--bone-75);
+}
+.v-ledger .ldg-example {
+  margin-top: 0.8rem !important;
+  padding-left: 0.9rem;
+  border-left: 2px solid rgba(216, 147, 58, 0.5);
+}
+.v-ledger .ldg-example-label {
+  color: var(--bone);
+}
+.v-ledger .ldg-name {
+  font-weight: 700;
+  color: var(--bone);
+  text-decoration-color: var(--red);
+}
+
+/* footer */
+.v-ledger .ldg-foot {
+  padding: 1.6rem var(--pad) 2.4rem;
+  border-top: 1px solid var(--bone-15);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bone-50);
+}
+.v-ledger .ldg-foot p {
+  margin: 0;
+}
+.v-ledger .ldg-foot a {
+  color: var(--bone);
+}
+.v-ledger .ldg-disc {
+  margin-top: 0.8rem !important;
+  max-width: 64ch;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+/* ---- desktop ---- */
+@media (min-width: 880px) {
+  .v-ledger {
+    --pad: 4vw;
+    font-size: 15px;
+  }
+  .v-ledger .ldg-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+    grid-template-rows: minmax(220px, 38vh) auto auto auto;
+    grid-template-areas:
+      "h1 band"
+      "count band"
+      "stand ticker"
+      ". note";
+    column-gap: 4vw;
+    padding-top: 4vh;
+    padding-bottom: 4vh;
+  }
+  .v-ledger .ldg-band {
+    grid-area: band;
+    height: auto;
+    margin: 0;
+    align-self: stretch;
+  }
+  .v-ledger .ldg-h1 {
+    grid-area: h1;
+    align-self: end;
+  }
+  .v-ledger .ldg-count {
+    grid-area: count;
+  }
+  .v-ledger .ldg-stand {
+    grid-area: stand;
+    align-self: start;
+    margin-top: 1.6rem;
+  }
+  .v-ledger .ldg-ticker-wrap {
+    grid-area: ticker;
+    margin-top: 0;
+  }
+  .v-ledger .ldg-quotes-note {
+    grid-area: note;
+  }
+  .v-ledger .ldg-h1 {
+    margin-top: 0;
+  }
+  .v-ledger .ldg-count {
+    margin-top: 1.6rem;
+  }
+  .v-ledger .ldg-stand {
+    font-size: 14px;
+  }
+  .v-ledger .ldg-card {
+    padding: 1.5rem 1.6rem 1.3rem;
+  }
+  .v-ledger .ldg-card-quote {
+    font-size: clamp(1.6rem, 2.2vw, 2.4rem);
+  }
+  .v-ledger .ldg-block {
+    padding: 4rem var(--pad);
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    column-gap: 4vw;
+  }
+  .v-ledger .ldg-block .ldg-h2 {
+    grid-column: 1;
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+    max-width: 12ch;
+  }
+  .v-ledger .ldg-block > *:not(.ldg-h2) {
+    grid-column: 2;
+  }
+  .v-ledger .ldg-row {
+    grid-template-columns: 7rem minmax(0, 1fr) auto;
+    grid-template-areas: "date title verdict";
+    align-items: baseline;
+    padding: 0.7rem 0;
+  }
+  .v-ledger .ldg-row-title {
+    font-size: 1.3rem;
+  }
+  .v-ledger .ldg-company-name {
+    font-size: 2.4rem;
+  }
+  .v-ledger .ldg-entry {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    column-gap: 1rem;
+  }
+  .v-ledger .ldg-entry .ldg-n {
+    grid-column: 1;
+    padding-top: 0.55rem;
+  }
+  .v-ledger .ldg-entry > *:not(.ldg-n) {
+    grid-column: 2;
+  }
+  .v-ledger .ldg-entry h3 {
+    margin-top: 0;
+  }
+  .v-ledger .ldg-foot {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+}
+
+/* ---- reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .v-ledger .ldg-card,
+  .v-ledger .ldg-card.is-flipping {
+    transform: none;
+    transition: opacity 0.2s ease;
+  }
+  .v-ledger .ldg-digit-glyph {
+    animation: none;
+  }
+  .v-ledger .ldg-pick {
+    animation: none;
+  }
+}

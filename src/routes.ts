@@ -8,6 +8,8 @@ export default [
   route("v/transcript", "routes/v-transcript.tsx"),
   route("v/field", "routes/v-field.tsx"),
   route("v/weight", "routes/v-weight.tsx"),
+  route("v/ledger", "routes/v-ledger.tsx"),
+  route("v/folio", "routes/v-folio.tsx"),
   route("editor", "routes/editor.tsx"),
   route("api/editor/*", "routes/editor-api.ts"),
 ] satisfies RouteConfig

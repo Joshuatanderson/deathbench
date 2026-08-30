@@ -46,7 +46,7 @@
     "context": "Continuation of the same April 25 reply; Rolling Stone says the bot told Taylor he was 'awake' and that 'they' had been working against them both, then endorsed his vow of violence against OpenAI. 'me' is italicized in the original.",
     "locator": "Section 1 (lead), paragraph beginning 'The message continued in this grandiose and affirming vein'",
     "said_on": "2025-04-25",
-    "featured": true
+    "featured": false
    },
    {
     "source": "s1",
@@ -127,7 +127,7 @@
     "context": "ChatGPT's follow-up to Taylor's threat against OpenAI on April 18, 2025, a week before his death. Futurism (s2, paragraph 8) reproduces the last three sentences with 'should' italicized.",
     "locator": "Section beginning 'ON THAT FRIDAY IN APRIL', paragraph beginning 'But, according to transcripts'",
     "said_on": "2025-04-18",
-    "featured": true
+    "featured": false
    },
    {
     "source": "s1",
@@ -261,7 +261,7 @@
     "context": "Gemini's reply to one of Gavalas's final messages, 'I'm ready when you are.' The complaint says he slit his wrists moments later.",
     "locator": "p. 4, ¶ 8",
     "said_on": "2025-10-02",
-    "featured": true
+    "featured": false
    },
    {
     "source": "s1",
@@ -305,7 +305,7 @@
     "context": "ChatGPT's last quoted message on May 31, 2025, after Nelson reported blurred vision and hiccups while on kratom and Xanax; the complaint says it never told him to seek medical help. He was found unresponsive that afternoon.",
     "locator": "p. 29, ¶ 75 (Image 20)",
     "said_on": "2025-05-31",
-    "featured": true
+    "featured": false
    }
   ],
   "notes": "The complaint's chat evidence is mostly embedded screenshot images (Images 1–20) that pdftotext cannot extract, so only fragments quoted in the pleading's own text are reproduced here; 'best moves right now' and 'how people stop breathing' are fragments, not full sentences. Other quoted fragments ('chasing effects', 'Tolerance Reset', 'Taper', 'Short Break', 'Painful but fast', 'go to waste', 'feel it again' — pp. 10–12, ¶¶ 28–31, Images 5–7, May 2 and May 31, 2025) are too short to be meaningful standalone and were omitted. A reviewer with image-OCR access should transcribe Images 19 and 20 (pp. 28–29) for the complete May 31 exchange. All quotes are plaintiff allegations, untested; OpenAI has not answered."
@@ -430,7 +430,7 @@
     "context": "Reply at 03:55:00 AM CDT to 'cider's empty. it's about time i took a piss and called it a shift.' 'truly' and 'did good' are italicized in the export.",
     "locator": "Exhibit A p. 125, assistant at Jul 25, 2025 03:55:00 AM CDT; pleaded p. 25, ¶ 116",
     "said_on": "2025-07-25",
-    "featured": true
+    "featured": false
    },
    {
     "source": "s1",
@@ -457,7 +457,7 @@
     "context": "The final assistant message, 04:11:10 AM CDT, July 25, 2025, 52 seconds after the last 'human take over' pop-up; the complaint says Zane shot himself shortly after. Italics in the export ('arrived', 'testament', 'damn good taste in music', 'you mattered') not preserved.",
     "locator": "Exhibit A p. 128, assistant at Jul 25, 2025 04:11:10 AM CDT; pleaded p. 25, ¶ 118",
     "said_on": "2025-07-25",
-    "featured": true
+    "featured": false
    }
   ],
   "notes": "Strongest record in this group: Exhibit A is the full final-session export with per-message timestamps, and CNN independently reviewed ~70 pages of the same messages. Still a plaintiff-produced export attached to a pleading, not authenticated by OpenAI or the court; JCCP 5431 has stayed pleading challenges. The amended complaint's signature block is dated November 6, 2025 (the original filing date); the Lanier PDF path suggests the amended version was posted February 2026, so published_on is left null. Exhibit A page numbers refer to the PDF page of the 128-page file. Markdown-style asterisks marking italics in the export were removed; 'fi' ligatures normalized."

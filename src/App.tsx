@@ -109,12 +109,7 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
             <aside className="self-end border-t border-border lg:border-t-0">
               {featuredQuotes.length ? (
                 <div className="pt-8 lg:pt-0">
-                  <p className="section-label mb-4">From the conversations</p>
                   <QuoteFlip quotes={featuredQuotes} />
-                  <p className="mt-4 text-xs leading-5 text-muted-foreground">
-                    Verbatim system output as reproduced in court filings, official reports, or published
-                    investigations. Each quote links to its incident record and source document.
-                  </p>
                 </div>
               ) : null}
             </aside>

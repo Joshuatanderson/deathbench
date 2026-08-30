@@ -32,16 +32,6 @@ export function SiteHeader() {
           <span>DeathBench</span>
         </a>
 
-        <a
-          className="flex items-center gap-2 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-muted-foreground hover:text-foreground"
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
-          <span className="hidden sm:inline">Open data · Open source</span>
-          <span className="sm:hidden">Open</span>
-        </a>
       </div>
     </header>
   )

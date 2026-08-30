@@ -39,6 +39,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Generate Open Graph image
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pnpm generate:og
 
       - name: Commit the updated image

@@ -103,6 +103,11 @@ try {
   if (!response?.ok()) throw new Error(`Homepage returned HTTP ${response?.status() ?? "unknown"}`)
   await page.evaluate(() => document.fonts.ready)
 
+  const unavailable = await page.getByText("temporarily unavailable").count()
+  if (unavailable > 0) {
+    throw new Error("Homepage rendered without registry data (totals unavailable); refusing to screenshot.")
+  }
+
   if (browserErrors.length) {
     throw new Error(`Homepage emitted browser errors:\n${browserErrors.join("\n")}`)
   }

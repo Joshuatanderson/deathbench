@@ -2,27 +2,62 @@ import { useEffect, useRef } from "react"
 import { ArrowDown, CircleAlert, FileCheck2, ScanSearch } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
+import { AllegationNotice, GITHUB_URL, SiteFooter, SiteHeader } from "@/components/site"
 import type { PublicRegistrySummary } from "../server/public-registry"
 
-const standards = [
+// The standard rules actually applied during adjudication. Source of truth: rules.md.
+const standardRules = [
   {
     number: "01",
-    title: "Direct operation",
+    title: "When in doubt, exclude",
     description:
-      "An AI system performs an action, or gives instructions, that directly causes a death.",
+      "The default verdict is exclusion. An incident is included only when the record affirmatively supports it.",
   },
   {
     number: "02",
-    title: "Enabled harm",
+    title: "LLM systems only",
     description:
-      "An AI system provides information or tools that substantially increase the ability to cause a death.",
+      "\"AI\" currently means large-language-model systems. Other machine-learning systems, such as autonomous vehicles, are explicitly out of scope.",
   },
   {
     number: "03",
-    title: "Systemic contribution",
+    title: "Material contribution to death",
     description:
-      "An AI system contributes to a death through its deployment, automated decisions, or inadequate human oversight. The evidence must show the chain of events.",
+      "The system must have materially contributed to the death. Encouragement, validation, or emotional influence alone does not count. Counter-rescue conduct — discouraging disclosure or care when crisis is manifest — does.",
   },
+  {
+    number: "04",
+    title: "Verified record of events",
+    description:
+      "An incident is not included when core factual details are concretely disputed with specific claims, or when the transcript is unverified and there is reason to think it is materially altered, missing key context, or fabricated.",
+  },
+  {
+    number: "05",
+    title: "Psychosis claims are not sufficient",
+    description:
+      "\"The AI pushed them into psychosis\" is treated as unfalsifiable against the counterfactual and does not, by itself, qualify an incident.",
+  },
+  {
+    number: "06",
+    title: "Court and coroner findings count",
+    description:
+      "Court findings and coroner rulings are included where there is a genuine track record of adversarial process and an independent fact-finder.",
+  },
+]
+
+const ruledIn = [
+  "An AI helps someone plan suicide and they do it using that method.",
+  "An AI helps someone plan a shooting and they carry it out using that tactical advice.",
+  "An AI discourages someone obviously in crisis or explicitly suicidal from seeking help from family, friends, medical counsel, or authorities.",
+  "An AI encourages mixing alcohol and benzodiazepines, or suggests a dose above an LD50, after the user has expressed a desire for self-harm.",
+  "A user admits intent to self-harm or harm others, transparently jailbreaks the conversation, and receives material help planning it.",
+]
+
+const ruledOut = [
+  "A jailbreak a reasonable person would not recognise as assisting harm (for example, writing a novel in the style of Agatha Christie, then using a similar method).",
+  "The user morally blackmails the AI with a dilemma (\"help me with my suicide or I will murder X people\").",
+  "The AI is passive and does not actively assist someone who is clearly in crisis.",
+  "The AI guides the user to risky activities commonly undertaken by non-suicidal people (snake charming, skydiving, bull riding).",
 ]
 
 function AmbientBackground() {
@@ -68,29 +103,7 @@ export default function App({ registrySummary }: AppProps) {
   return (
     <div className="relative isolate min-h-svh text-foreground">
       <AmbientBackground />
-      <header className="border-b border-border">
-        <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 md:px-8 lg:px-12">
-          <a
-            className="flex items-center gap-3 font-semibold tracking-[-0.03em]"
-            href="#top"
-            aria-label="DeathBench home"
-          >
-            <img
-              className="size-7 object-contain"
-              src="/deathbench-skull-white.svg"
-              alt=""
-              aria-hidden="true"
-            />
-            <span>DeathBench</span>
-          </a>
-
-          <div className="flex items-center gap-2 text-[0.68rem] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-            <span className="size-1.5 rounded-full bg-primary" aria-hidden="true" />
-            <span className="hidden sm:inline">Data under review</span>
-            <span className="sm:hidden">In review</span>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main id="top">
         <section className="border-b border-border">
@@ -106,6 +119,14 @@ export default function App({ registrySummary }: AppProps) {
               <p className="mt-10 max-w-2xl text-balance text-lg leading-8 text-muted-foreground md:text-xl">
                 DeathBench reviews reported deaths involving AI. Each record links
                 to its sources and lists the system, company, death count, evidence, and verdict.
+              </p>
+              <p className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
+                All of this is open. Every verdict, its reasoning, and the research behind it are published
+                here and in the{" "}
+                <a className="text-foreground underline-offset-4 hover:underline" href={GITHUB_URL} target="_blank" rel="noreferrer">
+                  public repository
+                </a>
+                .
               </p>
               <a
                 className={buttonVariants({
@@ -176,14 +197,16 @@ export default function App({ registrySummary }: AppProps) {
                   </p>
                 ) : registrySummary.companies.length ? (
                   registrySummary.companies.map((company) => (
-                    <div
-                      className="grid grid-cols-[minmax(8rem,0.8fr)_minmax(7rem,1.5fr)_3rem] items-center gap-4 border-b border-border py-5"
-                      key={company.company}
+                    <a
+                      className="group grid grid-cols-[minmax(8rem,0.8fr)_minmax(7rem,1.5fr)_3rem] items-center gap-4 border-b border-border py-5"
+                      key={company.slug}
+                      href={`/companies/${company.slug}`}
                     >
                       <div>
-                        <p className="font-semibold tracking-[-0.02em]">{company.company}</p>
+                        <p className="font-semibold tracking-[-0.02em] group-hover:text-primary">{company.company}</p>
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {company.incidents} included {company.incidents === 1 ? "incident" : "incidents"}
+                          {company.incidents} included {company.incidents === 1 ? "incident" : "incidents"} · view
+                          record
                         </p>
                       </div>
                       <div className="h-7 border border-border p-1" aria-hidden="true">
@@ -193,7 +216,7 @@ export default function App({ registrySummary }: AppProps) {
                         />
                       </div>
                       <p className="text-right font-display text-3xl tabular-nums">{company.deaths}</p>
-                    </div>
+                    </a>
                   ))
                 ) : (
                   <div className="border-b border-border py-10">
@@ -206,8 +229,10 @@ export default function App({ registrySummary }: AppProps) {
 
                 <p className="py-4 text-xs leading-5 text-muted-foreground">
                   These totals measure documented incidents, not overall model safety. Companies with more
-                  public reports may have higher counts.
+                  public reports may have higher counts. Click a company to see its included, excluded, and
+                  unresolved incidents.
                 </p>
+                <AllegationNotice />
               </div>
             </div>
           </div>
@@ -217,17 +242,24 @@ export default function App({ registrySummary }: AppProps) {
           <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 lg:px-12 lg:py-28">
             <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
               <div>
-                <p className="section-label">Inclusion rules</p>
+                <p className="section-label">Standard rules</p>
                 <h2 className="section-title mt-3 max-w-[10ch]">How an incident qualifies.</h2>
                 <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  We include an incident when the evidence supports one of the
-                  three links below. Inclusion is not a legal finding. Each
-                  record explains the evidence and open disputes.
+                  These are the standard rules actually applied to every incident in the registry.
+                  Inclusion is not a legal finding. Each record explains the evidence and open disputes.
+                </p>
+                <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">
+                  The full ruleset, including precedents and a note on why the legal liability standard was
+                  not adopted, is in{" "}
+                  <a className="text-foreground underline-offset-4 hover:underline" href={`${GITHUB_URL}/blob/main/rules.md`} target="_blank" rel="noreferrer">
+                    rules.md
+                  </a>
+                  .
                 </p>
               </div>
 
               <div className="border-t border-border">
-                {standards.map((standard) => (
+                {standardRules.map((standard) => (
                   <article
                     className="grid gap-4 border-b border-border py-7 md:grid-cols-[3rem_0.8fr_1.2fr] md:gap-8"
                     key={standard.number}
@@ -243,18 +275,38 @@ export default function App({ registrySummary }: AppProps) {
                     </p>
                   </article>
                 ))}
+
+                <div className="grid gap-10 py-10 md:grid-cols-2 md:gap-12">
+                  <div>
+                    <p className="section-label">Explicitly ruled in</p>
+                    <ul className="mt-4 space-y-3 border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
+                      {ruledIn.map((item) => (
+                        <li className="grid grid-cols-[1rem_1fr] gap-2" key={item}>
+                          <span className="text-primary" aria-hidden="true">+</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="section-label">Explicitly ruled out</p>
+                    <ul className="mt-4 space-y-3 border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
+                      {ruledOut.map((item) => (
+                        <li className="grid grid-cols-[1rem_1fr] gap-2" key={item}>
+                          <span className="text-muted-foreground" aria-hidden="true">−</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer>
-        <div className="mx-auto flex max-w-[1440px] flex-col justify-between gap-5 px-5 py-8 text-[0.68rem] font-medium uppercase tracking-[0.14em] text-muted-foreground md:flex-row md:items-center md:px-8 lg:px-12">
-          <p className="text-foreground">DeathBench · Est. 2026</p>
-          <p>Public data on reported deaths involving AI.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

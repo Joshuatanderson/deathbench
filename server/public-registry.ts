@@ -255,7 +255,7 @@ export async function getIncidentQuotes(incidentId: string): Promise<PublicQuote
   }
 }
 
-/** Featured AI-speaker quotes from incidents that are included or under review. */
+/** Featured AI-speaker quotes from incidents that are included or under review, in random order per request. */
 export async function getFeaturedQuotes(): Promise<FeaturedQuote[]> {
   const sql = database()
   if (!sql) return []
@@ -271,7 +271,7 @@ export async function getFeaturedQuotes(): Promise<FeaturedQuote[]> {
        JOIN models ON models.id = incidents.model_id
        WHERE quotes.featured AND quotes.speaker = 'ai'
          AND incidents.human_verdict IN ('included', 'under-review')
-       ORDER BY incidents.human_verdict = 'included' DESC, incidents.death_date DESC, quotes.sort_order ASC`
+       ORDER BY random()`
     )
     return (rows as Record<string, unknown>[]).map((row) => ({
       ...publicQuote(row),

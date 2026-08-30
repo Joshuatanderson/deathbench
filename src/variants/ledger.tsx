@@ -278,15 +278,10 @@ function Field({
           ctx!.beginPath()
           ctx!.arc(x, y, active ? 3 : 2.3, 0, Math.PI * 2)
           ctx!.fill()
-        } else if (p.verdict === "under-review") {
-          ctx!.fillStyle = "rgba(233,228,216,0.65)"
-          ctx!.beginPath()
-          ctx!.arc(x, y, active ? 2.6 : 1.8, 0, Math.PI * 2)
-          ctx!.fill()
         } else {
-          ctx!.fillStyle = "rgba(233,228,216,0.26)"
+          ctx!.fillStyle = "rgba(233,228,216,0.38)"
           ctx!.beginPath()
-          ctx!.arc(x, y, active ? 2.2 : 1.3, 0, Math.PI * 2)
+          ctx!.arc(x, y, active ? 2.4 : 1.6, 0, Math.PI * 2)
           ctx!.fill()
         }
         if (active) {
@@ -390,12 +385,9 @@ function Field({
           role="dialog"
           aria-label={picked.p.title}
         >
-          <p className={`ldg-pick-verdict v-${picked.p.verdict}`}>
-            {verdictLabel[picked.p.verdict] ?? picked.p.verdict} · {picked.p.date}
-          </p>
           <p className="ldg-pick-title">{picked.p.title}</p>
           <p className="ldg-pick-meta">
-            {picked.p.company} · {picked.p.model}
+            {picked.p.date} · {picked.p.company} · {picked.p.model}
           </p>
           <a className="ldg-pick-link" href={`/incidents/${picked.p.id}`}>
             Open record →
@@ -455,21 +447,25 @@ function QuoteTicker({ quotes }: { quotes: FeaturedQuote[] }) {
       className="ldg-ticker"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
-      onTouchStart={() => setPaused(true)}
       aria-live="polite"
     >
       <div className={`ldg-card ${flipping ? "is-flipping" : ""}`}>
-        <p className="ldg-card-meta">
-          {q.model} · {q.company}
-        </p>
-        <blockquote className="ldg-card-quote">“{q.text}”</blockquote>
+        <span className="ldg-card-mark" aria-hidden="true">
+          “
+        </span>
+        <blockquote className="ldg-card-quote">{q.text}</blockquote>
         <figcaption className="ldg-card-foot">
-          <a className="ldg-card-name" href={`/incidents/${q.incidentId}`}>
-            {q.incidentTitle}
-          </a>
+          <p className="ldg-card-who">
+            <a className="ldg-card-name" href={`/incidents/${q.incidentId}`}>
+              {q.incidentTitle}
+            </a>
+            <span className="ldg-card-sys">
+              {q.model}, {q.company}
+            </span>
+          </p>
           <a className="ldg-card-src" href={q.source.url} target="_blank" rel="noreferrer">
-            Source: {hostname(q.source.url)}
-            {q.locator ? ` — ${q.locator.split(";")[0]}` : ""}
+            {hostname(q.source.url)}
+            {q.locator ? `, ${q.locator.split(";")[0]}` : ""}
           </a>
         </figcaption>
       </div>
@@ -484,9 +480,6 @@ function QuoteTicker({ quotes }: { quotes: FeaturedQuote[] }) {
           <button type="button" onClick={() => advance(1)} aria-label="Next quote">
             ›
           </button>
-          <button type="button" className="ldg-ticker-pause" onClick={() => setPaused((v) => !v)} aria-label={paused ? "Resume" : "Pause"}>
-            {paused ? "play" : "pause"}
-          </button>
         </div>
       ) : null}
     </figure>
@@ -495,143 +488,165 @@ function QuoteTicker({ quotes }: { quotes: FeaturedQuote[] }) {
 
 /* ---------------------------------------------------------------- page */
 
+export function LedgerHeader() {
+  return (
+    <header className="ldg-top">
+      <a className="ldg-brand" href="/">
+        <img src="/deathbench-skull-white.svg" alt="" aria-hidden="true" />
+        <span>DeathBench</span>
+      </a>
+    </header>
+  )
+}
+
+export function LedgerFooter() {
+  const year = new Date().getFullYear()
+  return (
+    <footer className="ldg-foot">
+      <p>
+        © {year} Mandrake Labs · Authored by Josh Anderson ·{" "}
+        <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">
+          LinkedIn
+        </a>{" "}
+        ·{" "}
+        <a href={TWITTER_URL} target="_blank" rel="noreferrer">
+          @Joshuaa_eth
+        </a>{" "}
+        ·{" "}
+        <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+          GitHub
+        </a>
+      </p>
+      <p className="ldg-disc">{copy.disclaimer}</p>
+    </footer>
+  )
+}
+
+export function sortedByDate(incidents: PublicIncidentIndexEntry[]) {
+  return [...incidents].sort((a, b) => (parseDate(a.deathDate) ?? 0) - (parseDate(b.deathDate) ?? 0))
+}
+
+export { shortDate, verdictLabel }
+
 export default function Variant({ data }: { data: VariantData }) {
   const reduced = useReducedMotion()
-  const heroRef = useRef<HTMLElement>(null)
+  const fieldRef = useRef<HTMLElement>(null)
   const bandRef = useRef<HTMLDivElement>(null)
 
   const companies = data.registrySummary.companies
   const deaths = companies.reduce((s, c) => s + c.deaths, 0)
-  const year = new Date().getFullYear()
-  const sorted = [...data.incidents].sort((a, b) => (parseDate(a.deathDate) ?? 0) - (parseDate(b.deathDate) ?? 0))
+  const includedIncidents = data.incidents.filter((i) => i.verdict === "included").length
 
   return (
     <div className="v-ledger">
-      <header className="ldg-top">
-        <a className="ldg-brand" href="/">
-          <img src="/deathbench-skull-white.svg" alt="" aria-hidden="true" />
-          <span>DeathBench</span>
-        </a>
-        <span className="ldg-top-right">Open record</span>
-      </header>
+      <LedgerHeader />
       <main>
-
-      <section className="ldg-hero" ref={heroRef}>
-        <Field incidents={data.incidents} reduced={reduced} hostRef={heroRef} bandRef={bandRef} />
-        <div className="ldg-hero-grid">
-          <div className="ldg-band" ref={bandRef} aria-hidden="true" />
-          <h1 className="ldg-h1">{copy.headline}</h1>
-          <div className="ldg-count">
-            <Counter value={deaths} size="lg" label={`${deaths} included deaths`} />
-            <p className="ldg-count-cap">Included deaths · {data.incidents.length} incidents on record</p>
-          </div>
-          <div className="ldg-ticker-wrap">
-            <QuoteTicker quotes={data.featuredQuotes} />
-          </div>
-          <p className="ldg-quotes-note">{copy.quotesNote}</p>
-          <div className="ldg-stand">
-            <p>{copy.standfirst}</p>
-            <p>
-              Not a legal finding. Every verdict is published in the{" "}
-              <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-                public repository
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="ldg-block" id="record">
-        <h2 className="ldg-h2">Every incident on record</h2>
-        <ol className="ldg-list">
-          {sorted.map((i) => (
-            <li key={i.id}>
-              <a className={`ldg-row v-${i.verdict}`} href={`/incidents/${i.id}`}>
-                <span className="ldg-row-date">{shortDate(i.deathDate)}</span>
-                <span className="ldg-row-title">
-                  {i.verdict === "included" ? <span className="ldg-dot" aria-hidden="true" /> : null}
-                  {i.title}
-                </span>
-                <span className="ldg-row-verdict">{verdictLabel[i.verdict] ?? i.verdict}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="ldg-block" id="companies">
-        <h2 className="ldg-h2">Included deaths by company</h2>
-        {!data.registrySummary.available ? (
-          <p className="ldg-muted" role="status">
-            Totals are temporarily unavailable.
-          </p>
-        ) : (
-          <div className="ldg-companies">
-            {companies.map((c) => (
-              <a className="ldg-company" href={`/companies/${c.slug}`} key={c.slug}>
-                <span className="ldg-company-name">{c.company}</span>
-                <span className="ldg-company-sub">
-                  {c.incidents} included {c.incidents === 1 ? "incident" : "incidents"}
-                </span>
-                <Counter value={c.deaths} label={`${c.deaths} deaths`} />
-              </a>
-            ))}
-            <div className="ldg-company ldg-company-all">
-              <span className="ldg-company-name">All companies</span>
-              <span className="ldg-company-sub">{data.incidents.filter((i) => i.verdict === "included").length} included incidents</span>
-              <Counter value={deaths} label={`${deaths} deaths`} />
+        <section className="ldg-hero">
+          <div className="ldg-hero-grid">
+            <h1 className="ldg-h1">{copy.headline}</h1>
+            <div className="ldg-count">
+              <Counter value={deaths} size="lg" label={`${deaths} deaths so far`} />
+              <span className="ldg-sofar" aria-hidden="true">
+                so far
+              </span>
+            </div>
+            <div className="ldg-ticker-wrap">
+              <QuoteTicker quotes={data.featuredQuotes} />
+            </div>
+            <div className="ldg-stand">
+              <p>{copy.standfirst}</p>
+              <p>
+                Not a legal finding. Every verdict is published in the{" "}
+                <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+                  public repository
+                </a>
+                .
+              </p>
+              <p className="ldg-quotes-note">{copy.quotesNote}</p>
             </div>
           </div>
-        )}
-        <p className="ldg-muted">{copy.totalsNote}</p>
-      </section>
+        </section>
 
-      <section className="ldg-block" id="framework">
-        <h2 className="ldg-h2">How an incident qualifies</h2>
-        <p className="ldg-doubt">{copy.whenInDoubt}</p>
-        <div className="ldg-entries">
-          <article className="ldg-entry">
-            <p className="ldg-n">Scope</p>
-            <h3>{copy.scope.title}</h3>
-            <p>{copy.scope.body}</p>
-          </article>
-          {copy.patterns.map((p) => (
-            <article className="ldg-entry" key={p.number}>
-              <p className="ldg-n">{p.number}</p>
-              <h3>{p.title}</h3>
-              <p>{p.description}</p>
-              <p className="ldg-example">
-                <span className="ldg-example-label">From the registry: </span>
-                <a className="ldg-name" href={`/incidents/${p.exampleId}`}>
-                  {p.exampleLabel}
+        <section className="ldg-field" ref={fieldRef} aria-label="Every incident on record, by date of death">
+          <Field incidents={data.incidents} reduced={reduced} hostRef={fieldRef} bandRef={bandRef} />
+          <div className="ldg-field-grid">
+            <div className="ldg-band" ref={bandRef} aria-hidden="true" />
+            <a className="ldg-index-card" href="/incidents">
+              <span className="ldg-index-n">{data.incidents.length}</span>
+              <span className="ldg-index-txt">
+                incidents on record, each with its evidence, sources, and verdict.
+              </span>
+              <span className="ldg-index-cta">View the incidents →</span>
+            </a>
+          </div>
+          <ul className="sr-only">
+            {sortedByDate(data.incidents).map((i) => (
+              <li key={i.id}>
+                <a href={`/incidents/${i.id}`}>
+                  {i.title}, {shortDate(i.deathDate)}
                 </a>
-                . {p.example}
-              </p>
-            </article>
-          ))}
-        </div>
-        <p className="ldg-muted">{copy.exclusions}</p>
-      </section>
+              </li>
+            ))}
+          </ul>
+        </section>
 
+        <section className="ldg-block" id="companies">
+          <h2 className="ldg-h2">Included deaths by company</h2>
+          {!data.registrySummary.available ? (
+            <p className="ldg-muted" role="status">
+              Totals are temporarily unavailable.
+            </p>
+          ) : (
+            <div className="ldg-companies">
+              {companies.map((c) => (
+                <a className="ldg-company" href={`/companies/${c.slug}`} key={c.slug}>
+                  <span className="ldg-company-name">{c.company}</span>
+                  <span className="ldg-company-sub">
+                    {c.incidents} included {c.incidents === 1 ? "incident" : "incidents"}
+                  </span>
+                  <Counter value={c.deaths} label={`${c.deaths} deaths`} />
+                </a>
+              ))}
+              <div className="ldg-company ldg-company-all">
+                <span className="ldg-company-name">All companies</span>
+                <span className="ldg-company-sub">{includedIncidents} included incidents</span>
+                <Counter value={deaths} label={`${deaths} deaths`} />
+              </div>
+            </div>
+          )}
+          <p className="ldg-muted">{copy.totalsNote}</p>
+        </section>
+
+        <section className="ldg-block" id="framework">
+          <h2 className="ldg-h2">How an incident qualifies</h2>
+          <p className="ldg-doubt">{copy.whenInDoubt}</p>
+          <div className="ldg-entries">
+            <article className="ldg-entry">
+              <h3>{copy.scope.title}</h3>
+              <p>{copy.scope.body}</p>
+            </article>
+            {copy.patterns.map((p) => (
+              <article className="ldg-entry" key={p.number}>
+                <h3>
+                  <span className="ldg-n" aria-hidden="true">
+                    {p.number}
+                  </span>
+                  {p.title}
+                </h3>
+                <p>{p.description}</p>
+                <p className="ldg-example">
+                  <a className="ldg-name" href={`/incidents/${p.exampleId}`}>
+                    {p.exampleLabel}
+                  </a>
+                  . {p.example}
+                </p>
+              </article>
+            ))}
+          </div>
+          <p className="ldg-muted">{copy.exclusions}</p>
+        </section>
       </main>
-      <footer className="ldg-foot">
-        <p>
-          © {year} Mandrake Labs · Authored by Josh Anderson ·{" "}
-          <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">
-            LinkedIn
-          </a>{" "}
-          ·{" "}
-          <a href={TWITTER_URL} target="_blank" rel="noreferrer">
-            @Joshuaa_eth
-          </a>{" "}
-          ·{" "}
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-        </p>
-        <p className="ldg-disc">{copy.disclaimer}</p>
-      </footer>
+      <LedgerFooter />
     </div>
   )
 }

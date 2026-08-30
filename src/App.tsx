@@ -62,13 +62,25 @@ function AmbientBackground() {
   )
 }
 
+function Counter({ value, size = "md" }: { value: number; size?: "md" | "lg" }) {
+  const digits = String(value).padStart(3, "0").split("")
+  return (
+    <div className="flex gap-1.5" aria-label={`${value} deaths`}>
+      {digits.map((digit, index) => (
+        <span key={index} className={size === "lg" ? "counter-digit counter-digit-lg" : "counter-digit"} aria-hidden="true">
+          {digit}
+        </span>
+      ))}
+    </div>
+  )
+}
+
 type AppProps = {
   registrySummary: PublicRegistrySummary
   featuredQuotes: FeaturedQuote[]
 }
 
 export default function App({ registrySummary, featuredQuotes }: AppProps) {
-  const maxDeaths = Math.max(1, ...registrySummary.companies.map((company) => company.deaths))
   const includedDeaths = registrySummary.companies.reduce((total, company) => total + company.deaths, 0)
 
   return (
@@ -78,104 +90,85 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
 
       <main id="top">
         <section className="border-b border-border">
-          <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-16 md:gap-16 md:px-8 md:py-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(320px,0.9fr)] lg:gap-20 lg:px-12 lg:py-28">
-            <div>
-              <h1 className="display-title max-w-[11ch]">
-                Death tolls for AI systems.
-              </h1>
-              <p className="mt-10 max-w-2xl text-balance text-lg leading-8 text-muted-foreground md:text-xl">
-                An open count of deaths AI contributed to. Inclusion is our judgment, not a legal finding.
-              </p>
-              <p className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
-                Every verdict, its reasoning, and the research behind it are published here and in the{" "}
-                <a className="text-foreground underline-offset-4 hover:underline" href={GITHUB_URL} target="_blank" rel="noreferrer">
-                  public repository
-                </a>
-                .
-              </p>
-              <a
-                className={buttonVariants({
-                  className: "mt-10 h-11 rounded-none px-5 uppercase tracking-[0.1em]",
-                })}
-                href="#framework"
-              >
-                See inclusion rules
-                <ArrowDown data-icon="inline-end" aria-hidden="true" />
-              </a>
-            </div>
-
-            <aside className="self-end border-t border-border lg:border-t-0">
-              {featuredQuotes.length ? (
-                <div className="pt-8 lg:pt-0">
-                  <QuoteFlip quotes={featuredQuotes} />
-                </div>
-              ) : null}
-            </aside>
-          </div>
-        </section>
-
-        <section id="companies" className="border-b border-border scroll-mt-8">
-          <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 lg:px-12 lg:py-28">
-            <div className="grid gap-12 lg:grid-cols-[0.58fr_1.42fr] lg:gap-24">
+          <div className="mx-auto grid max-w-[1440px] gap-12 px-5 py-14 md:px-8 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-24 lg:px-12 lg:py-24">
+            <div className="flex flex-col justify-between gap-12">
               <div>
-                <p className="section-label">Company totals</p>
-                <h2 className="section-title mt-3 max-w-[11ch]">Included deaths by company.</h2>
-                <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  A total counts only incidents a reviewer marked as included.
-                </p>
-                <p className="mt-8 text-sm leading-6 text-muted-foreground">
-                  <span className="font-semibold text-foreground">{includedDeaths}</span> deaths across all
-                  included incidents.
+                <h1 className="display-title max-w-[11ch]">Death tolls for AI systems.</h1>
+                <p className="mt-6 max-w-md text-lg leading-7 text-muted-foreground">
+                  An open count of deaths AI contributed to, by company.
                 </p>
               </div>
 
-              <div className="border-t border-border" aria-label="Included deaths by company">
-                <div className="grid grid-cols-[minmax(8rem,0.8fr)_minmax(7rem,1.5fr)_3rem] gap-4 border-b border-border py-3 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  <span>Company</span>
-                  <span>Included deaths</span>
-                  <span className="text-right">Count</span>
-                </div>
+              <div className="lg:hidden">
+                <Counter value={includedDeaths} size="lg" />
+              </div>
 
+              {featuredQuotes.length ? (
+                <div className="hidden lg:block">
+                  <QuoteFlip quotes={featuredQuotes} />
+                </div>
+              ) : null}
+            </div>
+
+            <div className="hidden flex-col justify-between gap-12 lg:flex">
+              <div className="border-t border-border" aria-label="Included deaths by company">
                 {!registrySummary.available ? (
                   <p className="border-b border-border py-10 text-sm leading-6 text-muted-foreground" role="status">
-                    Company totals are temporarily unavailable.
+                    Totals are temporarily unavailable.
                   </p>
-                ) : registrySummary.companies.length ? (
-                  registrySummary.companies.map((company) => (
-                    <a
-                      className="group grid grid-cols-[minmax(8rem,0.8fr)_minmax(7rem,1.5fr)_3rem] items-center gap-4 border-b border-border py-5"
-                      key={company.slug}
-                      href={`/companies/${company.slug}`}
-                    >
-                      <div>
-                        <p className="font-semibold tracking-[-0.02em] group-hover:text-primary">{company.company}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {company.incidents} {company.incidents === 1 ? "incident" : "incidents"}
-                        </p>
-                      </div>
-                      <div className="h-7 border border-border p-1" aria-hidden="true">
-                        <div
-                          className="h-full bg-primary"
-                          style={{ width: `${(company.deaths / maxDeaths) * 100}%` }}
-                        />
-                      </div>
-                      <p className="text-right font-display text-3xl tabular-nums">{company.deaths}</p>
-                    </a>
-                  ))
                 ) : (
-                  <div className="border-b border-border py-10">
-                    <p className="font-semibold">No included incidents yet.</p>
-                    <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                      Only included incidents appear here.
-                    </p>
-                  </div>
+                  <>
+                    {registrySummary.companies.map((company) => (
+                      <a
+                        className="group flex items-center justify-between gap-8 border-b border-border py-5"
+                        key={company.slug}
+                        href={`/companies/${company.slug}`}
+                      >
+                        <span className="font-display text-3xl tracking-[-0.02em] group-hover:text-primary md:text-4xl">
+                          {company.company}
+                        </span>
+                        <Counter value={company.deaths} />
+                      </a>
+                    ))}
+                    <div className="flex items-center justify-between gap-8 border-b border-border py-5">
+                      <span className="font-display text-3xl tracking-[-0.02em] md:text-4xl">All companies</span>
+                      <Counter value={includedDeaths} />
+                    </div>
+                  </>
                 )}
-
-                <p className="py-4 text-xs leading-5 text-muted-foreground">
+                <p className="pt-4 text-xs leading-5 text-muted-foreground">
                   Totals measure documented incidents, not model safety. Companies with more public reports
                   will have higher counts.
                 </p>
               </div>
+
+              <div className="flex items-center gap-7">
+                <a
+                  className={buttonVariants({ className: "h-11 rounded-none px-5 uppercase tracking-[0.1em]" })}
+                  href="#framework"
+                >
+                  How we count
+                  <ArrowDown data-icon="inline-end" aria-hidden="true" />
+                </a>
+                <p className="text-sm text-muted-foreground">
+                  Not a legal finding. Every verdict is published in the{" "}
+                  <a className="text-foreground underline-offset-4 hover:underline" href={GITHUB_URL} target="_blank" rel="noreferrer">
+                    public repository
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-8 lg:hidden">
+              {featuredQuotes.length ? <QuoteFlip quotes={featuredQuotes} /> : null}
+              <a
+                className={buttonVariants({ className: "h-11 w-fit rounded-none px-5 uppercase tracking-[0.1em]" })}
+                href="#framework"
+              >
+                How we count
+                <ArrowDown data-icon="inline-end" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </section>

@@ -17,15 +17,6 @@ importers:
       '@fontsource-variable/geist':
         specifier: ^5.3.0
         version: 5.3.0
-      '@fontsource/anton':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/cormorant-garamond':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/courier-prime':
-        specifier: ^5.3.0
-        version: 5.3.0
       '@neondatabase/serverless':
         specifier: ^1.1.0
         version: 1.1.0
@@ -292,15 +283,6 @@ packages:
 
   '@fontsource-variable/geist@5.3.0':
     resolution: {integrity: sha512-j0m+vLQuG5XAYoHtGCVu0spvlGreR3EzpECUVzkFmI1mTVnAO38l/NEPDCFgZ177JxzYJCLSmTQibIiYPilGrA==}
-
-  '@fontsource/anton@5.3.0':
-    resolution: {integrity: sha512-OR1D5n124n2XRs66SbX7IjcOSptljEJE8FcDNnlni2y1/M6KpTx7cU2PIWzTSsBj4WFkHPw24On8qw3qkQZuTw==}
-
-  '@fontsource/cormorant-garamond@5.3.0':
-    resolution: {integrity: sha512-weuGsCirGVWBWqpt6YUp0yLThTe4G8YO45noq8wxeJCRvEpq5lFrxNMFSTxcyOyV5k5otzJ8guDzYegdYlcLMQ==}
-
-  '@fontsource/courier-prime@5.3.0':
-    resolution: {integrity: sha512-KIi1k4VG1Wv+/CGpb1AUpLkUuOAQA6zmvthqxOZGN0AV8BEgQgbK7qAtquv14zsBJAY1bb5BHIEbWVFLgENh0w==}
 
   '@hono/node-server@2.1.1':
     resolution: {integrity: sha512-ELuehkj5VCBdgEw9zs+ivkKwyzzUCSQuE96YmiPvn1ECBoZCczbFXJLeEGMTYjphP6gydh4pHMqEYPVMYUVgQg==}
@@ -2494,12 +2476,6 @@ snapshots:
   '@fontsource-variable/bodoni-moda@5.3.0': {}
 
   '@fontsource-variable/geist@5.3.0': {}
-
-  '@fontsource/anton@5.3.0': {}
-
-  '@fontsource/cormorant-garamond@5.3.0': {}
-
-  '@fontsource/courier-prime@5.3.0': {}
 
   '@hono/node-server@2.1.1(hono@4.13.3)':
     dependencies:

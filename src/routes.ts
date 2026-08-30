@@ -10,6 +10,7 @@ export default [
   route("v/weight", "routes/v-weight.tsx"),
   route("v/ledger", "routes/v-ledger.tsx"),
   route("v/folio", "routes/v-folio.tsx"),
+  route("v/advisory", "routes/v-advisory.tsx"),
   route("editor", "routes/editor.tsx"),
   route("api/editor/*", "routes/editor-api.ts"),
 ] satisfies RouteConfig

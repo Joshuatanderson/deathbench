@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { GITHUB_URL, LINKEDIN_URL, TWITTER_URL } from "@/components/site"
 import type { FeaturedQuote, PublicIncidentIndexEntry } from "../../server/public-registry"
 import { copy, hostname, type VariantData } from "./data"
-import "./ledger.css"
+import "./advisory.css"
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -43,6 +43,21 @@ const verdictLabel: Record<string, string> = {
   unreviewed: "Not yet reviewed",
 }
 
+function Severity({ verdict, className = "" }: { verdict: string; className?: string }) {
+  return <span className={`adv-sev v-${verdict} ${className}`}>{verdictLabel[verdict] ?? verdict}</span>
+}
+
+function dbId(n: number) {
+  return `DB-${String(n).padStart(3, "0")}`
+}
+
+function displayIds(incidents: PublicIncidentIndexEntry[]) {
+  const sorted = [...incidents].sort((a, b) => (parseDate(a.deathDate) ?? 0) - (parseDate(b.deathDate) ?? 0))
+  const map = new Map<string, string>()
+  sorted.forEach((i, n) => map.set(i.id, dbId(n + 1)))
+  return { sorted, map }
+}
+
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false)
   useEffect(() => {
@@ -64,6 +79,7 @@ type Point = {
   date: string
   company: string
   model: string
+  ref: string
   t: number
   u: number
   phase: number
@@ -73,6 +89,7 @@ type Point = {
 }
 
 function buildPoints(incidents: PublicIncidentIndexEntry[]): Point[] {
+  const { map: ids } = displayIds(incidents)
   const parsed = incidents.map((i) => ({ i, ms: parseDate(i.deathDate) }))
   const known = parsed.filter((p) => p.ms !== null).map((p) => p.ms as number)
   const min = Math.min(...known)
@@ -92,6 +109,7 @@ function buildPoints(incidents: PublicIncidentIndexEntry[]): Point[] {
         date: shortDate(i.deathDate),
         company: i.company,
         model: i.model,
+        ref: ids.get(i.id) ?? "",
         t,
         u: hash(i.id),
         phase: hash(i.id + "p") * Math.PI * 2,
@@ -228,21 +246,21 @@ function Field({
       for (const s of specks) {
         const dx = reduced ? 0 : Math.sin(time / 9000 + s.d) * 0.8
         const dy = reduced ? 0 : Math.cos(time / 11000 + s.d) * 0.8
-        ctx!.fillStyle = `rgba(233,228,216,${s.a})`
+        ctx!.fillStyle = `rgba(230,230,227,${s.a})`
         ctx!.beginPath()
         ctx!.arc(s.x * W + dx, s.y * H + dy, s.r, 0, Math.PI * 2)
         ctx!.fill()
       }
 
       const { x0, x1, base } = axis()
-      ctx!.strokeStyle = "rgba(233,228,216,0.14)"
+      ctx!.strokeStyle = "rgba(154,160,166,0.28)"
       ctx!.lineWidth = 1
       ctx!.beginPath()
       ctx!.moveTo(x0, base + 0.5)
       ctx!.lineTo(x1, base + 0.5)
       ctx!.stroke()
       ctx!.font = "10px 'Courier Prime', 'Courier New', monospace"
-      ctx!.fillStyle = "rgba(233,228,216,0.45)"
+      ctx!.fillStyle = "rgba(167,173,179,0.8)"
       ctx!.textAlign = "center"
       for (const tk of ticks) {
         const x = x0 + tk.t * (x1 - x0)
@@ -267,30 +285,31 @@ function Field({
         const active = p === selected || p === hover
         if (p.verdict === "included") {
           const breath = reduced ? 1 : 0.7 + 0.3 * Math.sin((time / 1000 / p.period) * Math.PI * 2 + p.phase)
-          const g = ctx!.createRadialGradient(x, y, 0, x, y, 14)
-          g.addColorStop(0, `rgba(216,147,58,${0.6 * breath})`)
-          g.addColorStop(1, "rgba(216,147,58,0)")
+          const halo = 12 + 6 * breath
+          const g = ctx!.createRadialGradient(x, y, 0, x, y, halo)
+          g.addColorStop(0, `rgba(229,56,59,${0.55 * breath})`)
+          g.addColorStop(1, "rgba(229,56,59,0)")
           ctx!.fillStyle = g
           ctx!.beginPath()
-          ctx!.arc(x, y, 14, 0, Math.PI * 2)
+          ctx!.arc(x, y, halo, 0, Math.PI * 2)
           ctx!.fill()
-          ctx!.fillStyle = `rgba(236,176,96,${0.8 + 0.2 * breath})`
+          ctx!.fillStyle = `rgba(255,90,93,${0.85 + 0.15 * breath})`
           ctx!.beginPath()
           ctx!.arc(x, y, active ? 3 : 2.3, 0, Math.PI * 2)
           ctx!.fill()
         } else if (p.verdict === "under-review") {
-          ctx!.fillStyle = "rgba(233,228,216,0.65)"
+          ctx!.fillStyle = "rgba(184,134,27,0.95)"
           ctx!.beginPath()
-          ctx!.arc(x, y, active ? 2.6 : 1.8, 0, Math.PI * 2)
+          ctx!.arc(x, y, active ? 2.8 : 2, 0, Math.PI * 2)
           ctx!.fill()
         } else {
-          ctx!.fillStyle = "rgba(233,228,216,0.26)"
+          ctx!.fillStyle = "rgba(154,160,166,0.25)"
           ctx!.beginPath()
           ctx!.arc(x, y, active ? 2.2 : 1.3, 0, Math.PI * 2)
           ctx!.fill()
         }
         if (active) {
-          ctx!.strokeStyle = p.verdict === "included" ? "rgba(216,147,58,0.8)" : "rgba(233,228,216,0.6)"
+          ctx!.strokeStyle = p.verdict === "included" ? "rgba(255,90,93,0.9)" : "rgba(167,173,179,0.7)"
           ctx!.beginPath()
           ctx!.arc(x, y, 8, 0, Math.PI * 2)
           ctx!.stroke()
@@ -382,22 +401,29 @@ function Field({
 
   return (
     <>
-      <canvas ref={ref} className={`ldg-canvas ${near ? "is-near" : ""}`} aria-hidden="true" />
+      <canvas
+        ref={ref}
+        className={`adv-canvas ${near ? "is-near" : ""}`}
+        role="img"
+        aria-label={`Timeline of ${incidents.length} incidents on record. Included incidents are marked in red. Use the incident record list below to open each record.`}
+      />
       {picked ? (
         <div
-          className={`ldg-pick ${flipLeft ? "is-left" : ""} ${flipUp ? "is-up" : ""}`}
+          className={`adv-pick ${flipLeft ? "is-left" : ""} ${flipUp ? "is-up" : ""}`}
           style={{ left: picked.x, top: picked.y }}
           role="dialog"
-          aria-label={picked.p.title}
+          aria-label={`${picked.p.ref} ${picked.p.title}`}
+          tabIndex={-1}
         >
-          <p className={`ldg-pick-verdict v-${picked.p.verdict}`}>
-            {verdictLabel[picked.p.verdict] ?? picked.p.verdict} · {picked.p.date}
+          <p className="adv-pick-head">
+            <span className="adv-pick-ref">{picked.p.ref}</span>
+            <Severity verdict={picked.p.verdict} />
           </p>
-          <p className="ldg-pick-title">{picked.p.title}</p>
-          <p className="ldg-pick-meta">
-            {picked.p.company} · {picked.p.model}
+          <p className="adv-pick-title">{picked.p.title}</p>
+          <p className="adv-pick-meta">
+            {picked.p.date} · {picked.p.company} · {picked.p.model}
           </p>
-          <a className="ldg-pick-link" href={`/incidents/${picked.p.id}`}>
+          <a className="adv-pick-link" href={`/incidents/${picked.p.id}`}>
             Open record →
           </a>
         </div>
@@ -411,10 +437,10 @@ function Field({
 function Counter({ value, size = "sm", label }: { value: number; size?: "sm" | "lg"; label: string }) {
   const digits = String(value).padStart(3, "0").split("")
   return (
-    <div className={`ldg-counter ldg-counter-${size}`} role="img" aria-label={label}>
+    <div className={`adv-counter adv-counter-${size}`} role="img" aria-label={label}>
       {digits.map((d, i) => (
-        <span className="ldg-digit" style={{ "--i": i } as React.CSSProperties} key={i} aria-hidden="true">
-          <span className="ldg-digit-glyph">{d}</span>
+        <span className="adv-digit" style={{ "--i": i } as React.CSSProperties} key={i} aria-hidden="true">
+          <span className="adv-digit-glyph">{d}</span>
         </span>
       ))}
     </div>
@@ -452,29 +478,29 @@ function QuoteTicker({ quotes }: { quotes: FeaturedQuote[] }) {
   const q = quotes[index]
   return (
     <figure
-      className="ldg-ticker"
+      className="adv-ticker"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onTouchStart={() => setPaused(true)}
       aria-live="polite"
     >
-      <div className={`ldg-card ${flipping ? "is-flipping" : ""}`}>
-        <p className="ldg-card-meta">
+      <div className={`adv-card ${flipping ? "is-flipping" : ""}`}>
+        <p className="adv-card-meta">
           {q.model} · {q.company}
         </p>
-        <blockquote className="ldg-card-quote">“{q.text}”</blockquote>
-        <figcaption className="ldg-card-foot">
-          <a className="ldg-card-name" href={`/incidents/${q.incidentId}`}>
+        <blockquote className="adv-card-quote">“{q.text}”</blockquote>
+        <figcaption className="adv-card-foot">
+          <a className="adv-card-name" href={`/incidents/${q.incidentId}`}>
             {q.incidentTitle}
           </a>
-          <a className="ldg-card-src" href={q.source.url} target="_blank" rel="noreferrer">
+          <a className="adv-card-src" href={q.source.url} target="_blank" rel="noreferrer">
             Source: {hostname(q.source.url)}
             {q.locator ? ` — ${q.locator.split(";")[0]}` : ""}
           </a>
         </figcaption>
       </div>
       {total > 1 ? (
-        <div className="ldg-ticker-nav">
+        <div className="adv-ticker-nav">
           <button type="button" onClick={() => advance(-1)} aria-label="Previous quote">
             ‹
           </button>
@@ -484,7 +510,7 @@ function QuoteTicker({ quotes }: { quotes: FeaturedQuote[] }) {
           <button type="button" onClick={() => advance(1)} aria-label="Next quote">
             ›
           </button>
-          <button type="button" className="ldg-ticker-pause" onClick={() => setPaused((v) => !v)} aria-label={paused ? "Resume" : "Pause"}>
+          <button type="button" className="adv-ticker-pause" onClick={() => setPaused((v) => !v)} aria-label={paused ? "Resume" : "Pause"}>
             {paused ? "play" : "pause"}
           </button>
         </div>
@@ -503,33 +529,55 @@ export default function Variant({ data }: { data: VariantData }) {
   const companies = data.registrySummary.companies
   const deaths = companies.reduce((s, c) => s + c.deaths, 0)
   const year = new Date().getFullYear()
-  const sorted = [...data.incidents].sort((a, b) => (parseDate(a.deathDate) ?? 0) - (parseDate(b.deathDate) ?? 0))
+  const { sorted, map: ids } = displayIds(data.incidents)
+  const underReview = data.incidents.filter((i) => i.verdict === "under-review").length
+  const lastUpdated = sorted.reduce((best, i) => {
+    const d = i.deathDate.match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? ""
+    return d > best ? d : best
+  }, "")
+  const maxDeaths = Math.max(1, ...companies.map((c) => c.deaths))
 
   return (
-    <div className="v-ledger">
-      <header className="ldg-top">
-        <a className="ldg-brand" href="/">
+    <div className="v-advisory">
+      <header className="adv-top">
+        <a className="adv-brand" href="/">
           <img src="/deathbench-skull-white.svg" alt="" aria-hidden="true" />
           <span>DeathBench</span>
         </a>
-        <span className="ldg-top-right">Open record</span>
+        <span className="adv-top-right">Public advisory</span>
       </header>
+      <div className="adv-status" role="status" aria-label="Record status">
+        <span className="adv-live">
+          <span className="adv-live-dot" aria-hidden="true" />
+          Live record
+        </span>
+        <span className="adv-status-item">Last updated {lastUpdated}</span>
+        <span className="adv-status-item adv-status-scale">
+          Severity scale:{" "}
+          <Severity verdict="included" className="adv-sev-mini" />{" "}
+          <Severity verdict="under-review" className="adv-sev-mini" />{" "}
+          <Severity verdict="excluded" className="adv-sev-mini" />
+        </span>
+      </div>
       <main>
 
-      <section className="ldg-hero" ref={heroRef}>
+      <section className="adv-hero" ref={heroRef}>
         <Field incidents={data.incidents} reduced={reduced} hostRef={heroRef} bandRef={bandRef} />
-        <div className="ldg-hero-grid">
-          <div className="ldg-band" ref={bandRef} aria-hidden="true" />
-          <h1 className="ldg-h1">{copy.headline}</h1>
-          <div className="ldg-count">
+        <div className="adv-hero-grid">
+          <div className="adv-band" ref={bandRef} aria-hidden="true" />
+          <h1 className="adv-h1">{copy.headline}</h1>
+          <div className="adv-count">
             <Counter value={deaths} size="lg" label={`${deaths} included deaths`} />
-            <p className="ldg-count-cap">Included deaths · {data.incidents.length} incidents on record</p>
+            <p className="adv-count-cap">
+              Included deaths · {data.incidents.length} incidents on record · {underReview} under review
+            </p>
           </div>
-          <div className="ldg-ticker-wrap">
+          <div className="adv-ticker-wrap">
+            <p className="adv-sec">01 — From the conversations</p>
             <QuoteTicker quotes={data.featuredQuotes} />
           </div>
-          <p className="ldg-quotes-note">{copy.quotesNote}</p>
-          <div className="ldg-stand">
+          <p className="adv-quotes-note">{copy.quotesNote}</p>
+          <div className="adv-stand">
             <p>{copy.standfirst}</p>
             <p>
               Not a legal finding. Every verdict is published in the{" "}
@@ -542,68 +590,72 @@ export default function Variant({ data }: { data: VariantData }) {
         </div>
       </section>
 
-      <section className="ldg-block" id="record">
-        <h2 className="ldg-h2">Every incident on record</h2>
-        <ol className="ldg-list">
+      <section className="adv-block" id="record">
+        <p className="adv-sec">02 — Incident record</p>
+        <h2 className="adv-h2">Every incident on record</h2>
+        <ol className="adv-list">
           {sorted.map((i) => (
             <li key={i.id}>
-              <a className={`ldg-row v-${i.verdict}`} href={`/incidents/${i.id}`}>
-                <span className="ldg-row-date">{shortDate(i.deathDate)}</span>
-                <span className="ldg-row-title">
-                  {i.verdict === "included" ? <span className="ldg-dot" aria-hidden="true" /> : null}
-                  {i.title}
-                </span>
-                <span className="ldg-row-verdict">{verdictLabel[i.verdict] ?? i.verdict}</span>
+              <a className={`adv-row v-${i.verdict}`} href={`/incidents/${i.id}`}>
+                <span className="adv-row-ref">{ids.get(i.id)}</span>
+                <span className="adv-row-date">{shortDate(i.deathDate)}</span>
+                <span className="adv-row-title">{i.title}</span>
+                <Severity verdict={i.verdict} className="adv-row-verdict" />
               </a>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="ldg-block" id="companies">
-        <h2 className="ldg-h2">Included deaths by company</h2>
+      <section className="adv-block" id="companies">
+        <p className="adv-sec">03 — Totals by company</p>
+        <h2 className="adv-h2">Included deaths by company</h2>
         {!data.registrySummary.available ? (
-          <p className="ldg-muted" role="status">
+          <p className="adv-muted" role="status">
             Totals are temporarily unavailable.
           </p>
         ) : (
-          <div className="ldg-companies">
+          <div className="adv-companies">
             {companies.map((c) => (
-              <a className="ldg-company" href={`/companies/${c.slug}`} key={c.slug}>
-                <span className="ldg-company-name">{c.company}</span>
-                <span className="ldg-company-sub">
+              <a className="adv-company" href={`/companies/${c.slug}`} key={c.slug}>
+                <span className="adv-company-name">{c.company}</span>
+                <span className="adv-company-sub">
                   {c.incidents} included {c.incidents === 1 ? "incident" : "incidents"}
+                </span>
+                <span className="adv-company-bar" aria-hidden="true">
+                  <span style={{ width: `${(c.deaths / maxDeaths) * 100}%` }} />
                 </span>
                 <Counter value={c.deaths} label={`${c.deaths} deaths`} />
               </a>
             ))}
-            <div className="ldg-company ldg-company-all">
-              <span className="ldg-company-name">All companies</span>
-              <span className="ldg-company-sub">{data.incidents.filter((i) => i.verdict === "included").length} included incidents</span>
+            <div className="adv-company adv-company-all">
+              <span className="adv-company-name">All companies</span>
+              <span className="adv-company-sub">{data.incidents.filter((i) => i.verdict === "included").length} included incidents</span>
               <Counter value={deaths} label={`${deaths} deaths`} />
             </div>
           </div>
         )}
-        <p className="ldg-muted">{copy.totalsNote}</p>
+        <p className="adv-muted">{copy.totalsNote}</p>
       </section>
 
-      <section className="ldg-block" id="framework">
-        <h2 className="ldg-h2">How an incident qualifies</h2>
-        <p className="ldg-doubt">{copy.whenInDoubt}</p>
-        <div className="ldg-entries">
-          <article className="ldg-entry">
-            <p className="ldg-n">Scope</p>
+      <section className="adv-block" id="framework">
+        <p className="adv-sec">04 — Inclusion standard</p>
+        <h2 className="adv-h2">How an incident qualifies</h2>
+        <p className="adv-doubt">{copy.whenInDoubt}</p>
+        <div className="adv-entries">
+          <article className="adv-entry">
+            <p className="adv-n">Scope</p>
             <h3>{copy.scope.title}</h3>
             <p>{copy.scope.body}</p>
           </article>
           {copy.patterns.map((p) => (
-            <article className="ldg-entry" key={p.number}>
-              <p className="ldg-n">{p.number}</p>
+            <article className="adv-entry" key={p.number}>
+              <p className="adv-n">{p.number}</p>
               <h3>{p.title}</h3>
               <p>{p.description}</p>
-              <p className="ldg-example">
-                <span className="ldg-example-label">From the registry: </span>
-                <a className="ldg-name" href={`/incidents/${p.exampleId}`}>
+              <p className="adv-example">
+                <span className="adv-example-label">From the registry: </span>
+                <a className="adv-name" href={`/incidents/${p.exampleId}`}>
                   {p.exampleLabel}
                 </a>
                 . {p.example}
@@ -611,11 +663,15 @@ export default function Variant({ data }: { data: VariantData }) {
             </article>
           ))}
         </div>
-        <p className="ldg-muted">{copy.exclusions}</p>
+        <p className="adv-muted">{copy.exclusions}</p>
       </section>
 
       </main>
-      <footer className="ldg-foot">
+      <footer className="adv-foot">
+        <div className="adv-advisory">
+          <p className="adv-sec">Advisory</p>
+          <p className="adv-disc">{copy.disclaimer}</p>
+        </div>
         <p>
           © {year} Mandrake Labs · Authored by Josh Anderson ·{" "}
           <a href={LINKEDIN_URL} target="_blank" rel="noreferrer">
@@ -630,7 +686,6 @@ export default function Variant({ data }: { data: VariantData }) {
             GitHub
           </a>
         </p>
-        <p className="ldg-disc">{copy.disclaimer}</p>
       </footer>
     </div>
   )

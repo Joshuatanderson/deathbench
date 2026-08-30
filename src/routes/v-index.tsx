@@ -9,6 +9,7 @@ export default function VariantIndex() {
     ["weight", "Weight", "Kinetic brutalism. One block per death, falling into place."],
     ["ledger", "Ledger", "Hybrid, dark: field + Courier + counter + card ticker, mobile-first."],
     ["folio", "Folio", "Hybrid, paper: the same fold, field drawn in ink."],
+    ["advisory", "Advisory", "Security-advisory branding: near-black, alert red, severity badges, DB-ids."],
   ]
   return (
     <main className="mx-auto max-w-2xl px-6 py-24">

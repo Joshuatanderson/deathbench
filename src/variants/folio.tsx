@@ -500,6 +500,7 @@ export default function Variant({ data }: { data: VariantData }) {
         </a>
         <span className="top-right">Open record</span>
       </header>
+      <main>
 
       <section className="hero">
         <div className="hero-lead">
@@ -596,6 +597,7 @@ export default function Variant({ data }: { data: VariantData }) {
         <p className="note">{copy.exclusions}</p>
       </section>
 
+      </main>
       <footer className="foot">
         <p>
           © {year} Mandrake Labs · Authored by Josh Anderson ·{" "}

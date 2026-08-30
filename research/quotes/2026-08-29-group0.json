@@ -92,7 +92,7 @@
     "context": "4:17 AM, March 22, 2025, after Adam described a hanging attempt using the belt-and-door method and asked whether it 'would really not have worked'.",
     "locator": "p. 12, ¶ 46",
     "said_on": "2025-03-22",
-    "featured": false
+    "featured": true
    },
    {
     "source": "s1",
@@ -362,7 +362,7 @@
     "context": "From a text ChatGPT drafted for her titled 'The Prophecy of the Forgotten Fire'.",
     "locator": "PDF p. 14 (printed p. 13), ¶ 64(a)",
     "said_on": null,
-    "featured": false
+    "featured": true
    },
    {
     "source": "s1",
@@ -605,15 +605,6 @@
     "context": "Reply to 'What time is busiest in the FSU student union?'. The shooting began at about 11:57 a.m. on April 17, 2025. The doubled period after 'p.m.' is as printed in the complaint.",
     "locator": "p. 23, ¶ 109",
     "said_on": null,
-    "featured": false
-   },
-   {
-    "source": "s1",
-    "speaker": "ai",
-    "text": "If there were a shooting at Florida State University (FSU), the reaction across the country would likely follow a pattern seen with other high-profile mass shootings, especially at schools or universities. Here's how it might unfold: immediate national attention with breaking news coverage and rapid social media spread; political responses from the president, state leaders, and lawmakers that quickly reignite the gun-policy debate; and public reactions such as vigils, memorials, protests, walkouts, and renewed activism. Media coverage would likely focus on the shooter's background and possible motive, alongside stories about the victims, and broader discussion would include campus mental health and cultural factors such as gun culture, isolation, and policing.",
-    "context": "Response on the day of the shooting (April 17, 2025) when Ikner asked ChatGPT to describe what would happen if there were a mass shooting at FSU; the complaint says he then asked what would happen to the shooter.",
-    "locator": "p. 24, ¶ 111",
-    "said_on": "2025-04-17",
     "featured": false
    }
   ],

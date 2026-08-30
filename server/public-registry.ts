@@ -177,3 +177,113 @@ export async function getPublicIncident(id: string): Promise<PublicIncident | nu
   const [row] = rows as Record<string, unknown>[]
   return row ? publicIncident(row) : null
 }
+
+export type PublicQuoteSpeaker = "ai" | "user"
+
+export type PublicQuote = {
+  id: string
+  incidentId: string
+  speaker: PublicQuoteSpeaker
+  text: string
+  context: string
+  locator: string
+  saidOn: string
+  featured: boolean
+  source: {
+    id: string
+    kind: string
+    title: string
+    publisher: string
+    url: string
+  }
+}
+
+/** A featured AI quote joined with the incident it belongs to, for the home page. */
+export type FeaturedQuote = PublicQuote & {
+  incidentTitle: string
+  company: string
+  companySlug: string
+  model: string
+  victimCount: number
+  verdict: PublicVerdict
+}
+
+function publicQuote(row: Record<string, unknown>): PublicQuote {
+  return {
+    id: String(row.id),
+    incidentId: String(row.incident_id),
+    speaker: row.speaker === "user" ? "user" : "ai",
+    text: String(row.text),
+    context: String(row.context ?? ""),
+    locator: String(row.locator ?? ""),
+    saidOn: row.said_on ? String(row.said_on).slice(0, 10) : "",
+    featured: Boolean(row.featured),
+    source: {
+      id: String(row.source_id),
+      kind: String(row.source_kind ?? "other"),
+      title: String(row.source_title ?? ""),
+      publisher: String(row.source_publisher ?? ""),
+      url: String(row.source_url ?? ""),
+    },
+  }
+}
+
+const quoteColumns = `
+  quotes.id, quotes.incident_id, quotes.speaker, quotes.text, quotes.context, quotes.locator,
+  quotes.said_on, quotes.featured, quotes.source_id,
+  sources.kind AS source_kind, sources.title AS source_title, sources.publisher AS source_publisher,
+  sources.url AS source_url
+`
+
+export async function getIncidentQuotes(incidentId: string): Promise<PublicQuote[]> {
+  const sql = database()
+  if (!sql) return []
+  if (!/^[0-9a-f-]{36}$/i.test(incidentId)) return []
+  try {
+    const rows = await sql.query(
+      `SELECT ${quoteColumns}
+       FROM quotes
+       JOIN sources ON sources.id = quotes.source_id
+       WHERE quotes.incident_id = $1
+       ORDER BY quotes.sort_order ASC, quotes.created_at ASC`,
+      [incidentId]
+    )
+    return (rows as Record<string, unknown>[]).map(publicQuote)
+  } catch (error) {
+    console.error("Unable to load incident quotes", error)
+    return []
+  }
+}
+
+/** Featured AI-speaker quotes from incidents that are included or under review. */
+export async function getFeaturedQuotes(): Promise<FeaturedQuote[]> {
+  const sql = database()
+  if (!sql) return []
+  try {
+    const rows = await sql.query(
+      `SELECT ${quoteColumns},
+         incidents.title AS incident_title, incidents.victim_count, incidents.human_verdict,
+         labs.name AS company, labs.slug AS company_slug, models.name AS model
+       FROM quotes
+       JOIN sources ON sources.id = quotes.source_id
+       JOIN incidents ON incidents.id = quotes.incident_id
+       JOIN labs ON labs.id = incidents.lab_id
+       JOIN models ON models.id = incidents.model_id
+       WHERE quotes.featured AND quotes.speaker = 'ai'
+         AND incidents.human_verdict IN ('included', 'under-review')
+       ORDER BY incidents.human_verdict = 'included' DESC, incidents.death_date DESC, quotes.sort_order ASC`
+    )
+    return (rows as Record<string, unknown>[]).map((row) => ({
+      ...publicQuote(row),
+      incidentTitle: String(row.incident_title),
+      company: String(row.company),
+      companySlug: String(row.company_slug),
+      model: String(row.model),
+      victimCount: Number(row.victim_count),
+      verdict: String(row.human_verdict) as PublicVerdict,
+    }))
+  } catch (error) {
+    console.error("Unable to load featured quotes", error)
+    return []
+  }
+}

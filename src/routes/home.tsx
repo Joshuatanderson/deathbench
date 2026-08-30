@@ -1,14 +1,15 @@
-import { getPublicRegistrySummary } from "../../server/public-registry"
+import { getFeaturedQuotes, getPublicRegistrySummary } from "../../server/public-registry"
 import App from "../App"
 import type { Route } from "./+types/home"
 
 export async function loader() {
-  return getPublicRegistrySummary()
+  const [registrySummary, featuredQuotes] = await Promise.all([getPublicRegistrySummary(), getFeaturedQuotes()])
+  return { registrySummary, featuredQuotes }
 }
 
 export function meta() {
   return [
-    { title: "DeathBench — Deaths linked to AI systems" },
+    { title: "DeathBench: Death tolls for AI systems" },
     {
       name: "description",
       content:
@@ -25,5 +26,5 @@ export function meta() {
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  return <App registrySummary={loaderData} />
+  return <App registrySummary={loaderData.registrySummary} featuredQuotes={loaderData.featuredQuotes} />
 }

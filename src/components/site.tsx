@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import type { PublicVerdict } from "../../server/public-registry"
 
 export const GITHUB_URL = "https://github.com/Joshuatanderson/deathbench"
-export const LINKEDIN_URL = "https://www.linkedin.com/in/joshuatanderson"
+export const LINKEDIN_URL = "https://www.linkedin.com/in/josh-anderson-sf/"
 export const TWITTER_URL = "https://x.com/Joshuaa_eth"
 
 export const verdictLabels: Record<PublicVerdict, string> = {
@@ -54,13 +54,19 @@ export function SiteFooter() {
             </a>
           </p>
         </div>
-        <p>
-          Open data and source on{" "}
-          <a className="text-foreground underline-offset-4 hover:underline" href={GITHUB_URL} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          .
-        </p>
+        <div className="flex flex-col gap-2 md:max-w-md md:text-right">
+          <p>
+            Open data and source on{" "}
+            <a className="text-foreground underline-offset-4 hover:underline" href={GITHUB_URL} target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            .
+          </p>
+          <p className="normal-case tracking-normal">
+            Everything here is an allegation unless stated otherwise. Verdicts are the authors&apos; opinion and
+            are not a claim of legal responsibility against any AI system or company.
+          </p>
+        </div>
       </div>
     </footer>
   )

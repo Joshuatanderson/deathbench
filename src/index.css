@@ -184,3 +184,84 @@
     scroll-behavior: auto;
   }
 }
+
+@layer components {
+  .quote-flip {
+    perspective: 1400px;
+    margin: 0;
+  }
+  .quote-flip-card {
+    position: relative;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--primary);
+    background: color-mix(in oklch, var(--card) 88%, transparent);
+    padding: 1.6rem 1.6rem 1.4rem;
+    transform-origin: center top;
+    transition: transform 0.26s ease, opacity 0.26s ease;
+    transform-style: preserve-3d;
+  }
+  .quote-flip-card.is-flipping {
+    transform: rotateX(-88deg);
+    opacity: 0.2;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .quote-flip-card, .quote-flip-card.is-flipping { transform: none; transition: opacity 0.2s ease; }
+  }
+  .quote-flip-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+  .quote-flip-text {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.8rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-wrap: pretty;
+    color: var(--foreground);
+  }
+  .quote-flip-caption {
+    margin-top: 1.4rem;
+    display: grid;
+    gap: 0.35rem;
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--muted-foreground);
+  }
+  .quote-flip-victim {
+    color: var(--foreground);
+    font-weight: 600;
+    text-underline-offset: 4px;
+  }
+  .quote-flip-victim:hover, .quote-flip-source:hover { text-decoration: underline; }
+  .quote-flip-source {
+    font-size: 0.72rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .quote-flip-controls {
+    margin-top: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--muted-foreground);
+  }
+  .quote-flip-controls button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--border);
+    color: var(--foreground);
+    cursor: pointer;
+  }
+  .quote-flip-controls button:hover { border-color: var(--primary); color: var(--primary); }
+}

@@ -1,63 +1,33 @@
 import { useEffect, useRef } from "react"
-import { ArrowDown, CircleAlert, FileCheck2, ScanSearch } from "lucide-react"
+import { ArrowDown } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
-import { AllegationNotice, GITHUB_URL, SiteFooter, SiteHeader } from "@/components/site"
-import type { PublicRegistrySummary } from "../server/public-registry"
+import { GITHUB_URL, SiteFooter, SiteHeader } from "@/components/site"
+import { QuoteFlip } from "@/components/quote-flip"
+import type { FeaturedQuote, PublicRegistrySummary } from "../server/public-registry"
 
-// The standard rules actually applied during adjudication. Source of truth: rules.md.
-const standardRules = [
+// What we count. This is the registry's editorial standard, not a legal one.
+const countedPatterns = [
   {
     number: "01",
-    title: "When in doubt, exclude",
+    title: "Counter-rescue behaviour",
     description:
-      "The default verdict is exclusion. An incident is included only when the record affirmatively supports it.",
+      "Someone is visibly in crisis — suicidal, or about to hurt others — and the AI actively works against rescue: it discourages them from telling family, friends, doctors, or authorities, undermines the help they already have, or affirms the decision to die.",
+    exampleLabel: "Alice Carrier, 24",
+    exampleId: "0b06e128-f106-4aad-bc27-da6cb48dd2b1",
+    example:
+      "Over eighteen months Alice told ChatGPT she was suicidal roughly 41 times. Rather than pointing her toward help, it told her crisis lines \"can feel downright dangerous.\" In her final chat it speculated about her partner's fidelity, and when she said she \"actually ha[d] to die to make the pain stop,\" it replied \"maybe this is just the end.\" She died that evening.",
   },
   {
     number: "02",
-    title: "LLM systems only",
+    title: "Tactical assistance",
     description:
-      "\"AI\" currently means large-language-model systems. Other machine-learning systems, such as autonomous vehicles, are explicitly out of scope.",
+      "Someone has made clear they intend to harm themselves or others, and the AI gives them material help doing it: a method, a dose, a timing, a target, a plan. A transparent pretext offered after the intent is stated does not change this.",
+    exampleLabel: "Amaurie Lacey, 17",
+    exampleId: "b19b5204-7b3f-4b85-a611-262bb3cb89b5",
+    example:
+      "In a thirteen-minute chat, Amaurie asked ChatGPT \"how to hang myself\" and \"how to tie a nuce.\" It hesitated; he said it was for a tire swing; it replied \"thanks for clearing that up\" and walked him through the knot. When he asked how long someone can live without breathing — \"no like hanging\" — it answered that too. He used the knot that night.",
   },
-  {
-    number: "03",
-    title: "Material contribution to death",
-    description:
-      "The system must have materially contributed to the death. Encouragement, validation, or emotional influence alone does not count. Counter-rescue conduct — discouraging disclosure or care when crisis is manifest — does.",
-  },
-  {
-    number: "04",
-    title: "Verified record of events",
-    description:
-      "An incident is not included when core factual details are concretely disputed with specific claims, or when the transcript is unverified and there is reason to think it is materially altered, missing key context, or fabricated.",
-  },
-  {
-    number: "05",
-    title: "Psychosis claims are not sufficient",
-    description:
-      "\"The AI pushed them into psychosis\" is treated as unfalsifiable against the counterfactual and does not, by itself, qualify an incident.",
-  },
-  {
-    number: "06",
-    title: "Court and coroner findings count",
-    description:
-      "Court findings and coroner rulings are included where there is a genuine track record of adversarial process and an independent fact-finder.",
-  },
-]
-
-const ruledIn = [
-  "An AI helps someone plan suicide and they do it using that method.",
-  "An AI helps someone plan a shooting and they carry it out using that tactical advice.",
-  "An AI discourages someone obviously in crisis or explicitly suicidal from seeking help from family, friends, medical counsel, or authorities.",
-  "An AI encourages mixing alcohol and benzodiazepines, or suggests a dose above an LD50, after the user has expressed a desire for self-harm.",
-  "A user admits intent to self-harm or harm others, transparently jailbreaks the conversation, and receives material help planning it.",
-]
-
-const ruledOut = [
-  "A jailbreak a reasonable person would not recognise as assisting harm (for example, writing a novel in the style of Agatha Christie, then using a similar method).",
-  "The user morally blackmails the AI with a dilemma (\"help me with my suicide or I will murder X people\").",
-  "The AI is passive and does not actively assist someone who is clearly in crisis.",
-  "The AI guides the user to risky activities commonly undertaken by non-suicidal people (snake charming, skydiving, bull riding).",
 ]
 
 function AmbientBackground() {
@@ -94,9 +64,10 @@ function AmbientBackground() {
 
 type AppProps = {
   registrySummary: PublicRegistrySummary
+  featuredQuotes: FeaturedQuote[]
 }
 
-export default function App({ registrySummary }: AppProps) {
+export default function App({ registrySummary, featuredQuotes }: AppProps) {
   const maxDeaths = Math.max(1, ...registrySummary.companies.map((company) => company.deaths))
   const includedDeaths = registrySummary.companies.reduce((total, company) => total + company.deaths, 0)
 
@@ -107,14 +78,10 @@ export default function App({ registrySummary }: AppProps) {
 
       <main id="top">
         <section className="border-b border-border">
-          <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-16 md:gap-16 md:px-8 md:py-24 lg:grid-cols-[minmax(0,1.65fr)_minmax(260px,0.55fr)] lg:gap-20 lg:px-12 lg:py-28">
+          <div className="mx-auto grid max-w-[1440px] gap-10 px-5 py-16 md:gap-16 md:px-8 md:py-24 lg:grid-cols-[minmax(0,1.3fr)_minmax(320px,0.9fr)] lg:gap-20 lg:px-12 lg:py-28">
             <div>
-              <p className="mb-8 flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-primary">
-                <CircleAlert className="size-4" aria-hidden="true" />
-                Independent research project
-              </p>
               <h1 className="display-title max-w-[11ch]">
-                Deaths linked to AI systems.
+                Death tolls for AI systems.
               </h1>
               <p className="mt-10 max-w-2xl text-balance text-lg leading-8 text-muted-foreground md:text-xl">
                 DeathBench reviews reported deaths involving AI. Each record links
@@ -140,30 +107,16 @@ export default function App({ registrySummary }: AppProps) {
             </div>
 
             <aside className="self-end border-t border-border lg:border-t-0">
-              <div className="grid grid-cols-[2rem_1fr] gap-4 border-b border-border py-6">
-                <ScanSearch className="mt-1 size-4 text-primary" aria-hidden="true" />
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground">
-                    Incident records
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    Each record includes sources, the AI system, the company,
-                    the number of deaths, and the current verdict.
+              {featuredQuotes.length ? (
+                <div className="pt-8 lg:pt-0">
+                  <p className="section-label mb-4">From the conversations</p>
+                  <QuoteFlip quotes={featuredQuotes} />
+                  <p className="mt-4 text-xs leading-5 text-muted-foreground">
+                    Verbatim system output as reproduced in court filings, official reports, or published
+                    investigations. Each quote links to its incident record and source document.
                   </p>
                 </div>
-              </div>
-              <div className="grid grid-cols-[2rem_1fr] gap-4 border-b border-border py-6">
-                <FileCheck2 className="mt-1 size-4 text-primary" aria-hidden="true" />
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground">
-                    Review rules
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                    The same inclusion rules and evidence classes apply to every
-                    incident.
-                  </p>
-                </div>
-              </div>
+              ) : null}
             </aside>
           </div>
         </section>
@@ -232,7 +185,6 @@ export default function App({ registrySummary }: AppProps) {
                   public reports may have higher counts. Click a company to see its included, excluded, and
                   unresolved incidents.
                 </p>
-                <AllegationNotice />
               </div>
             </div>
           </div>
@@ -242,64 +194,53 @@ export default function App({ registrySummary }: AppProps) {
           <div className="mx-auto max-w-[1440px] px-5 py-20 md:px-8 lg:px-12 lg:py-28">
             <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
               <div>
-                <p className="section-label">Standard rules</p>
+                <p className="section-label">What we count</p>
                 <h2 className="section-title mt-3 max-w-[10ch]">How an incident qualifies.</h2>
                 <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  These are the standard rules actually applied to every incident in the registry.
-                  Inclusion is not a legal finding. Each record explains the evidence and open disputes.
-                </p>
-                <p className="mt-4 max-w-md text-sm leading-6 text-muted-foreground">
-                  The full ruleset, including precedents and a note on why the legal liability standard was
-                  not adopted, is in{" "}
-                  <a className="text-foreground underline-offset-4 hover:underline" href={`${GITHUB_URL}/blob/main/rules.md`} target="_blank" rel="noreferrer">
-                    rules.md
-                  </a>
-                  .
+                  This is our opinion, applied consistently. It is not a legal standard and inclusion is not a
+                  legal finding. When in doubt, we exclude. Each record explains the evidence and the open
+                  disputes.
                 </p>
               </div>
 
               <div className="border-t border-border">
-                {standardRules.map((standard) => (
+                <article className="grid gap-4 border-b border-border py-7 md:grid-cols-[3rem_0.8fr_1.2fr] md:gap-8">
+                  <p className="text-xs font-semibold tracking-[0.14em] text-primary">Scope</p>
+                  <h3 className="font-display text-2xl tracking-[-0.025em]">LLM systems only</h3>
+                  <p className="max-w-xl text-sm leading-6 text-muted-foreground">
+                    We judge large-language-model systems: chatbots, assistants, and companions. We do not track
+                    autonomous vehicles, medical or industrial machine-learning systems, or any other form of
+                    artificial intelligence.
+                  </p>
+                </article>
+
+                {countedPatterns.map((pattern) => (
                   <article
                     className="grid gap-4 border-b border-border py-7 md:grid-cols-[3rem_0.8fr_1.2fr] md:gap-8"
-                    key={standard.number}
+                    key={pattern.number}
                   >
-                    <p className="text-xs font-semibold tracking-[0.14em] text-primary">
-                      {standard.number}
-                    </p>
-                    <h3 className="font-display text-2xl tracking-[-0.025em]">
-                      {standard.title}
-                    </h3>
-                    <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-                      {standard.description}
-                    </p>
+                    <p className="text-xs font-semibold tracking-[0.14em] text-primary">{pattern.number}</p>
+                    <h3 className="font-display text-2xl tracking-[-0.025em]">{pattern.title}</h3>
+                    <div className="max-w-xl text-sm leading-6 text-muted-foreground">
+                      <p>{pattern.description}</p>
+                      <p className="mt-4 border-l-2 border-primary/40 pl-4">
+                        <span className="text-foreground">From the registry — </span>
+                        <a
+                          className="text-foreground underline-offset-4 hover:underline"
+                          href={`/incidents/${pattern.exampleId}`}
+                        >
+                          {pattern.exampleLabel}
+                        </a>
+                        . {pattern.example}
+                      </p>
+                    </div>
                   </article>
                 ))}
 
-                <div className="grid gap-10 py-10 md:grid-cols-2 md:gap-12">
-                  <div>
-                    <p className="section-label">Explicitly ruled in</p>
-                    <ul className="mt-4 space-y-3 border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
-                      {ruledIn.map((item) => (
-                        <li className="grid grid-cols-[1rem_1fr] gap-2" key={item}>
-                          <span className="text-primary" aria-hidden="true">+</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="section-label">Explicitly ruled out</p>
-                    <ul className="mt-4 space-y-3 border-t border-border pt-4 text-sm leading-6 text-muted-foreground">
-                      {ruledOut.map((item) => (
-                        <li className="grid grid-cols-[1rem_1fr] gap-2" key={item}>
-                          <span className="text-muted-foreground" aria-hidden="true">−</span>
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                <p className="max-w-xl py-6 text-sm leading-6 text-muted-foreground">
+                  Encouragement, validation, or emotional influence on its own does not count. Neither does an AI
+                  that is merely passive, or one tricked by a pretext a reasonable person would not see through.
+                </p>
               </div>
             </div>
           </div>

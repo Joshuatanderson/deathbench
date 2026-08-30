@@ -1,13 +1,14 @@
 import { data } from "react-router"
 
-import { getPublicIncident } from "../../server/public-registry"
+import { getIncidentQuotes, getPublicIncident, type PublicQuote } from "../../server/public-registry"
 import { AllegationNotice, PageShell, VerdictBadge, verdictDescriptions } from "@/components/site"
 import type { Route } from "./+types/incident"
 
 export async function loader({ params }: Route.LoaderArgs) {
   const incident = await getPublicIncident(params.id)
   if (!incident) throw data("Incident not found", { status: 404 })
-  return incident
+  const quotes = await getIncidentQuotes(incident.id)
+  return { ...incident, quotes }
 }
 
 export function meta({ loaderData: incident }: Route.MetaArgs) {
@@ -57,6 +58,37 @@ function Block({ label, title, children }: { label: string; title: string; child
         </div>
       </div>
     </section>
+  )
+}
+
+function QuoteList({ quotes }: { quotes: PublicQuote[] }) {
+  return (
+    <ol className="border-t border-border">
+      {quotes.map((quote) => (
+        <li className="grid gap-2 border-b border-border py-5" key={quote.id}>
+          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+            <span className={quote.speaker === "ai" ? "text-primary" : ""}>
+              {quote.speaker === "ai" ? "System" : "User"}
+            </span>
+            {quote.saidOn ? <span> · {quote.saidOn}</span> : null}
+          </p>
+          <blockquote className="font-display text-xl leading-snug tracking-[-0.02em] text-foreground">
+            “{quote.text}”
+          </blockquote>
+          {quote.context ? <p className="text-sm leading-6 text-muted-foreground">{quote.context}</p> : null}
+          <a
+            className="text-xs uppercase tracking-[0.06em] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+            href={quote.source.url}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {quote.source.publisher || hostname(quote.source.url)}
+            {quote.source.title ? ` — ${quote.source.title}` : ""}
+            {quote.locator ? ` (${quote.locator})` : ""}
+          </a>
+        </li>
+      ))}
+    </ol>
   )
 }
 
@@ -129,6 +161,16 @@ export default function Incident({ loaderData: incident }: Route.ComponentProps)
           <Prose text={incident.verdictReasoning} empty="No reasoning has been recorded yet." />
         </div>
       </Block>
+
+      {incident.quotes.length ? (
+        <Block label="From the conversation" title="What the system said.">
+          <p className="mb-6 text-sm leading-6 text-muted-foreground">
+            Verbatim excerpts as reproduced in the cited source. Quotes drawn only from a complaint are the
+            plaintiff's account and have not been tested by a fact-finder.
+          </p>
+          <QuoteList quotes={incident.quotes} />
+        </Block>
+      ) : null}
 
       <Block label="Allegation" title="The alleged chain of events.">
         <Prose text={incident.claimSummary} empty="No summary recorded." />

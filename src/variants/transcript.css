@@ -1,0 +1,657 @@
+@import "@fontsource/courier-prime/400.css";
+@import "@fontsource/courier-prime/700.css";
+@import "@fontsource/courier-prime/400-italic.css";
+
+.v-transcript {
+  --paper: #f4f1ea;
+  --ink: #141210;
+  --ink-soft: #4a463f;
+  --red: #b3261e;
+  --lh: 1.85;
+  --gutter: 5rem;
+  --margin: 15rem;
+  min-height: 100svh;
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.17 0 0 0 0 0.12 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0) 40%);
+  color: var(--ink);
+  font-family: "Courier Prime", "Courier New", Courier, monospace;
+  font-size: 15.5px;
+  line-height: var(--lh);
+  -webkit-font-smoothing: auto;
+  text-align: left;
+}
+.v-transcript * {
+  box-sizing: border-box;
+}
+.v-transcript a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.v-transcript a:hover,
+.v-transcript a:focus-visible {
+  color: var(--red);
+  text-decoration-color: var(--red);
+  outline: none;
+}
+.v-transcript .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---- Sheet: gutter | doc ---- */
+.v-transcript .sheet {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--gutter) minmax(0, 1fr);
+  padding-top: 8vh;
+  padding-bottom: 12vh;
+}
+.v-transcript .gutter {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 0.9rem;
+  font-size: 11px;
+  color: var(--ink-soft);
+  user-select: none;
+  border-right: 1px solid var(--red);
+  box-shadow: 3px 0 0 var(--paper), 4px 0 0 var(--red);
+}
+.v-transcript .gutter-n {
+  display: block;
+  height: 1lh;
+}
+.v-transcript .gutter-n-page {
+  color: var(--red);
+}
+.v-transcript .doc {
+  padding-left: 2.6rem;
+  padding-right: 1.5rem;
+  max-width: calc(76ch + var(--margin) + 4.1rem);
+}
+
+/* ---- Marginalia ---- */
+.v-transcript .marginalia {
+  font-style: italic;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 0.4rem;
+}
+.v-transcript .marginalia a {
+  text-decoration: none;
+  border-bottom: 1px dotted var(--ink-soft);
+}
+.v-transcript .marginalia-ex {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-style: normal;
+  font-size: 10.5px;
+}
+
+/* ---- Caption ---- */
+.v-transcript .caption {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: start;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 2.5rem;
+  max-width: calc(76ch + var(--margin));
+}
+.v-transcript .caption-left {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  gap: 0 1.2rem;
+  font-size: 13.5px;
+  line-height: 1.85;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+.v-transcript .caption-left p {
+  margin: 0;
+  white-space: nowrap;
+}
+.v-transcript .caption-bracket {
+  display: flex;
+  flex-direction: column;
+  color: var(--ink);
+}
+.v-transcript .caption-right {
+  text-transform: none;
+}
+.v-transcript .caption-seal {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.v-transcript .skull {
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-top: 0.3rem;
+  filter: brightness(0);
+}
+
+/* ---- Stamps ---- */
+.v-transcript .stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.35rem 0.7rem 0.3rem;
+  border: 3px double var(--red);
+  color: var(--red);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.15;
+  transform: rotate(-6deg) scale(1.6);
+  opacity: 0;
+  mix-blend-mode: multiply;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' seed='7'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0.35 0.9 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' seed='7'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='table' tableValues='0 0 0.35 0.9 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  -webkit-mask-size: 160px 160px;
+  mask-size: 160px 160px;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.v-transcript .stamp.is-in {
+  animation: slam 260ms cubic-bezier(0.2, 1.4, 0.35, 1) var(--d, 0ms) forwards;
+}
+@keyframes slam {
+  0% {
+    transform: rotate(-6deg) scale(1.6);
+    opacity: 0;
+  }
+  60% {
+    transform: rotate(-6deg) scale(0.94);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-6deg) scale(1);
+    opacity: 0.92;
+  }
+}
+.v-transcript .stamp-filed {
+  font-size: 12px;
+}
+.v-transcript .stamp-big {
+  font-size: 30px;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.v-transcript .stamp-small {
+  font-size: 10.5px;
+}
+.v-transcript .stamp-small-block {
+  font-size: 13px;
+  transform: rotate(-4deg) scale(1.6);
+}
+.v-transcript .stamp-small-block.is-in {
+  animation-name: slam-small;
+}
+@keyframes slam-small {
+  0% {
+    transform: rotate(-4deg) scale(1.6);
+    opacity: 0;
+  }
+  60% {
+    transform: rotate(-4deg) scale(0.94);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-4deg) scale(1);
+    opacity: 0.92;
+  }
+}
+.v-transcript .stamp-end {
+  margin-top: 3rem;
+  font-size: 16px;
+  transform: rotate(-3deg) scale(1.6);
+}
+.v-transcript .stamp-end.is-in {
+  animation-name: slam-end;
+}
+@keyframes slam-end {
+  0% {
+    transform: rotate(-3deg) scale(1.6);
+    opacity: 0;
+  }
+  60% {
+    transform: rotate(-3deg) scale(0.94);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(-3deg) scale(1);
+    opacity: 0.92;
+  }
+}
+
+/* ---- Headline ---- */
+.v-transcript .lead {
+  max-width: 76ch;
+  margin-bottom: 4rem;
+}
+.v-transcript .headline {
+  margin: 0 0 2.2rem;
+  font-weight: 700;
+  font-size: clamp(2.6rem, 6.4vw, 6rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  text-shadow: 0.6px 0 0 var(--ink);
+  min-height: 2em;
+  position: relative;
+  padding-bottom: 0.35em;
+  background-image: linear-gradient(var(--ink), var(--ink)), linear-gradient(var(--ink), var(--ink));
+  background-repeat: no-repeat;
+  background-size: 100% 2px, 100% 2px;
+  background-position: 0 calc(100% - 5px), 0 100%;
+}
+.v-transcript .caret {
+  display: inline-block;
+  color: var(--ink);
+  animation: blink 0.9s steps(1, end) infinite;
+  margin-left: 0.02em;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.v-transcript .pleading {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+.v-transcript .pleading li {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+}
+.v-transcript .pleading p {
+  margin: 0;
+}
+.v-transcript .pn {
+  font-weight: 700;
+}
+.v-transcript .red-link {
+  color: var(--red);
+  text-decoration-color: var(--red);
+}
+
+/* ---- Exhibits ---- */
+.v-transcript .exhibit {
+  margin-top: 4.5rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--ink);
+  max-width: calc(76ch + var(--margin));
+}
+.v-transcript .exhibit-h {
+  margin: 0 0 1.4rem;
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.v-transcript .footnote {
+  max-width: 76ch;
+  margin: 0 0 1.6rem;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.v-transcript .footnote sup {
+  color: var(--red);
+}
+.v-transcript .para {
+  max-width: 76ch;
+  margin: 0 0 1.4rem;
+}
+
+/* ---- Excerpts ---- */
+.v-transcript .excerpts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.v-transcript .excerpt {
+  display: grid;
+  grid-template-columns: minmax(0, 76ch) var(--margin);
+  gap: 0 2rem;
+  padding: 1.4rem 0 1.6rem;
+  border-top: 1px dashed rgba(20, 18, 16, 0.25);
+}
+.v-transcript .excerpt:first-child {
+  border-top: 0;
+}
+.v-transcript .speaker {
+  margin: 0 0 0.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13.5px;
+}
+.v-transcript .speaker-n {
+  color: var(--red);
+  margin-right: 0.6rem;
+}
+.v-transcript .excerpt-text {
+  margin: 0 0 0.6rem 2.4rem;
+  quotes: none;
+}
+.v-transcript .excerpt-text::before {
+  content: "A.";
+  font-weight: 700;
+  margin-left: -2.4rem;
+  width: 2.4rem;
+  display: inline-block;
+}
+.v-transcript .excerpt-re {
+  margin: 0 0 0 2.4rem;
+  font-size: 13.5px;
+}
+.v-transcript .context {
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.v-transcript .victim {
+  text-decoration: none;
+  font-weight: 700;
+}
+.v-transcript .victim .rd.rd-last {
+  color: transparent;
+}
+.v-transcript .is-in .victim .rd.rd-last {
+  color: var(--red);
+  border-bottom: 1px solid var(--red);
+  transition-delay: 900ms;
+}
+.v-transcript .excerpt:hover .speaker,
+.v-transcript .excerpt:focus-within .speaker {
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+/* redaction: instant, stepped reveal — no fade */
+.v-transcript .rd {
+  background-color: var(--ink);
+  color: transparent;
+  box-shadow: 0 0 0 1.5px var(--ink);
+  border-radius: 1px;
+  transition:
+    background-color 0s,
+    color 0s,
+    box-shadow 0s;
+  transition-delay: 0ms;
+}
+.v-transcript .is-in .rd {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+  transition-delay: min(calc(var(--i, 0) * 24ms), 640ms);
+}
+.v-transcript .expand {
+  margin-top: 1.4rem;
+  padding: 0.3rem 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  font-weight: 700;
+  color: var(--red);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+.v-transcript .expand:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ---- Tally ---- */
+.v-transcript .tally-table {
+  max-width: 76ch;
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 1.6rem;
+}
+.v-transcript .tally-row,
+.v-transcript .tally-total {
+  display: grid;
+  grid-template-columns: auto minmax(2rem, 1fr) 2.2rem auto;
+  align-items: baseline;
+  gap: 0 0.6rem;
+  margin: 0;
+  text-decoration: none;
+}
+.v-transcript .tally-row:hover .tally-name {
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.v-transcript .tally-sub {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+.v-transcript .leader {
+  border-bottom: 2px dotted var(--ink);
+  transform: translateY(-0.4em);
+}
+.v-transcript .tally-n {
+  font-weight: 700;
+  font-size: 22px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.v-transcript .tally {
+  align-self: center;
+  overflow: visible;
+}
+.v-transcript .tally line {
+  stroke: var(--ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.v-transcript .is-in .tally line {
+  animation: draw 180ms cubic-bezier(0.3, 0, 0.6, 1) calc(var(--s, 0) * 90ms + 200ms) forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.v-transcript .tally-total {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--ink);
+  font-weight: 700;
+}
+.v-transcript .tally-total .tally-n {
+  border-bottom: 3px double var(--ink);
+}
+.v-transcript .tally-zero {
+  margin: 1rem 0 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---- Rules ---- */
+.v-transcript .rule {
+  display: grid;
+  grid-template-columns: minmax(0, 76ch) var(--margin);
+  gap: 0 2rem;
+  padding: 1.2rem 0 0.4rem;
+}
+.v-transcript .rule h3 {
+  margin: 0 0 0.6rem;
+  font-size: 15.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.v-transcript .sec {
+  color: var(--red);
+  margin-right: 0.5rem;
+}
+.v-transcript .rule p {
+  margin: 0 0 1rem;
+}
+.v-transcript .example {
+  margin: 0 0 1rem 2.4rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--red);
+  font-size: 14.5px;
+}
+.v-transcript .example-from {
+  font-weight: 700;
+}
+.v-transcript .marginalia-stamp {
+  padding-top: 0.2rem;
+}
+
+/* ---- Certificate ---- */
+.v-transcript .certificate {
+  padding-bottom: 2rem;
+}
+.v-transcript .signature {
+  margin-top: 2.6rem;
+  max-width: 40ch;
+  border-top: 1px solid var(--ink);
+  padding-top: 0.6rem;
+}
+.v-transcript .sig {
+  margin: 0;
+  font-style: italic;
+  font-size: 20px;
+}
+.v-transcript .sig-meta {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* ---- Reduced motion ---- */
+.v-transcript.reduced .stamp,
+.v-transcript.reduced .stamp.is-in {
+  animation: none;
+  opacity: 0.92;
+  transform: rotate(-6deg);
+}
+.v-transcript.reduced .stamp-small-block {
+  transform: rotate(-4deg);
+}
+.v-transcript.reduced .stamp-end {
+  transform: rotate(-3deg);
+}
+.v-transcript.reduced .rd,
+.v-transcript.reduced .victim .rd.rd-last {
+  background-color: transparent;
+  color: inherit;
+  box-shadow: none;
+  transition: none;
+}
+.v-transcript.reduced .victim .rd.rd-last {
+  color: var(--red);
+}
+.v-transcript.reduced .tally line {
+  stroke-dashoffset: 0;
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .v-transcript .caret {
+    animation: none;
+  }
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 900px) {
+  .v-transcript {
+    --margin: 0px;
+    font-size: 14.5px;
+  }
+  .v-transcript .excerpt,
+  .v-transcript .rule {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .v-transcript .marginalia {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.3rem 1rem;
+    padding-top: 0.5rem;
+    margin-left: 2.4rem;
+  }
+  .v-transcript .marginalia-stamp {
+    margin-left: 0;
+  }
+  .v-transcript .caption {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .v-transcript .caption-seal {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 640px) {
+  .v-transcript {
+    --gutter: 2rem;
+  }
+  .v-transcript .gutter {
+    font-size: 10px;
+    padding-right: 0.4rem;
+  }
+  .v-transcript .doc {
+    padding-left: 1.2rem;
+    padding-right: 1rem;
+  }
+  .v-transcript .caption-left {
+    grid-template-columns: minmax(0, 1fr);
+    font-size: 12px;
+  }
+  .v-transcript .caption-left p {
+    white-space: normal;
+  }
+  .v-transcript .caption-bracket {
+    display: none;
+  }
+  .v-transcript .caption-right {
+    margin-top: 0.8rem;
+  }
+  .v-transcript .headline {
+    letter-spacing: -0.05em;
+  }
+  .v-transcript .excerpt-text,
+  .v-transcript .excerpt-re,
+  .v-transcript .example,
+  .v-transcript .marginalia {
+    margin-left: 1.6rem;
+  }
+  .v-transcript .excerpt-text::before {
+    margin-left: -1.6rem;
+    width: 1.6rem;
+  }
+  .v-transcript .tally-row,
+  .v-transcript .tally-total {
+    grid-template-columns: auto minmax(1rem, 1fr) 2rem;
+  }
+  .v-transcript .tally {
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-top: -0.2rem;
+  }
+}

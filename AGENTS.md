@@ -9,6 +9,8 @@
 
 ## Production verification
 
+- For now, skip deploy monitoring and production checks after a push unless the user asks. Push and stop.
+
 - Browser access is available. Use browser automation against `https://deathbench.com` to verify the real production experience, including relevant console and network errors.
 - Also inspect the corresponding Vercel deployment, build output, and logs when deploying or debugging production.
 - Do not treat a successful Vercel status as sufficient verification. Monitor the deployment through completion, then confirm the affected route on the custom production domain.

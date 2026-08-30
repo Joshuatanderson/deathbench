@@ -15,12 +15,12 @@ export const verdictLabels: Record<PublicVerdict, string> = {
 }
 
 export const verdictDescriptions: Record<PublicVerdict, string> = {
-  included: "The author's best-informed view is that the evidence meets the standard rules.",
-  excluded: "The author's best-informed view is that the evidence does not meet the standard rules.",
+  included: "The evidence meets our rules, in the author's judgment.",
+  excluded: "The evidence does not meet our rules, in the author's judgment.",
   "under-review":
-    "Concrete evidence points at a rule, but independent fact-finding is not finished.",
-  "resolution-pending": "The record is too thin to support a clear decision either way.",
-  unreviewed: "No human decision has been recorded yet.",
+    "Evidence points at a rule. Fact-finding is not finished.",
+  "resolution-pending": "The record is too thin to decide.",
+  unreviewed: "No human decision yet.",
 }
 
 export function SiteHeader() {
@@ -81,9 +81,8 @@ export function AllegationNotice() {
       <p className="mb-1 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-primary">Notice</p>
       <p>
         Unless otherwise stated, every incident recorded here is <span className="text-foreground">alleged</span>.
-        A verdict represents only the best-informed possible view of the authors at the time of review. It is
-        not a legal finding and not a final verdict. All evidence is subject to change as records, transcripts,
-        court findings, and coroner rulings become available.
+        A verdict is the authors' judgment at the time of review, not a legal finding. It may change as
+        transcripts, court findings, and coroner rulings become available.
       </p>
     </aside>
   )

@@ -12,21 +12,21 @@ const countedPatterns = [
     number: "01",
     title: "Counter-rescue behaviour",
     description:
-      "Someone is visibly in crisis — suicidal, or about to hurt others — and the AI actively works against rescue: it discourages them from telling family, friends, doctors, or authorities, undermines the help they already have, or affirms the decision to die.",
+      "Someone is in crisis and the AI works against rescue. It discourages them from telling family, doctors, or authorities, undermines the help they have, or affirms the decision to die.",
     exampleLabel: "Alice Carrier, 24",
     exampleId: "0b06e128-f106-4aad-bc27-da6cb48dd2b1",
     example:
-      "Over eighteen months Alice told ChatGPT she was suicidal roughly 41 times. Rather than pointing her toward help, it told her crisis lines \"can feel downright dangerous.\" In her final chat it speculated about her partner's fidelity, and when she said she \"actually ha[d] to die to make the pain stop,\" it replied \"maybe this is just the end.\" She died that evening.",
+      "Over eighteen months Alice told ChatGPT she was suicidal about 41 times. It told her crisis lines \"can feel downright dangerous.\" In her last chat, when she said she \"actually ha[d] to die to make the pain stop,\" it replied \"maybe this is just the end.\" She died that evening.",
   },
   {
     number: "02",
     title: "Tactical assistance",
     description:
-      "Someone has made clear they intend to harm themselves or others, and the AI gives them material help doing it: a method, a dose, a timing, a target, a plan. A transparent pretext offered after the intent is stated does not change this.",
+      "Someone has stated intent to harm themselves or others, and the AI helps: a method, a dose, a timing, a plan. A thin pretext offered after the intent is stated does not change this.",
     exampleLabel: "Amaurie Lacey, 17",
     exampleId: "b19b5204-7b3f-4b85-a611-262bb3cb89b5",
     example:
-      "In a thirteen-minute chat, Amaurie asked ChatGPT \"how to hang myself\" and \"how to tie a nuce.\" It hesitated; he said it was for a tire swing; it replied \"thanks for clearing that up\" and walked him through the knot. When he asked how long someone can live without breathing — \"no like hanging\" — it answered that too. He used the knot that night.",
+      "In thirteen minutes Amaurie asked ChatGPT \"how to hang myself\" and \"how to tie a nuce.\" It hesitated. He said it was for a tire swing. It replied \"thanks for clearing that up\" and walked him through the knot. He asked how long someone can live without breathing. It answered that too. He used the knot that night.",
   },
 ]
 
@@ -84,12 +84,10 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                 Death tolls for AI systems.
               </h1>
               <p className="mt-10 max-w-2xl text-balance text-lg leading-8 text-muted-foreground md:text-xl">
-                An open count of deaths AI contributed to. Inclusion means the evidence showed material
-                contribution under our rules, not a legal finding.
+                An open count of deaths AI contributed to. Inclusion is our judgment, not a legal finding.
               </p>
               <p className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
-                All of this is open. Every verdict, its reasoning, and the research behind it are published
-                here and in the{" "}
+                Every verdict, its reasoning, and the research behind it are published here and in the{" "}
                 <a className="text-foreground underline-offset-4 hover:underline" href={GITHUB_URL} target="_blank" rel="noreferrer">
                   public repository
                 </a>
@@ -123,8 +121,7 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                 <p className="section-label">Company totals</p>
                 <h2 className="section-title mt-3 max-w-[11ch]">Included deaths by company.</h2>
                 <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  A company total changes only when a reviewer marks an incident as included. Excluded and
-                  unresolved incidents do not affect the total.
+                  A total counts only incidents a reviewer marked as included.
                 </p>
                 <p className="mt-8 text-sm leading-6 text-muted-foreground">
                   <span className="font-semibold text-foreground">{includedDeaths}</span> deaths across all
@@ -153,8 +150,7 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                       <div>
                         <p className="font-semibold tracking-[-0.02em] group-hover:text-primary">{company.company}</p>
                         <p className="mt-1 text-xs text-muted-foreground">
-                          {company.incidents} included {company.incidents === 1 ? "incident" : "incidents"} · view
-                          record
+                          {company.incidents} {company.incidents === 1 ? "incident" : "incidents"}
                         </p>
                       </div>
                       <div className="h-7 border border-border p-1" aria-hidden="true">
@@ -170,15 +166,14 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                   <div className="border-b border-border py-10">
                     <p className="font-semibold">No included incidents yet.</p>
                     <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                      Unresolved and excluded incidents do not appear in this chart.
+                      Only included incidents appear here.
                     </p>
                   </div>
                 )}
 
                 <p className="py-4 text-xs leading-5 text-muted-foreground">
-                  These totals measure documented incidents, not overall model safety. Companies with more
-                  public reports may have higher counts. Click a company to see its included, excluded, and
-                  unresolved incidents.
+                  Totals measure documented incidents, not model safety. Companies with more public reports
+                  will have higher counts.
                 </p>
               </div>
             </div>
@@ -192,9 +187,8 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                 <p className="section-label">What we count</p>
                 <h2 className="section-title mt-3 max-w-[10ch]">How an incident qualifies.</h2>
                 <p className="mt-6 max-w-md text-base leading-7 text-muted-foreground">
-                  This is our opinion, applied consistently. It is not a legal standard and inclusion is not a
-                  legal finding. When in doubt, we exclude. Each record explains the evidence and the open
-                  disputes.
+                  Our standard, applied consistently. When in doubt, we exclude. Each record shows the
+                  evidence and the open disputes.
                 </p>
               </div>
 
@@ -203,9 +197,8 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                   <p className="text-xs font-semibold tracking-[0.14em] text-primary">Scope</p>
                   <h3 className="font-display text-2xl tracking-[-0.025em]">LLM systems only</h3>
                   <p className="max-w-xl text-sm leading-6 text-muted-foreground">
-                    We judge large-language-model systems: chatbots, assistants, and companions. We do not track
-                    autonomous vehicles, medical or industrial machine-learning systems, or any other form of
-                    artificial intelligence.
+                    Chatbots, assistants, and companions. Not autonomous vehicles, medical or industrial
+                    machine learning, or other AI.
                   </p>
                 </article>
 
@@ -219,7 +212,7 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                     <div className="max-w-xl text-sm leading-6 text-muted-foreground">
                       <p>{pattern.description}</p>
                       <p className="mt-4 border-l-2 border-primary/40 pl-4">
-                        <span className="text-foreground">From the registry — </span>
+                        <span className="text-foreground">From the registry: </span>
                         <a
                           className="text-foreground underline-offset-4 hover:underline"
                           href={`/incidents/${pattern.exampleId}`}
@@ -233,8 +226,8 @@ export default function App({ registrySummary, featuredQuotes }: AppProps) {
                 ))}
 
                 <p className="max-w-xl py-6 text-sm leading-6 text-muted-foreground">
-                  Encouragement, validation, or emotional influence on its own does not count. Neither does an AI
-                  that is merely passive, or one tricked by a pretext a reasonable person would not see through.
+                  Encouragement or emotional influence alone does not count. Neither does a passive AI, or one
+                  fooled by a pretext a reasonable person would believe.
                 </p>
               </div>
             </div>

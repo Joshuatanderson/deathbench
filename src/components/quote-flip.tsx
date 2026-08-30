@@ -69,8 +69,8 @@ export function QuoteFlip({ quotes }: { quotes: FeaturedQuote[] }) {
             target="_blank"
             rel="noreferrer"
           >
-            Source: {quote.source.publisher || hostname(quote.source.url)}
-            {quote.locator ? `, ${quote.locator}` : ""}
+            Source: {hostname(quote.source.url)}
+            {quote.locator ? ` — ${quote.locator.split(";")[0]}` : ""}
           </a>
         </figcaption>
       </div>

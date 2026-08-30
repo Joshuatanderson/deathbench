@@ -287,3 +287,43 @@ export async function getFeaturedQuotes(): Promise<FeaturedQuote[]> {
     return []
   }
 }
+
+/** Lightweight index of every incident in the registry, for timeline / visual overviews. */
+export type PublicIncidentIndexEntry = {
+  id: string
+  title: string
+  verdict: PublicVerdict
+  victimCount: number
+  deathDate: string
+  company: string
+  companySlug: string
+  model: string
+}
+
+export async function getPublicIncidentIndex(): Promise<PublicIncidentIndexEntry[]> {
+  const sql = database()
+  if (!sql) return []
+  try {
+    const rows = await sql.query(
+      `SELECT incidents.id, incidents.title, incidents.human_verdict, incidents.victim_count, incidents.death_date,
+         labs.name AS company, labs.slug AS company_slug, models.name AS model
+       FROM incidents
+       JOIN labs ON labs.id = incidents.lab_id
+       JOIN models ON models.id = incidents.model_id
+       ORDER BY incidents.death_date ASC`
+    )
+    return (rows as Record<string, unknown>[]).map((row) => ({
+      id: String(row.id),
+      title: String(row.title),
+      verdict: String(row.human_verdict) as PublicVerdict,
+      victimCount: Number(row.victim_count),
+      deathDate: String(row.death_date ?? ""),
+      company: String(row.company),
+      companySlug: String(row.company_slug),
+      model: String(row.model),
+    }))
+  } catch (error) {
+    console.error("Unable to load incident index", error)
+    return []
+  }
+}

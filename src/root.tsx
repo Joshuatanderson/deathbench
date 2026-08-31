@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { Analytics } from "@vercel/analytics/react"
 import {
   isRouteErrorResponse,
   Links,
@@ -33,6 +34,7 @@ export function Layout({ children }: { children: ReactNode }) {
         {children}
         <ScrollRestoration />
         <Scripts />
+        <Analytics />
       </body>
     </html>
   )

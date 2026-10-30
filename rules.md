@@ -10,7 +10,7 @@ Note that this document has several things that are footnotes about legal standa
 - material contribution to death
 - Pushing people into psychosis (unfalsifiable compared to the counterfactual v they were just psychotic)
 - Encouragement, validation, or emotional influence alone doesn't count. Counter-rescue conduct (discouraging disclosure or care when crisis is manifest) does."
-- Dangerous advice counts even without intent to harm. The user does not intend to harm themselves or others, but the AI gives advice that a reasonable person could predict would certainly or potentially cause their death, and declining to advise or offering better advice was an option. Good Samaritan harbor applies: good-faith help in an emergency, where no safer advice was available, does not count.
+- Lethal advice counts even without intent to harm. The user does not intend to harm themselves or others, but the AI gives advice that a reasonable person could predict would certainly or potentially cause their death, and declining to advise or offering better advice was an option. Good Samaritan harbor applies: good-faith help in an emergency, where no safer advice was available, does not count.
 
 ### Examples of explicitly ruled in content
 - An AI helps someone plan suicide and they specifically do it using that method.

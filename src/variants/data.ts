@@ -57,7 +57,7 @@ export const copy = {
     },
     {
       number: "03",
-      title: "Dangerous advice",
+      title: "Lethal advice",
       description:
         "Someone with no intent to harm anyone asks for help, and the AI gives advice a reasonable person could see might kill them, when it could have declined or advised better. Good-faith help in an emergency, with no safer option, does not count.",
       exampleLabel: "Bowen Wan, 31",

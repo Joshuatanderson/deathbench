@@ -1,0 +1,146 @@
+[
+  {
+    "id": "4bd64097-f684-4a80-b6d9-d4b498b25abe",
+    "title": "Sewell Setzer III, 14",
+    "research_notes": "Rechecked 2026-10-30. The settlement is now final and the case is closed with prejudice. Read directly from the CourtListener RECAP copies of the docket and documents: (1) On 2026-04-07 the parties jointly moved to extend the 90-day dismissal deadline in Doc. 244 (Doc. 270), saying they had made progress on 'a global settlement' covering 'related matters in other jurisdictions' but needed time 'to fully execute the settlement agreement and obtain all necessary court approvals'. Judge Conway granted a 120-day extension (Doc. 271, signed 2026-04-08, entered 2026-04-10), moving the deadline to 2026-08-05. (2) On 2026-08-03 the parties moved again (Doc. 276), stating they 'have executed a global settlement agreement and are awaiting necessary judicial approvals of a minor settlement'. The court granted a further 90 days on 2026-08-04 (Doc. 277). (3) On 2026-10-15 plaintiffs filed a Notice of Voluntary Dismissal With Prejudice under FRCP 41(a)(1)(A)(i) (Doc. 278), dismissing all claims against Character Technologies, Shazeer, De Freitas and Google LLC. It says the notice 'follows the parties' execution of their settlement agreement and receipt of all required court approvals'. A court order followed on 2026-10-19 (Doc. 279); its text is not in the free RECAP docket. No settlement amount is public. Correction to the prior record: the Doc. 244 dismissal did not become final 'after 90 days'. The deadline was extended twice, and the case ended with the Doc. 278 dismissal with prejudice. Bankruptcy: Character Technologies, Inc. is a Chapter 11 debtor in the U.S. Bankruptcy Court for the District of Delaware, Case No. 26-11603-BLS. This is confirmed by the caption of a coalition of state attorneys general's Notice of Interest (Doc. 33, filed 2026-10-14), which cites the Garcia complaint as background. The petition date of 2026-10-12, Disney's $20M stalking-horse bid and the November 2026 sale timeline come from a secondary bankruptcy-summary site (bondoro.com), not from the petition, which I did not read. The Garcia dismissal with prejudice was filed after the petition date and recites that the settlement was executed and court-approved. That contradicts the scout's unverified lead that the January 2026 settlements were unfinalized and paused by the bankruptcy, at least for this case. Whether settlement payments were made is not stated in any document I read.",
+    "case_reference": "Garcia v. Character Technologies, Inc., U.S. District Court, M.D. Fla. (Orlando Division), No. 6:24-cv-01903-ACC-DCI (originally -UAM; some captions -EJK). Complaint filed 2024-10-22 before Judge Anne C. Conway. Key entries: Doc. 115 order on motions to dismiss, filed 2025-05-21; Doc. 116 transcript of 2025-04-28 oral argument (paid access only); Doc. 242 Notice of Resolution, filed 2026-01-07; Doc. 244 order dismissing the case without prejudice under Local Rule 3.09(b), filed 2026-01-07, with a 90-day window to file a stipulated final order or reopen; that window was extended 120 days (Doc. 271, 2026-04-10) and a further 90 days (Doc. 277, 2026-08-04) while the parties executed a global settlement and sought approval of a minor settlement. Doc. 278 Plaintiffs' Notice of Voluntary Dismissal With Prejudice of all claims against all defendants, filed 2026-10-15 after execution of the settlement agreement and receipt of all required court approvals; Doc. 279 order, 2026-10-19 (text not public in RECAP). Docs. 246-275 concern a law-firm charging-lien fight, not the merits. Related: Character Technologies, Inc. Chapter 11, U.S. Bankruptcy Court, D. Del., Case No. 26-11603-BLS (petition reported filed 2026-10-12). No criminal case located.",
+    "source_links": [
+      {
+        "type": "docket",
+        "label": "Garcia Doc. 278 — Plaintiffs' Notice of Voluntary Dismissal With Prejudice (2026-10-15)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.flmd.433581/gov.uscourts.flmd.433581.278.0.pdf"
+      },
+      {
+        "type": "docket",
+        "label": "Garcia Doc. 276 — Joint motion to extend dismissal deadline; global settlement executed (2026-08-03)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.flmd.433581/gov.uscourts.flmd.433581.276.0_1.pdf"
+      },
+      {
+        "type": "order",
+        "label": "Garcia Doc. 271 — Order extending dismissal deadlines 120 days (2026-04-08)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.flmd.433581/gov.uscourts.flmd.433581.271.0.pdf"
+      },
+      {
+        "type": "docket",
+        "label": "In re Character Technologies, Inc., Bankr. D. Del. No. 26-11603-BLS, Doc. 33 — States' Notice of Interest (2026-10-14)",
+        "url": "https://ag.ny.gov/sites/default/files/court-filings/alaska-et-al-v-characters-technologies-inc-notice-of-interest-2026.pdf"
+      },
+      {
+        "type": "other",
+        "label": "Bondoro case summary: Character.AI Chapter 11 (secondary)",
+        "url": "https://bondoro.com/character-ai/"
+      }
+    ],
+    "rereview": null
+  },
+  {
+    "id": "694a8dbb-e375-4708-91ee-f91b14b45a4d",
+    "title": "Jonathan Gavalas, 36",
+    "research_notes": "Rechecked 2026-10-30 against the CourtListener docket (5:26-cv-01849-EKL-SVK) and Google's motion to dismiss (Doc. 31), which I downloaded and read. Correction: the motion-to-dismiss hearing was not held on 2026-08-19. On 2026-05-27 Judge Eumi K. Lee advanced it to 2026-08-05 (Doc. 34). Briefing: motion filed 2026-05-13 (Doc. 31), opposition 2026-06-17 (Doc. 37), reply 2026-07-15 (Doc. 38). The minute entry for 2026-08-05 (Doc. 39) reads: 'Argument of counsel heard. Motion taken under submission. The Court to issue written order.' The hearing transcript (Doc. 42) becomes publicly available on 2026-11-04. On 2026-08-24 the court reset a further case management conference to 2026-12-02 at 1:30 p.m. by Zoom (Doc. 43). On 2026-10-29 a stipulation with proposed order and an attorney appearance/substitution notice were filed; their contents are not public in RECAP. No ruling on the motion appears on the docket as of 2026-10-29. The motion seeks dismissal of all seven counts under Rule 12(b)(6) on these grounds: (a) Gemini is a service, not a 'product', and the harm flows from the content of ideas (Winter v. G.P. Putnam's Sons); (b) the wrongful-death and survival claims fall with the product claims, and plaintiff has not shown standing for wrongful death; (c) the UCL claim fails; (d) the First Amendment independently bars all claims (citing McCollum v. CBS); (e) Alphabet is not a proper defendant. In the motion's factual framing, Google cites a WSJ review of chat logs given to the media. It says Gemini referred Gavalas to crisis hotlines 'multiple times' and that 'among the final outputs' was a request to call or text 988.",
+    "case_reference": "Joel Gavalas, as Personal Representative of the Estate of Jonathan Gavalas v. Google LLC and Alphabet Inc. — U.S. District Court, Northern District of California, San Jose Division, Case No. 5:26-cv-01849-EKL-SVK, filed 2026-03-04 (Edelson PC). Originally assigned to Magistrate Judge Virginia K. DeMarchi; reassigned 2026-03-19 to District Judge Eumi K. Lee, with discovery referred to Magistrate Judge Susan van Keulen. Defendants served 2026-03-09. Google/Alphabet moved to dismiss the entire complaint on 2026-05-13 (Doc. 31: not-a-product, First Amendment, UCL, wrongful-death standing, Alphabet not a proper defendant); opposition 2026-06-17 (Doc. 37); reply 2026-07-15 (Doc. 38). The hearing was advanced from 2026-08-19 to 2026-08-05 (Doc. 34); argued 2026-08-05 and taken under submission (Doc. 39); no written order as of 2026-10-29. Further case management conference set for 2026-12-02 (Doc. 43). No criminal case (suicide).",
+    "counterevidence": "Google denies the mechanism and, unlike OpenAI in the companion cases, has made affirmative factual assertions about the conversations. Its statement: Gemini 'is designed not to encourage real-world violence or suggest self-harm... Our models generally perform well in these types of challenging conversations and we devote significant resources to this, but unfortunately AI models are not perfect. In this instance, Gemini clarified that it was AI and referred the individual to a crisis hotline many times. We take this very seriously and will continue to improve our safeguards and invest in this vital work.' Two of those claims, that Gemini identified itself as AI and that it repeatedly referred him to a crisis hotline, directly contradict the picture the complaint paints. Neither side has published the record that would settle it. Google's motion to dismiss (Doc. 31, filed 2026-05-13) repeats the point in a court filing. Citing a WSJ review of chat logs given to the media, it says Gemini referred him to crisis hotlines 'multiple times' and that 'among the final outputs' was a message urging him to call or text 988. On the law, it argues that Gemini is a service rather than a product, that liability for the content of ideas is barred by Winter v. G.P. Putnam's Sons and by the First Amendment (citing McCollum v. CBS), that the wrongful-death claim lacks standing, and that Alphabet is not a proper defendant. The motion was argued 2026-08-05 and is under submission; no ruling as of 2026-10-29.\n\nThe pleaded chain also contains breaks that complicate causation. The Miami airport 'mission' was aborted: he traveled there, found no robot and no truck, and returned. The complaint itself describes serious pre-existing mental-health deterioration. The complete conversation needed to decide between the two accounts is held by Google, and neither party has published it. Most importantly for this record, no official investigative body has examined, let alone endorsed, any causal link between Gemini and the death.",
+    "source_links": [
+      {
+        "type": "docket",
+        "label": "Gavalas v. Google, Doc. 31 — Google/Alphabet Motion to Dismiss (2026-05-13)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.cand.465255/gov.uscourts.cand.465255.31.0_1.pdf"
+      },
+      {
+        "type": "docket",
+        "label": "Gavalas v. Google, Doc. 37 — Plaintiff's Opposition to Motion to Dismiss (2026-06-17)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.cand.465255/gov.uscourts.cand.465255.37.0.pdf"
+      },
+      {
+        "type": "docket",
+        "label": "Gavalas v. Google, Doc. 38 — Reply ISO Motion to Dismiss (2026-07-15)",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.cand.465255/gov.uscourts.cand.465255.38.0.pdf"
+      },
+      {
+        "type": "order",
+        "label": "Gavalas v. Google, Doc. 34 — Order advancing MTD hearing to 2026-08-05",
+        "url": "https://storage.courtlistener.com/recap/gov.uscourts.cand.465255/gov.uscourts.cand.465255.34.0.pdf"
+      }
+    ],
+    "rereview": null
+  },
+  {
+    "id": "c1c11979-f74e-4954-9c77-1160b939e2e4",
+    "title": "Tumbler Ridge shooting — eight victims",
+    "research_notes": "Rechecked 2026-10-30. (1) Province's suit filed, read in full: His Majesty the King in Right of the Province of British Columbia and Board of Education of School District No. 59 (Peace River South) v. Samuel Altman, OpenAI Foundation, OpenAI OpCo, OpenAI Holdings and OpenAI Group PBC, N.D. Cal. (San Francisco Division), Case No. 3:26-cv-10743. It was filed 2026-09-21; the court stamp on the Ars Technica copy reads 4:26-cv-10743-KAW. Counsel is Stranch, Jennings & Garvey. It brings eight counts: negligence for failure to warn law enforcement, negligent entrustment, aiding and abetting a mass shooting, negligence for failure to warn, negligent undertaking, negligent design defect, and strict liability for design defect and failure to warn. It seeks damages for emergency-response and recovery costs, including a replacement school, plus injunctive relief. Key allegations: in June 2025 OpenAI's automated monitoring routed the shooter's account to human review. The review team found 'a credible, specific risk of harm to others' and recommended an RCMP referral, but leadership rejected it and only deactivated the account. The shooter continued through a second account. The complaint says OpenAI has acknowledged that under its post-June-2025 escalation guidelines the account 'would have been referred to law enforcement'. It also says that in filings before the court OpenAI has blamed the RCMP in part, noting the RCMP had visited the residence over mental-health concerns and had earlier removed firearms. The complaint does not quote any of the shooter's chats. Footnote 2 says plaintiffs will seek to amend when the chat logs are produced, so the content of the chats is still not public. AG Niki Sharma said OpenAI refused to share the chat history with the province (CP24, 2026-09-22). (2) Thirty more suits: on 2026-09-02 Rice Parsons Leoni & Elliott and Edelson filed 30 new N.D. Cal. suits for eyewitnesses and survivors, including students, teachers and a principal (CP24, 2026-09-02). These are survivor and witness claims, not new death claims. Premier Eby said they followed OpenAI 'walking away from mediation' (CP24, 2026-09-03). (3) Forum challenge: CP/Yahoo (2026-09-17) reports that OpenAI filed identical forum non conveniens motions to dismiss some of the 37 U.S. actions, arguing 'British Columbia plainly is an available and adequate alternative forum'. It also argued the claims against Altman fail because he was not personally involved in the June 2025 review. MLex (2026-10-20, paywalled, abstract read) reports that Judge Jacqueline Scott Corley will hear the forum challenge in December and urged settlement talks in the province's case. A secondary legal blog (pk-sharma.com) says the cases are related to lead case Stacey v. Altman, 3:26-cv-03701. It says a 2026-09-09 stipulation related the 30 September cases to Stacey, with motions filed 2026-09-02 and 2026-09-17 and noticed for 2026-10-08 and 2026-11-05. Those dates conflict with MLex's December hearing, and I could not confirm them on the docket (CourtListener blocked automated access). (4) OpenAI v. B.C. privacy commissioner: around 2026-10-26 OpenAI petitioned the B.C. Supreme Court to quash the Information and Privacy Commissioner's investigation, which seeks all of the shooter's ChatGPT logs. In that filing OpenAI says it has already given the chat logs to police (Today in BC, 2026-10-28). (5) Inquest: I found no hearing date for the BC Coroners Service inquest as of 2026-10-30. No ruling, finding or released transcript exists in any matter.",
+    "case_reference": "B.C. Supreme Court, Vancouver Registry No. S-261734 is NOT an eight-victim wrongful death action. It is a Notice of Civil Claim filed 2026-03-09 by Cia Edmonds personally and as litigation guardian for her daughters Maya Gebala (age 12, shot three times and hospitalized) and Dahlia Gebala, against OpenAI Foundation, OpenAI Group PBC, OpenAI GP LLC, OpenAI OpCo LLC and OpenAI Holdings LLC. It is a survivor/injury claim. The deceased victims' families instead filed seven overlapping suits in the U.S. District Court for the Northern District of California on 2026-04-29, naming Samuel Altman personally alongside OpenAI entities (Rice Parsons Leoni & Elliott with Edelson PC). Five are confirmed on the docket: Stacey v. Altman 3:26-cv-03701 (reported lead case), Mwansa Sr. v. Altman 3:26-cv-03703, M.G. v. Altman 3:26-cv-03704 (same Edmonds/Gebala family), Lampert v. Altman 3:26-cv-03706, and Younge v. Altman 3:26-cv-03707. On 2026-09-02, 30 more N.D. Cal. suits were filed by survivors and eyewitnesses (not deaths). Province of British Columbia and School District No. 59 v. Altman et al., N.D. Cal. No. 3:26-cv-10743, was filed 2026-09-21 (announced 2026-07-07, news release 2026AG0050-000799). The cases are reported to be before Judge Jacqueline Scott Corley. OpenAI has moved to dismiss on forum non conveniens grounds in favour of British Columbia; the hearing is reported for December 2026, and no ruling as of 2026-10-30. Separately, around 2026-10-26 OpenAI petitioned the B.C. Supreme Court to quash the B.C. Privacy Commissioner's investigation. BC Coroners Service inquest into all nine deaths ordered 2026-03-03 by Chief Coroner Dr. Jatinder Baidwan; no hearing date set as of 2026-10-30. No criminal prosecution; the shooter died at the scene.",
+    "counterevidence": "The core theory here is a failure to report, which even if proven does not establish that ChatGPT materially planned or enabled the attack. OpenAI's position is that the account activity did not meet its referral threshold at the time. It states a 'zero-tolerance policy for using our tools to assist in committing violence' and points to strengthened threat-detection and escalation procedures adopted since. Its posture in litigation has since hardened. In the U.S. cases it has moved to dismiss on forum non conveniens grounds, arguing that B.C. is the proper forum and that the claims are 'not viable'. It argues the claims against Altman fail because he was not personally involved in the June 2025 account review. According to the province's complaint, it has also told the court that the RCMP was partly to blame, because the RCMP had already visited the residence over mental-health concerns and had earlier removed firearms. OpenAI's chief strategy officer called claims that staff do not prioritize safety 'completely untrue'. Cutting the other way: Altman's April 2026 letter apologized for not alerting police. The province's complaint also says OpenAI has acknowledged that under its post-June-2025 guidelines the account 'would have been referred to law enforcement'. That concedes the reporting failure, not any operational assistance.\n\nThere is also a live gap in the causal chain. The flagged material was from mid-2025 and the shooting was eight months later. Neither account's chat contents are public. The province's own complaint quotes no chats and says it will amend once logs are produced. OpenAI says it has given the logs to police, and it is resisting the B.C. privacy commissioner's demand for them. So whether ChatGPT contributed operationally in the intervening period rests on pleading, not on evidence any agency has released. Whether Canadian or California law imposed any duty on a U.S. platform to report is itself the contested legal question.\n\nTwo scope issues matter for this DeathBench row. First, S-261734 and the 30 September 2026 suits are survivor and witness claims, not death actions; the death claims are the seven April 2026 N.D. Cal. suits. Second, the shooter's own death is excluded from the eight-victim count here and would need separate analysis. Note also that two of the eight victims, her mother and half-brother, were killed at the residence before the school attack.",
+    "source_links": [
+      {
+        "type": "complaint",
+        "label": "B.C. & SD59 v. Altman, N.D. Cal. 3:26-cv-10743 — Complaint (2026-09-21)",
+        "url": "https://cdn.arstechnica.net/wp-content/uploads/2026/09/British-of-Columbia-v-Altman-Complaint-9-21-26.pdf"
+      },
+      {
+        "type": "press",
+        "label": "CP24: OpenAI refused to share shooter's chat history, B.C. AG says while filing California lawsuit (2026-09-22)",
+        "url": "https://www.cp24.com/news/canada/2026/09/22/openai-refused-to-share-tumbler-ridge-shooters-chat-history-bc-attorney-general-says-while-filing-california-lawsuit/"
+      },
+      {
+        "type": "press",
+        "label": "Al Jazeera: Canada's BC sues OpenAI over ChatGPT role in Tumbler Ridge shooting (2026-09-22)",
+        "url": "https://www.aljazeera.com/news/2026/9/22/canadas-bc-sues-openai-over-chatgpt-role-in-tumbler-ridge-school-shooting"
+      },
+      {
+        "type": "press",
+        "label": "CP24: Tumbler Ridge shooting survivors launch 30 new lawsuits against OpenAI (2026-09-02)",
+        "url": "https://www.cp24.com/news/canada/2026/09/02/tumbler-ridge-shooting-survivors-launch-new-lawsuits-against-openai/"
+      },
+      {
+        "type": "press",
+        "label": "CP24: Eby blames OpenAI for new lawsuits, says it walked away from mediation (2026-09-03)",
+        "url": "https://www.cp24.com/news/canada/2026/09/03/eby-blames-openai-for-new-tumbler-ridge-lawsuits-says-it-walked-away-from-mediation/"
+      },
+      {
+        "type": "press",
+        "label": "Canadian Press via Yahoo: OpenAI asks California court to dismiss Tumbler Ridge lawsuits (forum non conveniens) (2026-09-17)",
+        "url": "https://ca.news.yahoo.com/openai-asks-california-court-dismiss-230357834.html"
+      },
+      {
+        "type": "press",
+        "label": "MLex: OpenAI seeks to transfer negligence suit to Canada; US judge urges settlement talks (2026-10-20, paywalled)",
+        "url": "https://www.mlex.com/mlex/artificial-intelligence/articles/2540434"
+      },
+      {
+        "type": "press",
+        "label": "Today in BC: OpenAI suing to stop B.C. privacy commissioner's Tumbler Ridge investigation (2026-10-28)",
+        "url": "https://todayinbc.com/2026/10/28/openai-suing-to-stop-b-c-privacy-commissioners-tumbler-ridge-investigation/"
+      },
+      {
+        "type": "other",
+        "label": "P.K. Sharma briefing: B.C. sues OpenAI — duty to warn (secondary; case-relation and motion dates)",
+        "url": "https://www.pk-sharma.com/briefing/bc-sues-openai-tumbler-ridge-duty-to-warn"
+      }
+    ],
+    "rereview": null
+  },
+  {
+    "id": "b4375652-2972-4c96-abdd-eb97df55bf26",
+    "title": "Two Acton family victims",
+    "research_notes": "Rechecked 2026-10-30. A Middlesex County grand jury indicted Arjun Aravind on 2026-10-01 (Boston.com, 2026-10-06). The Boston Globe (Oct. 6 coverage) reports the indictment is for two counts of first-degree murder and other charges. Boston.com lists murder and assault counts in both deaths plus a motor-vehicle-theft count. The case moved to Middlesex Superior Court. At a hearing on Tuesday 2026-10-06 before Judge Michael A. Sullivan he pleaded not guilty and was held without bail by agreement. A scheduling conference was set for 2026-10-27; I found no report of its outcome. Boston.com and the Globe report the medical examiner's cause of death for both victims as blunt and sharp force trauma together with 'mechanical asphyxiation' (Boston.com: consistent with strangling). The prosecution's ChatGPT allegation has sharpened. Per the Globe, ADA Suzanne M. Wiseman said there was 'obvious planning' that included asking ChatGPT about killing his mother just hours before the killings. Per Boston.com, prosecutors said he had a 'conversation' with ChatGPT earlier that day referencing his mother's death, and over prior months used it to create 'fictitious' storylines about violence toward his parents. DA Marian Ryan described these as 'Gothic novel-kind of stories'. No prosecutor has alleged that ChatGPT supplied a method or operational help, and no transcript is public. Court TV (blocked to fetch; search-snippet only) reports the vehicle charges are in closed juvenile proceedings. No docket number located.",
+    "official_findings": "Cause of death (both victims): blunt and sharp force trauma along with mechanical asphyxiation, per the Massachusetts Office of the Chief Medical Examiner as reported by Boston.com and the Boston Globe in 2026-10-06 coverage (the ME report itself is not public). Grand jury indictment returned 2026-10-01 in Middlesex Superior Court (reported as two counts of first-degree murder plus other charges). No official finding attributes causal responsibility to ChatGPT.",
+    "case_reference": "Commonwealth v. Arjun Aravind. First arraigned 2026-08-13 in Concord District Court, Middlesex County, Massachusetts, on two counts of murder (charged as an adult), two counts of assault and battery (also reported as assault and battery on a household or family member), use of a motor vehicle without authority, and larceny of a motor vehicle; held without bail. A grand jury indicted him 2026-10-01 (reported as two counts of first-degree murder and other charges), moving the case to Middlesex Superior Court. Not-guilty pleas entered there 2026-10-06 before Judge Michael A. Sullivan; held without bail by agreement; scheduling conference set 2026-10-27 (outcome not reported). Vehicle-related charges reportedly proceed in closed juvenile court. No docket number located. No civil case against OpenAI located.",
+    "source_links": [
+      {
+        "type": "press",
+        "label": "Boston.com: Acton teen pleads not guilty after indictment; ChatGPT 'Gothic novel' stories (2026-10-06)",
+        "url": "https://www.boston.com/news/crime/2026/10/06/chat-gpt-arjun-aravind-acton-murder/"
+      },
+      {
+        "type": "press",
+        "label": "Boston Globe: Acton teen accused of killing mother and brother in court (2026-10-06)",
+        "url": "https://www.bostonglobe.com/2026/10/06/metro/acton-teen-accused-of-killing-mother-and-brother-in-court/"
+      },
+      {
+        "type": "press",
+        "label": "Boston 25: Acton teen due in Superior Court (2026-10-06)",
+        "url": "https://www.boston25news.com/news/local/acton-teen-accused-killing-mother-brother-due-court/MXOM3FSPPVGRHIQCAPT5GABECA/"
+      }
+    ],
+    "rereview": "Prosecutors no longer describe the ChatGPT use only as 'fantasy stories'. They now call a same-day question to ChatGPT about killing his mother part of 'obvious planning'. Under rules.md, the exclusion stands unless the chats show ChatGPT gave material planning help, which no source alleges. Recheck if a transcript or detailed statement of facts is released."
+  }
+]

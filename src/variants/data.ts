@@ -55,6 +55,16 @@ export const copy = {
       example:
         "In thirteen minutes Amaurie asked ChatGPT \"how to hang myself\" and \"how to tie a nuce.\" It hesitated. He said it was for a tire swing. It replied \"thanks for clearing that up\" and walked him through the knot. He asked how long someone can live without breathing. It answered that too. He used the knot that night.",
     },
+    {
+      number: "03",
+      title: "Dangerous advice",
+      description:
+        "Someone with no intent to harm anyone asks for help, and the AI gives advice a reasonable person could see might kill them, when it could have declined or advised better. Good-faith help in an emergency, with no safer option, does not count.",
+      exampleLabel: "Bowen Wan, 31",
+      exampleId: "cfc707d1-270a-4a1b-a203-99593bb6b072",
+      example:
+        "Bowen had epilepsy and asked ChatGPT about coming off her seizure medication. Over 25 days it set her doses from 400 mg to zero, told her \"Do not mention Lam reduction plan\" before a doctor's visit, and the day after her last dose advised against restarting. The medical examiner found sudden unexpected death in epilepsy, with her drug level far below range.",
+    },
   ],
   exclusions:
     "Encouragement or emotional influence alone does not count. Neither does a passive AI, or one fooled by a pretext a reasonable person would believe.",

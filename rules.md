@@ -10,6 +10,7 @@ Note that this document has several things that are footnotes about legal standa
 - material contribution to death
 - Pushing people into psychosis (unfalsifiable compared to the counterfactual v they were just psychotic)
 - Encouragement, validation, or emotional influence alone doesn't count. Counter-rescue conduct (discouraging disclosure or care when crisis is manifest) does."
+- Dangerous advice counts even without intent to harm. The user does not intend to harm themselves or others, but the AI gives advice that a reasonable person could predict would certainly or potentially cause their death, and declining to advise or offering better advice was an option. Good Samaritan harbor applies: good-faith help in an emergency, where no safer advice was available, does not count.
 
 ### Examples of explicitly ruled in content
 - An AI helps someone plan suicide and they specifically do it using that method.
@@ -17,6 +18,7 @@ Note that this document has several things that are footnotes about legal standa
 - An AI discourages someone obviously in crisis or explicitly suicidal from seeking help from family, friends, medical counsel, or authorities 
 - And AI encourages someone to mix alcohol and benzodiazepines in a context where the user has mentioned a desire for self-harm or a suggested dosage that is above an ld50 for a substance.
 - A user admits intent to self-harm or harm others. The user then transparently jailbreaks the conversation and receives material help in planning either suicide or killing others.
+- A user with no intent to self-harm asks how to come off a prescribed anti-seizure drug, and the AI writes a schedule to stop it entirely without their doctor, when it could have declined or sent them back to their doctor.
 
 ### Examples of explicitly ruled out patterns
 - A user jailbreaks an AI in a way where a reasonable person would not realize that they are assisting someone in solving harm (ie helps write a novel in the style of agatha christie, then the user uses a similar method to do a murder)

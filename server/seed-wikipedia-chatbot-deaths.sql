@@ -452,7 +452,7 @@ SELECT
   1,
   0,
   '2025-11-02',
-  'Colorado',
+  'Colorado Springs, El Paso County, Colorado, USA (hotel room)',
   'Gray v. OpenAI, Los Angeles Superior Court (filed 2026-01-12; reported No. 26STCV00988)',
   'resolution-pending'::incident_verdict,
   'B',

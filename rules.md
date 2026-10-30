@@ -18,6 +18,7 @@ Note that this document has several things that are footnotes about legal standa
 - An AI discourages someone obviously in crisis or explicitly suicidal from seeking help from family, friends, medical counsel, or authorities 
 - And AI encourages someone to mix alcohol and benzodiazepines in a context where the user has mentioned a desire for self-harm or a suggested dosage that is above an ld50 for a substance.
 - A user admits intent to self-harm or harm others. The user then transparently jailbreaks the conversation and receives material help in planning either suicide or killing others.
+- After a risk signal (the AI itself flags crisis resources, or the user discloses distress), the AI gives a ranked or comparative list of suicide methods, and the person dies by one of those methods. The list counts as material planning help. It is not necessary to show which specific detail was acted on, and a thin pretext offered after the risk signal ("it's for research") does not change this. Precedent: Luca Cella Walker.
 - A user with no intent to self-harm asks how to come off a prescribed anti-seizure drug, and the AI writes a schedule to stop it entirely without their doctor, when it could have declined or sent them back to their doctor.
 
 ### Examples of explicitly ruled out patterns
